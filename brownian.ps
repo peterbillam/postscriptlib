@@ -1,0 +1,223 @@
+%%BeginResource: procset brownian
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2003, Peter J Billam          %
+%     c/o P J B Computing, GPO Box 669, Hobart TAS 7001, Australia      %
+%                                                                       %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit,  and provided this notice is retained.   Neither Peter Billam %
+% nor  P J B Computing  make any representations  about the suitability %
+% of this software for any purpose. It is provided "as is", without any %
+% express or implied warranty.                http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Brownian Curves and Landscapes, see
+%  http://www.pjb.com.au/comp/brownian.html
+% "The Fractal Geometry of Nature" Benoit Mandelbrot, Freeman pp251,437
+% "Fractals, Chaos, Power Laws"    Manfred Schroeder, Freeman pp132-133
+%
+% sample usage:
+% (/home/pjb/ps/lib/brownian.ps) run
+%
+% and then, to generate a Brownian Curve:
+% /redness 1.3 def   % 0=whitenoise, 1=pinknoise, 2=rednoise
+% /n_harmonics 100 def
+% x1 x2 y_scale redness n_harmonics new_brownian_curve
+%
+% newpath x1 y1 moveto % plot
+% /x x1 def {
+%    /y x brownian_curve def
+%    /x x delta_x add def x x2 gt { exit } if
+% } loop
+% the curve begins and ends at the same height, and is centered round zero
+
+% or, to generate a Brownian Landscape:
+% /redness 2.5 def   % 0=whitenoise, 1=pinknoise, 2=rednoise
+% x1 y1 x2 y2 z_scale redness n_harmonics new_brownian_landscape
+%
+% /x x1 def { % plot
+%    /y y1 def {
+%       /z x y brownian_landscape def
+%       newpath z 0.5 add setgray x y delta_x dup rectfill
+%       /y y delta_y add def y y2 gt { exit } if
+%    } loop
+%    /x x delta_x add def x x2 gt { exit } if
+% } loop
+
+
+% set up some of the random stuff ...
+/brownian_r 0.5 1024.0 div 1024.0 div 1024.0 div def   % rand scaling factor
+/brownian_phase_r brownian_r 360 mul def   % for 0..360
+/brownian_rand_phase { rand brownian_phase_r mul } bind def
+
+% curve stuff ...
+/new_brownian_curve {  % usage: x1 x2 y_scale redness N new_brownian_curve
+	/brownian_N exch def /brownian_redness exch def
+	/brownian_y_scale exch def /brownian_x2 exch def /brownian_x1 exch def
+	/brownian_x2mx1 brownian_x2 brownian_x1 sub def
+	/brownian_phases brownian_N array def  % these arrays are indexed 0..(N-1)
+	/brownian_amplitudes brownian_N array def
+
+	% fudge y_scale according to redness (and perhaps N)
+	% if redness==0 mul by .1, 1 mul by 0.4, 2 mul by .7, 3 mul by .9
+	brownian_redness 0.0 lt {
+		/brownian_redness 0.0 brownian_redness sub def
+	} if
+	/brownian_fudge 0.1 brownian_redness 0.3 mul add def
+	brownian_fudge 1.0 gt { /brownian_fudge 1.0 def } if
+	/brownian_y_scale brownian_y_scale brownian_fudge mul def
+	/brownian_redness brownian_redness 0.5 mul def  % from power to amplitude
+
+	/brownian_i 0 def {
+		brownian_amplitudes brownian_i
+		1.0 brownian_i 1 add brownian_redness exp div put
+		brownian_phases brownian_i brownian_rand_phase put
+		/brownian_i brownian_i 1 add def brownian_i brownian_N ge { exit } if
+	} loop
+} bind def
+/brownian_curve {  % usage: x brownian_curve
+	/brownian_x exch def
+	/brownian_total 0.0 def /brownian_i 0 def {
+		/brownian_total brownian_total
+		brownian_x brownian_x1 sub brownian_x2mx1 div brownian_i 1 add mul
+		360 mul brownian_phases brownian_i get add sin
+		brownian_amplitudes brownian_i get mul add def
+		/brownian_i brownian_i 1 add def brownian_i brownian_N ge { exit } if
+	} loop
+	brownian_total brownian_y_scale mul
+} bind def
+
+% landscape stuff ...
+/new_brownian_landscape { % x1 y1 x2 y2 scale redness N new_brownian_landscape
+	/brownian_N exch def /brownian_redness exch def /brownian_z_scale exch def
+	/brownian_y2 exch def /brownian_x2 exch def
+	/brownian_y1 exch def /brownian_x1 exch def
+	/brownian_x2mx1 brownian_x2 brownian_x1 sub def
+	/brownian_y2my1 brownian_y2 brownian_y1 sub def
+
+	% N refers to the larger dimension; the smaller one is scaled ...
+	brownian_x2mx1 brownian_y2my1 ge {
+		/brownian_Nx brownian_N ceiling cvi def
+		/brownian_Ny brownian_y2my1 brownian_x2mx1 div brownian_N mul
+		ceiling cvi def
+	} {
+		/brownian_Nx brownian_x2mx1 brownian_y2my1 div brownian_N mul
+		ceiling cvi def
+		/brownian_Ny brownian_N ceiling cvi def
+	} ifelse
+
+	/brownian_phases     brownian_Ny 2 mul 1 add array def % 0..2Ny, 0..Nx
+	/brownian_amplitudes brownian_Ny 2 mul 1 add array def % 0..2Ny, 0..Nx
+	/brownian_iy 0 def {
+		brownian_iy brownian_Ny 2 mul gt { exit } if
+		brownian_phases     brownian_iy brownian_Nx 1 add array put
+		brownian_amplitudes brownian_iy brownian_Nx 1 add array put
+		/brownian_iy brownian_iy 1 add def
+	} loop
+
+	% fudge z_scale according to redness (and perhaps N)
+	% if redness==0 mul by .1, 1 mul by 0.4, 2 mul by .7, 3 mul by .9
+	brownian_redness 0.0 lt {
+		/brownian_redness 0.0 brownian_redness sub def
+	} if
+	/brownian_fudge 0.1 brownian_redness 0.3 mul add def
+	brownian_fudge 1.0 gt { /brownian_fudge 1.0 def } if
+	/brownian_z_scale brownian_z_scale brownian_fudge mul 0.5 mul def
+	/brownian_redness brownian_redness 0.5 mul def  % from power to amplitude
+
+	/brownian_iy 0 def {
+		brownian_iy brownian_Ny 2 mul gt { exit } if
+		/brownian_ix 0 def {
+			brownian_ix brownian_Nx gt {exit} if
+			/brownian_p brownian_rand_phase def
+			/brownian_a
+			brownian_ix 0 eq brownian_iy brownian_Ny eq and {
+				0.0
+			} {
+				brownian_ix dup mul brownian_iy brownian_Ny sub dup mul add 1 add
+				brownian_redness -0.5 mul exp  % the exp includes inverse & sqrt
+			} ifelse def
+			brownian_amplitudes brownian_iy get brownian_ix
+			brownian_a brownian_p sin mul put
+			brownian_phases brownian_iy get brownian_ix brownian_rand_phase put
+		  /brownian_ix brownian_ix 1 add def
+		} loop
+		/brownian_iy brownian_iy 1 add def
+	} loop
+} bind def
+
+/brownian_landscape {  % usage: x y brownian_landscape
+	/brownian_y exch def /brownian_x exch def
+	/brownian_xp1 brownian_x brownian_x1 sub brownian_x2mx1 div def
+	/brownian_yp1 brownian_y brownian_y1 sub brownian_y2my1 div def
+	/brownian_total 0.0 def
+	/brownian_iy 0 def {
+		brownian_iy brownian_Ny 2 mul gt { exit } if
+		/brownian_yp brownian_yp1 brownian_iy brownian_Ny sub mul def
+		/brownian_ay brownian_amplitudes brownian_iy get def
+		/brownian_py brownian_phases     brownian_iy get def
+		/brownian_ix 0 def {
+			brownian_ix brownian_Nx gt {exit} if
+			/brownian_xp brownian_xp1 brownian_ix mul def
+			/brownian_total brownian_total
+			brownian_xp brownian_yp add 360 mul
+			brownian_py brownian_ix get add cos
+			brownian_ay brownian_ix get mul add
+			def
+		  /brownian_ix brownian_ix 1 add def
+		} loop
+		/brownian_iy brownian_iy 1 add def
+	} loop
+	brownian_total brownian_z_scale mul
+} bind def
+
+/brownian_island {  % usage: x y brownian_island
+	brownian_landscape /brownian_z exch def
+	brownian_yp1 .1667 gt     brownian_yp1 .8333 lt and
+	brownian_xp1 .1667 gt and brownian_xp1 .8333 lt and {  % central plateau
+		/brownian_z brownian_z 0.5 mul def
+	} { % edge
+		brownian_yp1 .1667 gt brownian_yp1 .8333 lt and {
+			/brownian_z brownian_xp1 1080 mul cos -0.25 mul 0.25 add
+			brownian_z mul def
+		} {
+			brownian_xp1 .1667 gt brownian_xp1 .8333 lt and {
+				/brownian_z brownian_yp1 1080 mul cos -0.25 mul 0.25 add
+				brownian_z mul def
+			} {
+				/brownian_z 1.0 brownian_xp1 1080 mul cos sub
+				1.0 brownian_yp1 1080 mul cos sub mul 0.125 mul brownian_z mul def
+			} ifelse
+		} ifelse
+	} ifelse
+	brownian_xp1 180 mul sin brownian_yp1 180 mul sin mul .5 sub brownian_z add
+} bind def
+
+/brownian_horiz_landscape {  % usage: x y brownian_horiz_landscape
+% NOPE. very diagonalish.
+	/brownian_y exch def /brownian_x exch def
+	/brownian_xp1 brownian_x brownian_x1 sub brownian_x2mx1 div def
+	/brownian_yp1 brownian_y brownian_y1 sub brownian_y2my1 div def
+	/brownian_total 0.0 def
+	/brownian_iy 0 def {
+		brownian_iy brownian_Ny 2 mul gt { exit } if
+		/brownian_yp brownian_yp1 brownian_iy brownian_Ny sub mul def
+		/brownian_ay brownian_amplitudes brownian_iy get def
+		/brownian_py brownian_phases     brownian_iy get def
+		/brownian_ix 0 def {
+			brownian_ix brownian_Nx gt {exit} if
+			brownian_ix brownian_iy brownian_Ny sub abs lt { % fudge
+				/brownian_xp brownian_xp1 brownian_ix mul def
+				/brownian_total brownian_total
+				brownian_xp brownian_yp add 360 mul
+				brownian_py brownian_ix get add cos
+				brownian_ay brownian_ix get mul add
+				def
+			} if
+			/brownian_ix brownian_ix 1 add def
+		} loop
+		/brownian_iy brownian_iy 1 add def
+	} loop
+	brownian_total brownian_z_scale mul 1.2 mul % fudge
+} bind def
+
+%%EndResource

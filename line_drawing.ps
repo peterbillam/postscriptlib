@@ -1,0 +1,293 @@
+%%BeginResource: procset line_drawing
+% line_drawing.ps : to make line drawing as compact and robust as possible
+%
+% (/home/wherever/ps/lib/line_drawing.ps) run
+% (/home/wherever/ps/lib/colours.ps) run
+% /longcurveto  usage: [ l c l c (pushxy) l c /apoint l c ] xto yto longcurveto
+%     'l' is the nominal length of the segment in mm (will be scaled !)
+%     'c' is the rightwards curvature of the segment in Radians/Metre (ditto)
+%     'pushxy' causes the x,y at that point to be left on the stack afterwards
+%     any nametype (e.g. /thispoint) causes it to be defined as in a pointdef
+%     where the curve is scaled and rotated to end at position xto, yto
+% /longcurve    usage: angle [ l c l c l c (pushxy) l c l c ] longcurve
+% /fuzzygraystroke usage: innergray outergray inwidth outwidth fuzzygraystroke
+% /fuzzygrayfill   usage: innergray outergray fuzzwidth fuzzygrayfill
+% /fuzzyrgbstroke  usage: incolour outgcolour inwidth outwidth fuzzyrgbstroke
+% /fuzzyrgbfill usage: innercolour outercolour fuzzwidth fuzzyrgbfill
+% /reversecurve usage: [ l1 c1 l2 c2 /name l3 c3 ] reversecurve
+% /pointdef     usage: /name_of_point x y pointdef
+% /pointadd     usage: x1 y1 x2 y2 pointadd
+% /pointdup     usage: x1 y1 pointdup => x1 y1 x1 y1 
+% /interpolate2 usage: x1 y1 weight1 x2 y2 weight2 interpolate2
+% /interpolate3 usage: x1 y1 weight1 x2 y2 weight2 x3 y3 weight3 interpolate3
+% All the colour stuff needs colours.ps, see www.pjb.com.au/comp/free
+%
+% hints for drawing, in 10 easy steps (-;
+% * at each junction of 3 colours, put a Point (eg "nosetip", "brow")
+% * at each boundary of 2 colours, put a Curve (eg "nosetip2brow")
+% * define at least 3 Points in x,y (eg "/brow { 67 mm 200 mm } def")
+% * define the Curves (eg "/nosetip2brow { 10 20 60 1 /bridge 15 -45 } def")
+% * define any remaining Points by interpolate2, interpolate3 and pointadd
+% * define any Colours ("/darkskin paleorange .4 brown .6 rgbmix rgbdef")
+% * run all the Curves and interpolations to calculate all Point positions
+%   (eg "nosetip moveto [ nosetip2brow ] brow longcurveto")
+% * make closedpaths round areas; clip, fill, fuzzystroke & fuzzyfill in them
+% * run the Curves again, and this time stroke or fuzzystroke them
+%
+% longcurveto, longcurve and reversecurve can, unfortunately, not
+% be used to create a userpath; they append to the current path.
+% (only ucache, setbbox, moveto, rmoveto, lineto, rlineto, curveto, arc,
+% rcurveto, arcn, arct and closepath may be used to specify a userpath)
+% See the PostScript Language Reference Manual for more about userpaths.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2000, Peter J Billam          %
+%     c/o P J B Computing, GPO Box 669, Hobart TAS 7001, Australia      %
+%                                                                       %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit,  and provided this notice is retained.   Neither Peter Billam %
+% nor  P J B Computing  make any representations  about the suitability %
+% of this software for any purpose. It is provided "as is", without any %
+% express or implied warranty.                http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/mm { 72 mul 25.4 div } def
+/metres { 72000 mul 25.4 div } def
+
+% ------------------ curve stuff ...
+/pushxy (pushxy) def
+/longc_nopushxy 0 def   % allow 'pushxy' ...
+/longcurveto { % usage: [ l c l c l c (pushxy) l c l c ] xto yto longcurveto
+	% 'l' is the nominal length of the segment in mm (will be scaled !)
+	% 'c' is the rightwards curvature of the segment in Radians/Metre (ditto)
+	% 'pushxy' causes the x,y at that point to be left on the stack afterwards
+	% where the curve is scaled and rotated to end at position xto, yto
+	/longct_aimy exch def /longct_aimx exch def
+	currentpoint /longct_starty exch def /longct_startx exch def
+	gsave   % prevent stroking of the trial curve
+	/longc_nopushxy 1 def  % prevent 'pushxy' for the trial curve ...
+	dup 0 exch longcurve   % do the trial curve to see where it ends
+	/longc_nopushxy 0 def  % re-allow 'pushxy' ...
+	currentpoint /longct_endy exch def /longct_endx exch def
+	grestore
+	% calculate the transformation that will take *end to *aim
+	/longct_rotation
+	longct_aimy longct_starty sub longct_aimx longct_startx sub atan
+	longct_endy longct_starty sub longct_endx longct_startx sub atan
+	sub def
+	/longct_scale
+	longct_aimy longct_starty sub dup mul longct_aimx longct_startx sub dup mul
+	add sqrt
+	longct_endy longct_starty sub dup mul longct_endx longct_startx sub dup mul
+	add sqrt div def
+	% now do the transformation and draw the curve
+	% scale leaves false pushxy's; must scan the array with mul and div
+	dup length /longct_n exch def /longct_i 0 def
+	{
+		dup longct_i get /longct_l exch def   % get current element
+		longct_l (pushxy) eq {
+		} {
+			longct_l type (nametype) eq {
+			} {
+				dup longct_i longct_l longct_scale mul put
+				/longct_i longct_i 1 add def longct_i longct_n ge { exit } if
+				dup longct_i get /longct_c exch def   % get current element
+				dup longct_i longct_c longct_scale div put
+			} ifelse
+		} ifelse
+		/longct_i longct_i 1 add def longct_i longct_n ge { exit } if
+	} loop
+	longct_rotation exch longcurve
+} def
+
+/longcurve { % usage: angle [ l c l c l c (pushxy) l c l c ] longcurve
+	% where the curve starts at angle 'angle' from the current point
+	% 'l' is the length of the segment in mm
+	% 'c' is the rightwards curvature of the segment in Radians per Metre
+	% 'pushxy' causes the x,y at that point to be left on the stack afterwards
+	% any nametype (e.g. /thispoint) causes it to be defined as in a pointdef
+	exch /longc_angle exch def
+	dup length /longc_n exch def
+	/longc_i 0 def
+	{
+		dup longc_i get /longc_l exch def
+		longc_l pushxy eq {
+			longc_nopushxy 0 eq { currentpoint 3 2 roll } if
+		} {
+			longc_l type (nametype) eq {
+				longc_l currentpoint pointdef
+			} {
+				/longc_l longc_l mm def
+				/longc_i longc_i 1 add def
+				dup longc_i get /longc_c exch def
+				longc_c 0 eq {  % prevent division by zero
+					longc_l longc_angle cos mul
+					longc_l longc_angle sin mul rlineto
+				} {
+					/longc_radius 1 longc_c div metres def
+					% find centre of curvature
+					currentpoint
+					longc_radius longc_angle cos mul sub /longc_y exch def
+					longc_radius longc_angle sin mul add /longc_x exch def
+					% find total curved angle
+					/longc_curved_angle longc_l longc_radius div 57.2958 mul def
+					% draw arc
+					longc_c 0 gt {
+						longc_x longc_y longc_radius
+						longc_angle 90 add dup longc_curved_angle sub arcn
+					} {
+						longc_x longc_y longc_radius
+						longc_angle 90 add dup longc_curved_angle sub arc
+					} ifelse
+					% move along for next segment
+					/longc_angle longc_angle longc_curved_angle sub def
+				} ifelse
+			} ifelse
+		} ifelse
+		/longc_i longc_i 1 add def longc_i longc_n ge { exit } if
+	} loop
+	pop
+} def
+
+/reversecurve { % usage: [ l1 c1 l2 c2 /name l3 c3 ] reversecurve
+	% leaves [ l3 -c3 /name l2 -c2 l1 -l1 ] on the stack
+	dup length /reversec_i exch def
+	/reversec_array reversec_i array def
+	/reversec_j 0 def  % index into reversec_array
+	{
+		/reversec_i reversec_i 1 sub def
+		dup reversec_i get /reversec_c exch def
+		reversec_c type (nametype) ne reversec_c (pushxy) ne and {
+			/reversec_i reversec_i 1 sub def
+			dup reversec_i get /reversec_l exch def
+
+			reversec_array reversec_j reversec_l put
+			/reversec_j reversec_j 1 add def
+			reversec_array reversec_j reversec_c -1.0 mul put
+			/reversec_j reversec_j 1 add def
+		} if
+		reversec_i 0 le { exit } if
+	} loop
+	pop reversec_array 0 reversec_j getinterval
+} def
+
+/pointdef { % usage: /name_of_point x y pointdef
+	/pointdef_y exch def /pointdef_x exch def
+	% This is Really Ugly stuff; Postscript is not made for string handling.
+	/pointdef_s 50 string def
+	(                                                  ) pointdef_s copy
+	0 pointdef_x 50 string cvs dup length /pointdef_l exch def putinterval
+	pointdef_s 25 pointdef_y 50 string cvs putinterval
+	pointdef_s 50 string copy cvx def
+} def
+
+/pointadd { % usage: x1 y1 x2 y2 pointadd
+	4 1 roll exch 4 1 roll add 3 1 roll add
+} def
+
+/pointdup { % usage: x1 y1 pointdup => x1 y1 x1 y1
+	dup 3 2 roll dup 4 1 roll exch
+} def
+
+/interpolate2 { % usage: x1 y1 weight1 x2 y2 weight2 interpolate2
+	% leaves interpolated point on stack ready for "moveto" or "pointdef"
+	/intpl_w2 exch def /intpl_y2 exch def /intpl_x2 exch def
+	/intpl_w1 exch def /intpl_y1 exch def /intpl_x1 exch def
+	% normalise the weights to add up to 1 ...
+	/intpl_wtot intpl_w1 intpl_w2 add def
+	/intpl_w1 intpl_w1 intpl_wtot div def
+	/intpl_w2 intpl_w2 intpl_wtot div def
+	% interpolate and leave on stack ...
+	intpl_x1 intpl_w1 mul intpl_x2 intpl_w2 mul add
+	intpl_y1 intpl_w1 mul intpl_y2 intpl_w2 mul add
+} def
+
+/interpolate3 { % usage: x1 y1 weight1 x2 y2 weight2 x3 y3 weight3 interpolate3
+	% leaves interpolated point on stack ready for "moveto" or "pointdef"
+	/intpl_w3 exch def /intpl_y3 exch def /intpl_x3 exch def
+	/intpl_w2 exch def /intpl_y2 exch def /intpl_x2 exch def
+	/intpl_w1 exch def /intpl_y1 exch def /intpl_x1 exch def
+	% normalise the weights to add up to 1 ...
+	/intpl_wtot intpl_w1 intpl_w2 add intpl_w3 add def
+	/intpl_w1 intpl_w1 intpl_wtot div def
+	/intpl_w2 intpl_w2 intpl_wtot div def
+	/intpl_w3 intpl_w3 intpl_wtot div def
+	% interpolate and leave on stack ...
+	intpl_x1 intpl_w1 mul intpl_x2 intpl_w2 mul add intpl_x3 intpl_w3 mul add
+	intpl_y1 intpl_w1 mul intpl_y2 intpl_w2 mul add intpl_y3 intpl_w3 mul add
+} def
+
+% ------------------ gray stuff ...
+
+/gray0 1.0 def /gray1 0.95 def /gray2 0.9  def /gray3 0.85 def /gray4 0.8 def
+/gray5 0.7 def /gray6 0.6  def /gray7 0.45 def /gray8 0.25 def /gray9 0.0 def
+
+
+/fuzzygraystroke { % usage: innergray outgray inwidth outwidth fuzzygraystroke
+	/fuzzys_ow exch def /fuzzys_iw exch def
+	/fuzzys_og exch def /fuzzys_ig exch def
+	gsave 1 setlinecap 1 setlinejoin
+	% should do more intermediate steps ...
+	gsave fuzzys_ow setlinewidth fuzzys_og setgray stroke grestore
+	gsave fuzzys_iw 0.2 mul fuzzys_ow 0.8 mul add setlinewidth
+		fuzzys_ig 0.2 mul fuzzys_og 0.8 mul add setgray stroke grestore
+	gsave fuzzys_iw 0.4 mul fuzzys_ow 0.6 mul add setlinewidth
+		fuzzys_ig 0.4 mul fuzzys_og 0.6 mul add setgray stroke grestore
+	gsave fuzzys_iw 0.6 mul fuzzys_ow 0.4 mul add setlinewidth
+		fuzzys_ig 0.6 mul fuzzys_og 0.4 mul add setgray stroke grestore
+	gsave fuzzys_iw 0.8 mul fuzzys_ow 0.2 mul add setlinewidth
+		fuzzys_ig 0.8 mul fuzzys_og 0.2 mul add setgray stroke grestore
+	fuzzys_iw setlinewidth fuzzys_ig setgray stroke grestore
+} def
+
+/fuzzygrayfill { % usage: innergray outergray fuzzwidth fuzzygrayfill
+	/fuzzyf_w exch def /fuzzyf_og exch def /fuzzyf_ig exch def
+	currentlinewidth currentlinecap currentgray gsave
+	fuzzyf_ig fuzzyf_og fuzzyf_w 0.1 mul fuzzyf_w 2.0 mul fuzzygraystroke
+	grestore fuzzys_ig setgray fill setgray setlinecap setlinewidth
+} def
+
+% ------------------ colour stuff ...
+% Needs colours.ps (see http://www.pjb.com.au/comp)
+% currentcolorspace 0 get 256 string cvs % e.g. DeviceGray or DeviceRGB
+
+/fuzzystroke { fuzzyrgbstroke } def
+/fuzzyfill   { fuzzyrgbfill } def
+
+/fuzzyrgbstroke { % usage: incolour outcolour inwidth outwidth fuzzyrgbstroke
+	/fuzzyrgbs_ow exch def /fuzzyrgbs_iw exch def
+	/fuzzyrgbs_oc 4 1 roll rgbdef /fuzzyrgbs_ic 4 1 roll rgbdef
+	gsave 1 setlinecap 1 setlinejoin
+	% should do more intermediate steps ...
+	gsave fuzzyrgbs_ow setlinewidth fuzzyrgbs_oc setrgbcolor stroke grestore
+	gsave fuzzyrgbs_iw 0.1 mul fuzzyrgbs_ow 0.9 mul add setlinewidth
+		fuzzyrgbs_ic 0.1 fuzzyrgbs_oc 0.9 rgbmix setrgbcolor stroke grestore
+	gsave fuzzyrgbs_iw 0.2 mul fuzzyrgbs_ow 0.8 mul add setlinewidth
+		fuzzyrgbs_ic 0.2 fuzzyrgbs_oc 0.8 rgbmix setrgbcolor stroke grestore
+	gsave fuzzyrgbs_iw 0.3 mul fuzzyrgbs_ow 0.7 mul add setlinewidth
+		fuzzyrgbs_ic 0.3 fuzzyrgbs_oc 0.7 rgbmix setrgbcolor stroke grestore
+	gsave fuzzyrgbs_iw 0.4 mul fuzzyrgbs_ow 0.6 mul add setlinewidth
+		fuzzyrgbs_ic 0.4 fuzzyrgbs_oc 0.6 rgbmix setrgbcolor stroke grestore
+	gsave fuzzyrgbs_iw 0.5 mul fuzzyrgbs_ow 0.5 mul add setlinewidth
+		fuzzyrgbs_ic 0.5 fuzzyrgbs_oc 0.5 rgbmix setrgbcolor stroke grestore
+	gsave fuzzyrgbs_iw 0.6 mul fuzzyrgbs_ow 0.4 mul add setlinewidth
+		fuzzyrgbs_ic 0.6 fuzzyrgbs_oc 0.4 rgbmix setrgbcolor stroke grestore
+	gsave fuzzyrgbs_iw 0.7 mul fuzzyrgbs_ow 0.3 mul add setlinewidth
+		fuzzyrgbs_ic 0.7 fuzzyrgbs_oc 0.3 rgbmix setrgbcolor stroke grestore
+	gsave fuzzyrgbs_iw 0.8 mul fuzzyrgbs_ow 0.2 mul add setlinewidth
+		fuzzyrgbs_ic 0.8 fuzzyrgbs_oc 0.2 rgbmix setrgbcolor stroke grestore
+	gsave fuzzyrgbs_iw 0.9 mul fuzzyrgbs_ow 0.1 mul add setlinewidth
+		fuzzyrgbs_ic 0.9 fuzzyrgbs_oc 0.1 rgbmix setrgbcolor stroke grestore
+	fuzzyrgbs_iw setlinewidth fuzzyrgbs_ic setrgbcolor stroke grestore
+} def
+
+/fuzzyrgbfill { % usage: innercolour outercolour fuzzwidth fuzzyrgbfill
+	/fuzzyrgbf_w exch def /fuzzyrgbf_oc 4 1 roll rgbdef
+	/fuzzyrgbf_ic 4 1 roll rgbdef gsave
+	fuzzyrgbf_ic fuzzyrgbf_oc fuzzyrgbf_w 0.1 mul fuzzyrgbf_w 2.0 mul
+	fuzzyrgbstroke grestore gsave fuzzyrgbs_ic setrgbcolor fill grestore
+} def
+
+%%EndResource
+

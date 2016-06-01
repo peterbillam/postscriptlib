@@ -1,0 +1,433 @@
+<HTML><HEAD><TITLE>colours.ps Manual</TITLE>
+<LINK rel=stylesheet type="text/css" href="styles.css" title="PJB Comp Styles">
+<META HTTP-EQUIV="Keywords"
+CONTENT="PostScript, line drawing, shading">
+</HEAD>
+<BODY LINK="#000066" VLINK="#000066" ALINK="#000066">
+<DIV>
+<H1><IMG SRC="logo.jpg" ALT=" " WIDTH=126 HEIGHT=52>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <I>colours.ps</I>
+</H1>
+<CENTER>
+<TABLE ALIGN="center" WIDTH="85%" BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left">
+	<UL><LI>
+	<B><A HREF="#name">NAME</A></B>
+	</LI><LI>
+	<B><A HREF="#synopsis">SYNOPSIS</A></B>
+	</LI><LI>
+	<B><A HREF="#description">DESCRIPTION</A></B>
+	</LI></UL>
+</TD><TD ALIGN="left">
+	<UL><LI>
+	<B><A HREF="#colours">COLOURS</A></B>
+	</LI><LI>
+	<B><A HREF="#subroutines">SUBROUTINES</A></B>
+	</LI><LI>
+	<B><A HREF="#callibrate_rgb2gray">Callibrating rgb2gray</A></B>
+	</LI></UL>
+</TD><TD ALIGN="left">
+	<UL><LI>
+	<B><A HREF="#author">AUTHOR</A></B>
+	</LI><LI>
+	<B><A HREF="#changes">CHANGES</A></B>
+	</LI><LI>
+	<B><A HREF="#see_also">SEE&nbsp;ALSO</A></B>
+	</LI></UL>
+</TD></TR></TABLE>
+</CENTER>
+
+
+<A NAME="name"> <HR> </A>
+<H3> NAME </H3>
+<P>
+&nbsp; &nbsp; &nbsp;
+colours.ps - Some useful colour-handling stuff in PostScript
+</P>
+
+<A NAME="synopsis"> <HR> </A>
+<H3> SYNOPSIS </H3>
+<PRE>
+ (/home/wherever/ps/lib/colours.ps) run
+ % to send it to a printer see <A HREF="include_run.html">include_run</A> . . .
+
+ <A HREF="#colours">palegreen</A> setrgbcolor
+
+ <A HREF="#colours">blue</A> 0.6 <A HREF="#colours">grey</A> 0.4 <A HREF="#rgbmix">rgbmix</A> setrgbcolor
+
+ /darkskin <A HREF="#colours">paleorange</A> 0.4 <A HREF="#colours">brown</A> 0.6 <A HREF="#rgbmix">rgbmix</A> <A HREF="#rgbdef">rgbdef</A>
+ darkskin setrgbcolor
+
+ /contourcolour [ 0 blue 50 yellow 100 green 150 grey 200 white ]
+    altitude <A HREF="#rgbinterpolate">rgbinterpolate</A> <A HREF="#rgbdef">rgbdef</A>
+
+ <A HREF="#colours">paleorange</A> <A HREF="#rgb2gray">rgb2gray</A> setgray  % same brightness as the paleorange
+
+ /equivalentgray <A HREF="#colours">palegreen</A> <A HREF="#rgb2gray">rgb2gray</A> def
+
+ <A HREF="#colours">orange</A> 0.9 <A HREF="#adjustbrightness">adjustbrightness</A> setrgbcolor
+ <A HREF="#colours">violet palegreen</A> <A HREF="#rgb2gray">rgb2gray</A> <A HREF="#adjustbrightness">adjustbrightness</A> setrgbcolor
+
+ 50 100 500 170 darkblue white    true -0.8 <A HREF="#rectgradientfill">rectgradientfill</A>
+ 50 270 500 500 white    paleblue true  0.3 <A HREF="#rectgradientfill">rectgradientfill</A>
+
+[ red black darkgrey ] <A HREF="#randomrgb">randomrgb</A> setrgbcolor
+
+</PRE>
+
+<A NAME="description"><HR></A><H3>DESCRIPTION</H3>
+<P>
+This module implements in PostScript
+some RGB
+<A HREF="#colours">colours</A> and colour-handling
+<A HREF="#subroutines">subroutines</A>
+to help an artist using PostScript.
+It is designed to work with the line-drawing routines in
+<A HREF="line_drawing.html">line_drawing.ps</A>
+</P><P>
+<B>To install:</B> go to
+<A HREF="http://www.pjb.com.au/comp/free/colours.ps.txt">
+www.pjb.com.au/comp/free/colours.ps.txt</A>
+and save the file to your local disc.<BR>
+Rename it to <I>colours.ps</I> and move it into some appropriate
+directory such as <CODE>~/ps/lib</CODE>&nbsp;.&nbsp;.&nbsp;.
+<BR>
+Or, first change directory to where you keep your PostScript libraries:
+<BR><CODE> &nbsp; &nbsp;
+cd /home/wherever/ps/lib/
+</CODE><BR>
+(or wherever) &nbsp; and then either: <BR>
+<CODE>
+&nbsp; &nbsp; wget -O colours.ps http://www.pjb.com.au/comp/free/colours.ps.txt
+</CODE><BR> or: <BR> <CODE>
+&nbsp; &nbsp; curl http://www.pjb.com.au/comp/free/colours.ps.txt -o colours.ps
+</CODE></P>
+</P>
+
+<A NAME="colours"> <HR> </A>
+<H3> COLOURS </H3>
+<P>
+colours.ps defines the following colours:
+</P>
+<UL><LI>
+white,
+lightgrey,
+lightgray,
+grey,
+gray,
+mediumgrey,
+mediumgray,
+darkgrey,
+darkgray,
+black
+</LI><LI>
+darkbrown,
+brown,
+palebrown
+</LI><LI>
+darkred,
+red,
+palered,
+pink
+</LI><LI>
+darkorange,
+orange,
+paleorange
+</LI><LI>
+yellow
+</LI><LI>
+darkgreen,
+green,
+palegreen
+</LI><LI>
+darkblue,
+blue,
+paleblue
+</LI><LI>
+darkviolet,
+violet,
+paleviolet
+</LI></UL>
+<P>You can use
+<A HREF="#rgbmix">rgbmix</A> and
+<A HREF="#adjustbrightness">adjustbrightness</A> to mix yourself
+any other colours that you may need, just like a painter would.
+</P>
+
+<A NAME="subroutines"> <HR> </A>
+<H3> SUBROUTINES </H3>
+<P>
+<B><A HREF="#rgbmix">rgbmix</A>,
+<A HREF="#rgbinterpolate">rgbinterpolate</A>,
+<A HREF="#rectgradientfill">rectgradientfill</A>,
+<A HREF="#rgbdef">rgbdef</A>,
+<A HREF="#randomrgb">randomrgb</A>,
+<A HREF="#rgb2gray">rgb2gray</A></B>,
+<B><A HREF="#adjustbrightness">adjustbrightness</A></B> and
+<B><A HREF="#pathbboxwh">pathbboxwh</A></B>
+</P>
+<DL>
+<DT><B><A NAME="rgbmix">
+colour1 weight1 &nbsp; colour2 weight2 &nbsp; rgbmix</A></B>
+</DT><DD><P>
+The above invocation leaves on the stack,
+in <CODE>r g b</CODE> three-number form,
+a colour intermediate between <CODE>colour1</CODE> and <CODE>colour2</CODE>.
+The arguments are:<BR>
+<B>colour1</B>
+is the first colour, in <CODE>r g b</CODE> three-number form<BR>
+<B>weight1</B>
+is the weight that will be given to the first colour in the mixing<BR>
+<B>colour2</B>
+is the second colour, in <CODE>r g b</CODE> three-number form<BR>
+<B>weight2</B>
+is the weight that will be given to the second colour in the mixing<BR>
+</P><P>
+The weights don't have to add up to one, 
+they get normalised to total 1.0 automatically.
+<B>rgbmix</B> uses non-linear mixing,
+to conform to the way the eye sees these things.
+</P>
+
+</DD><DT>
+<B><A NAME="rgbinterpolate">
+[ a1 colour1 .. aN colourN ] a &nbsp; rgbinterpolate</A></B>
+</DT><DD><P>
+The above invocation leaves on the stack,
+in <CODE>r g b</CODE> three-number form,
+a colour which depends on where the number <B>a</B> lies
+in relation to the series of numbers <B>a1,a2..aN</B>.
+</P><P>
+It is expected that <B>a1,a2..aN</B> are in ascending order !<BR>
+If <B>a</B> is <B>a1</B> or less, <B>colour1</B> will be returned,<BR>
+if <B>a</B> is between <B>a1</B> and <B>a2</B>,
+<A HREF="#rgbmix">rgbmix</A> is used to interpolate between them,<BR>
+If <B>a</B> is <B>a2</B> <B>colour2</B> will be returned,<BR>
+if <B>a</B> is between <B>a2</B> and <B>a3</B>
+<A HREF="#rgbmix">rgbmix</A> is used to interpolate between them,<BR>
+if <B>a</B> is <B>aN</B> or more,
+<B>colourN</B> will be returned.<BR>
+For example:<BR><CODE>
+[ .5 paleblue .51 white 1 mediumgray ] z rgbinterpolate setrgbcolor
+</CODE><BR>
+would transform a <A HREF="brownian.html">brownian landscape</A> in
+<B>z</B> into a sky with clouds ...
+</P>
+
+</DD><DT>
+<B><A NAME="rectgradientfill">
+x y width height startrgb endrgb vertical convexity &nbsp; rectgradientfill</A></B>
+</DT><DD><P>
+The above invocation, conceived as a sort of extension of <I>rectfill</I>,
+fills the rectangle with a colour-gradient,
+starting at colour <B>startrgb</B> and ending with <B>endrgb</B>.<BR>
+If <B>vertical</B> is <I>true</I>, the starting colour is at the bottom
+(<I>y</I>) and the ending colour at the top (<I>y+height</I>).<BR>
+If <B>vertical</B> is <I>false</I>, the starting colour is on the left
+(<I>x</I>) and the ending colour on the right (<I>x+width</I>).<BR>
+The <B>convexity</B> parameter should lie betwen -1.0 and 1.0.
+If it is zero, the colour is interpolated linearly;
+otherwise it is interpolated quadratically, such that if <B>convexity</B>
+is negative the colour changes fastest towards the end (the top or right),
+and if <B>convexity</B> is positive the colour changes fastest at the start
+(the bottom or left).
+</P>
+
+</DD><DT>
+<B><A NAME="rgbdef">/name_of_colour r g b &nbsp; rgbdef</A></B>
+</DT><DD><P>
+The above invocation causes
+<CODE>name_of_colour</CODE> to be defined as <CODE>{ r g b }</CODE>
+so it's like a three-dimensional version of <CODE>def</CODE>.
+</P>
+
+</DD><DT>
+<B><A NAME="randomrgb">[ red black darkgrey ] &nbsp; randomrgb</A></B>
+</DT><DD><P>
+The above invocation chooses at random one of the
+colours in the array (red, black and darkgrey in this example),
+and then leaves that colour on the stack.
+</P><P>
+By default it will make different a choice every time you load the
+page, so if you need consistency you should invoke <I>srand</I> first.
+</P>
+
+</DD><DT>
+<B><A NAME="rgb2gray">r g b &nbsp; rgb2gray</A></B>
+</DT><DD><P>
+The above invocation causes the
+<CODE>r g b</CODE> colour to be converted to its equivalent gray value,
+which is then left on the stack.
+The conversion follows the NTSC video standard, which determines how
+a colour television signal is rendered on a black and white television:
+gray&nbsp;=&nbsp;.3&nbsp;*&nbsp;red&nbsp;+&nbsp;.59&nbsp;*&nbsp;green&nbsp;+&nbsp;.11 * blue
+</P><P>
+Printers and Graphic displays differ widely, and the NTSC standard does
+not necessarily produce a gray value which you will perceive, on your
+Graphic display, as having the same luminance as the original colour.
+If this becomes an issue for you on some particular display, then the
+<A HREF="#callibrate_rgb2gray">callibrate_rgb2gray</A> variable will
+allow you to callibrate the conversion.
+</P>
+
+</DD><DT>
+<B><A NAME="adjustbrightness">r g b gray &nbsp; adjustbrightness</A></B>
+</DT><DD><P>
+The above invocation causes the
+<CODE>r g b</CODE> colour to be adjusted in brightness until it
+matches the <CODE>gray</CODE> value, as judged by the
+<A HREF="#rgb2gray">rgb2gray</A> subroutine.
+The resulting colour is left on the stack in <CODE>r g b</CODE> form.
+<P></P>
+Where possible, all three components of the colour are scaled
+by the same factor; this adjusts the Brightness of the colour.
+But if one of those components would as a result exceed 1.0,
+then it is fixed at 1.0 and the result is mixed with white until it
+matches <CODE>gray</CODE>; this reduces the Saturation of the colour.
+<P></P>
+An excellent discussion of the many uses of equiluminant colours
+of different hues can be found in Margret Livingstone's book
+<I>Vision and Art, the Biology of Seeing</I>.
+</P>
+
+</DD><DT>
+<B><A NAME="pathbboxwh">pathbboxwh</A></B>
+</DT><DD><P>
+This is the same as the standard <I>pathbbox</I> procedure,
+except that it leaves the box on the stack in the form:<BR>
+<CODE>&nbsp; llx lly width height</CODE><BR>
+ready for use by<I>rectclip</I>, <I>rectfill</I> or
+<A HREF="#rectgradientfill">rectgradientfill</A>. &nbsp;
+The standard <I>pathbbox</I> leaves it
+in the form: <CODE>llx&nbsp;lly&nbsp;urx&nbsp;ury</CODE>
+<P></P>
+For example:<BR>
+<CODE>&nbsp; (a string) charpath clip<BR>
+&nbsp; clippath pathbboxwh &nbsp;red orange false 0.5 rectgradientfill</CODE>
+</P>
+
+</DD></DL>
+
+<P></P>
+<A NAME="callibrate_rgb2gray"> <HR> </A>
+<H3> Callibrating rgb2gray to fit your display </H3>
+<P>
+Printers and graphic displays differ widely, and the NTSC standard
+which is used by <A HREF="#rgb2gray">rgb2gray</A>
+and <A HREF="#adjustbrightness">adjustbrightness</A> does
+not necessarily produce a gray value which you will perceive,
+on your display, as having the same luminance as the original colour.
+If this becomes an issue for you, a simple one-parameter adjustment
+is available to help you customise the formula to fit your display.
+Usage:
+</P><PRE>
+ (/home/wherever/ps/lib/colours.ps) run
+ . . .
+ /callibrate_rgb2gray 0.4 def   % between 0.0 and 1.0
+ orange rgb2gray setgray ...
+</PRE><P>
+If you set <B>callibrate_rgb2gray</B> to 0.0,
+then the standard NTSC conversion will be performed.
+The NTSC formula converts evenly mixed (greyish) colours correctly.
+But the NTSC formula thinks that <CODE>red</CODE> has the same luminance as
+<CODE>0.3 setgray</CODE>, whereas your printer or display may well show the
+gray as being much darker.
+As you increase the value of <B>callibrate_rgb2gray</B>, the purer
+colours (reddish, greeninsh, blueish) will be converted lighter,
+without affecting the conversion of the more neutral (greyish) colours.
+For example, on my CRT,
+<CODE>/callibrate_rgb2gray&nbsp;0.4&nbsp;def</CODE> gave the best results.
+If you leave <B>callibrate_rgb2gray</B> unset,
+its default value is now 0.15
+</P><P>
+A PostScript page
+<B><A HREF="free/callibrate_rgb2gray.ps.txt">callibrate_rgb2gray.ps</A></B>
+is supplied to help you measure what <B>callibrate_rgb2gray</B>
+should be to suit a particular display or printer.
+Various values of <B>callibrate_rgb2gray</B> are printed down the left
+side of the page; choose the value which gives each grey rectangle
+in the row the same luminance as its neighbouring colour rectangles.
+Choose the best compromise value across all the colour columns.
+</P><P>
+As mentioned, for my CRT the best setting was 0.4,
+and for my current monitor it is 0.2.
+I'd enjoy hearing what the optimum is for other devices;
+if they cluster around a particular value I'll make that the default.
+</P>
+
+<A NAME="author"> <HR> </A>
+<H3> AUTHOR </H3>
+<P>
+Peter J Billam
+<A HREF="http://www.pjb.com.au/comp/contact.html">
+www.pjb.com.au/comp/contact.html</A>
+</P>
+
+<A NAME="changes"><HR></A><H3>CHANGES</H3><PRE>
+ 20160519 add pathbboxwh
+ 20160515 add darkorange
+ 20160425 fix the small gap rectgradientfill left at the beginning
+ 20160421 add randomrgb, useful eg. for foliage
+ 20140703 add rectgradientfill, useful eg. for art deco and psychedelia
+ 20060121 callibrate_rgb2gray now defaults to 0.15
+ 20060121 adjustbrightness defends against division by zero
+ 20031024 add callibrate_rgb2gray mechanism
+ 20031020 add pink as synonym for palered
+ 20031017 add adjustbrightness
+ 20031016 add rgb2gray
+ 20030610 some extra colours
+ 20030313 roll in some stuff from line_drawing.ps
+ 20030303 rgbinterpolate now working :-)
+ 20030225 add nonlinearise and nonlinearrgbmix
+ 20001214 rgbmix does non-linear mixing
+ 20001213 corrected some colours after visual test
+ 20001212 Colour-Handling Utilities for Postscript
+</PRE>
+
+<A NAME="see_also"> <HR> </A>
+<H3> SEE ALSO </H3>
+<P>As examples, see
+<A HREF="free/sample1.ps.txt">sample1.ps.txt</A> and
+<A HREF="free/sample4.ps.txt">sample4.ps.txt</A>&nbsp;.&nbsp;.&nbsp;.
+Save the file to your local disc, rename it to <I>sample1.ps</I> or
+<I>sample4.ps</I> and edit it so that the
+<B>run</B> statement(s) near the beginning point to the directory where
+<A HREF="http://www.pjb.com.au/comp/free/line_drawing.ps.txt">
+line_drawing.ps</A> and
+<A HREF="http://www.pjb.com.au/comp/free/colours.ps.txt">colours.ps</A>
+are installed on your system.
+Then use GhostView or equivalent to view it.
+If you wish to print it out, feel free to use something like
+<A HREF="http://www.pjb.com.au/comp/include_run.html">include_run</A>
+to roll the run-files in.
+</P><P>
+For easy viewing, PDF versions of the results are in
+<A HREF="free/sample1.pdf">sample1.pdf</A> and
+<A HREF="free/sample4.pdf">sample4.pdf</A>&nbsp;.&nbsp;.&nbsp;.
+</P><P>
+See also
+<UL><LI>
+<A HREF="line_drawing.html">line_drawing.ps</A>
+</LI><LI>
+<A HREF="brownian.html">brownian.ps</A>
+</LI><LI>
+<A HREF="text.html">text.ps</A>
+</LI><LI>
+<A HREF="include_run.html">include_run</A>
+</LI><LI>
+<A HREF="http://search.cpan.org/src/PJB/Math-Evol-1.06/bin/ps_evol">ps_evol</A>,
+<A HREF="http://search.cpan.org/perldoc?Math::Evol">Math::Evol.pm</A>, and
+<A HREF="http://search.cpan.org/perldoc?Term::Clui">Term::Clui.pm</A>
+</LI><LI>
+<A HREF="http://www.pjb.com.au/">http://www.pjb.com.au/</A>
+</LI><LI>
+the <I>PostScript Language Reference Manual</I> (Adobe).
+</LI><LI>
+<I>Vision and Art, the Biology of Seeing</I>, Margret Livingstone, Abrams,
+New York, 2002; important material on the use of equiluminant colours.
+</LI></UL>
+</P>
+
+<HR><CENTER><P>Back to <A HREF="index.html">P J B Computing</A> or to
+<A HREF="../index.html">www.pjb.com.au</A>&nbsp;.&nbsp;.&nbsp;.</CENTER></P>
+</DIV></BODY></HTML>

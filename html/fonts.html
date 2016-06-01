@@ -1,0 +1,227 @@
+<HTML><HEAD><TITLE>fonts.ps Manual</TITLE>
+<LINK rel=stylesheet type="text/css" href="styles.css" title="PJB Comp Styles">
+<META HTTP-EQUIV="Keywords"
+CONTENT="PostScript, fonts">
+</HEAD>
+<BODY LINK="#000066" VLINK="#000066" ALINK="#000066">
+<DIV>
+<H1><IMG SRC="logo.jpg" ALT=" " WIDTH=126 HEIGHT=52>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <I>fonts.ps</I>
+</H1>
+<CENTER>
+<TABLE ALIGN="center" WIDTH="85%" BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left">
+	<UL><LI>
+	<B><A HREF="#name">NAME</A></B>
+	</LI><LI>
+	<B><A HREF="#synopsis">SYNOPSIS</A></B>
+	</LI></UL>
+</TD><TD ALIGN="left">
+	<UL><LI>
+	<B><A HREF="#description">DESCRIPTION</A></B>
+	</LI><LI>
+	<B><A HREF="#fonts">FONTS</A></B>
+	</LI></UL>
+</TD><TD ALIGN="left">
+	<UL><LI>
+	<B><A HREF="#install">INSTALL</A></B>
+	</LI><LI>
+	<B><A HREF="#author">AUTHOR</A></B>
+	</LI></UL>
+</TD><TD ALIGN="left">
+	<UL><LI>
+	<B><A HREF="#changes">CHANGES</A></B>
+	</LI><LI>
+	<B><A HREF="#see_also">SEE&nbsp;ALSO</A></B>
+	</LI></UL>
+</TD></TR></TABLE>
+</CENTER>
+
+
+<A NAME="name"> <HR> </A>
+<H3> NAME </H3>
+<P>
+&nbsp; &nbsp; &nbsp;
+fonts.ps - Some useful fonts in PostScript
+</P>
+
+<A NAME="synopsis"> <HR> </A>
+<H3> SYNOPSIS </H3>
+<PRE>
+ (/home/wherever/ps/lib/fonts.ps) run
+ % to send it to a printer see <A HREF="include_run.html">include_run</A> . . .
+
+ <A HREF="#TimesSmallCaps">/TimesSmallCaps</A> 30 selectfont
+    50 700 moveto (TimesSmallCaps) show
+ <A HREF="#TimesItalicSmallCaps">/TimesItalicSmallCaps</A> 30 selectfont
+    50 650 moveto (TimesItalicSmallCaps) show
+ <A HREF="#TimesBoldSmallCaps">/TimesBoldSmallCaps</A> 30 selectfont
+    50 600 moveto (TimesBoldSmallCaps) show
+ <A HREF="#TimesBoldItalicSmallCaps">/TimesBoldItalicSmallCaps</A> 30 selectfont
+    50 550 moveto (TimesBoldItalicSmallCaps) show
+ <A HREF="#HelveticaSmallCaps">/HelveticaSmallCaps</A> 30 selectfont
+    50 450 moveto (HelveticaSmallCaps) show
+ <A HREF="#HelveticaItalicSmallCaps">/HelveticaItalicSmallCaps</A> 30 selectfont
+    50 400 moveto (HelveticaItalicSmallCaps) show
+ <A HREF="#HelveticaBoldSmallCaps">/HelveticaBoldSmallCaps</A> 30 selectfont
+    50 350 moveto (HelveticaBoldSmallCaps) show
+ <A HREF="#HelveticaBoldItalicSmallCaps">/HelveticaBoldItalicSmallCaps</A> 30 selectfont
+    50 300 moveto (HelveticaBoldItalicSmallCaps) show
+ <A HREF="#FatSimple">/FatSimple</A> 30 selectfont
+    50 200 moveto (FatSimple) show
+ <A HREF="#FatSimpleItalic">/FatSimpleItalic</A> 30 selectfont
+    50 150 moveto (FatSimpleItalic) show
+
+</PRE>
+
+<A NAME="description"><HR></A><H3>DESCRIPTION</H3>
+<P>
+This module implements, in PostScript,
+a small collection of custom fonts.
+
+</P>
+
+<A NAME="fonts"> <HR> </A>
+<H3> FONTS </H3>
+<CENTER><P>
+<B><A HREF="#TimesSmallCaps">TimesSmallCaps</A></B> &nbsp;
+<B><A HREF="#TimesItalicSmallCaps">TimesItalicSmallCaps</A></B> &nbsp;
+<B><A HREF="#TimesBoldSmallCaps">TimesBoldSmallCaps</A></B> &nbsp;
+<B><A HREF="#TimesBoldItalicSmallCaps">TimesBoldItalicSmallCaps</A></B><BR>
+<B><A HREF="#HelveticaSmallCaps">HelveticaSmallCaps</A></B> &nbsp;
+<B><A HREF="#HelveticaItalicSmallCaps">HelveticaItalicSmallCaps</A></B> &nbsp;
+<B><A HREF="#HelveticaBoldSmallCaps">HelveticaBoldSmallCaps</A></B> &nbsp;
+<B><A HREF="#HelveticaBoldItalicSmallCaps">HelveticaBoldItalicSmallCaps</A></B><BR>
+<!--<B><A HREF="#Bitfont5x7">Bitfont5x7</A></B><BR>-->
+<B><A HREF="#FatSimple">FatSimple</A></B> &nbsp;
+<B><A HREF="#FatSimpleItalic">FatSimpleItalic</A></B> &nbsp;
+</CENTER></P>
+<DL>
+
+<DT>
+<B><A NAME="TimesSmallCaps">/TimesSmallCaps 30 selectfont</A></B>
+</DT><DD><P>
+This is <I>Times-Roman</I> with lower-case letters replaced by
+smaller-size uppercase letters.
+<BR>
+See <I>Carlos</I> in <I>comp.lang.postscript</I> on 20160522
+</P></DD><DT>
+
+<B><A NAME="TimesItalicSmallCaps">/TimesItalicSmallCaps 30 selectfont</A></B>
+</DT><DD><P>
+This is <I>Times-Italic</I> with lower-case letters replaced by
+smaller-size uppercase letters.
+</P></DD><DT>
+
+<B><A NAME="TimesBoldSmallCaps">/TimesBoldSmallCaps 30 selectfont</A></B>
+</DT><DD><P>
+This is <I>Times-Bold</I> with lower-case letters replaced by
+smaller-size uppercase letters.
+</P></DD><DT>
+
+<B><A NAME="TimesBoldItalicSmallCaps">/TimesBoldItalicSmallCaps 30 selectfont</A></B>
+</DT><DD><P>
+This is <I>Times-BoldItalic</I> with lower-case letters replaced by
+smaller-size uppercase letters.
+</P></DD><DT>
+
+<B><A NAME="HelveticaSmallCaps">/HelveticaSmallCaps 30 selectfont</A></B>
+</DT><DD><P>
+This is <I>Helvetica</I> with lower-case letters replaced by
+smaller-size uppercase letters.
+</P></DD>
+
+<B><A NAME="HelveticaItalicSmallCaps">/HelveticaItalicSmallCaps 30 selectfont</A></B>
+</DT><DD><P>
+This is <I>Helvetica-Oblique</I> with lower-case letters replaced by
+smaller-size uppercase letters.
+</P></DD><DT>
+
+<B><A NAME="HelveticaBoldSmallCaps">/HelveticaBoldSmallCaps 30 selectfont</A></B>
+</DT><DD><P>
+This is <I>Helvetica-Bold</I> with lower-case letters replaced by
+smaller-size uppercase letters.
+</P></DD><DT>
+
+<B><A NAME="HelveticaBoldItalicSmallCaps">/HelveticaBoldItalicSmallCaps 30 selectfont</A></B>
+</DT><DD><P>
+This is <I>Helvetica-BoldOblique</I> with lower-case letters replaced by
+smaller-size uppercase letters.
+</P></DD><DT>
+
+<!--<B><A NAME="Bitfont5x7">/Bitfont5x7 30 selectfont</A></B>
+</DT><DD><P>
+This is a wonderfully nostalgic 5x7 constant-width bitmap font
+<BR>
+See <I>luser- -droog</I> in <I>comp.lang.postscript</I> on 20160529
+</P>-->
+
+</P></P>
+<B><A NAME="FatSimple">/FatSimple 30 selectfont</A></B>
+</DT><DD><P>
+This is a <I>Type 3</I> font, with simple shapes and very broad strokes.
+It creates very clear tangent-lines along the top and the bottom of the
+letters, which can be useful graphically.
+<BR>Remember <I> charpath</I> will not work with any <I>Type 3</I> font.
+</P></DD><DT>
+
+<B><A NAME="FatSimpleItalic">/FatSimpleItalic 30 selectfont</A></B>
+</DT><DD><P>
+This is the same as <I>FatSimple</I> but sloping strongly to the right.
+</P>
+
+</DD></DL>
+
+<A NAME="install"> <HR> </A>
+<H3> INSTALL </H3>
+<P>
+To install: go to
+<A HREF="free/fonts.ps.txt">www.pjb.com.au/comp/free/fonts.ps.txt</A>
+and save the file to your local disc.<BR>
+Rename it to <I>fonts.ps</I> and move it into some appropriate
+directory such as <CODE>~/ps/lib</CODE>&nbsp;.&nbsp;.&nbsp;.
+</P><P>
+Or, first change directory to where you keep your PostScript libraries:
+<BR><CODE> &nbsp; &nbsp;
+cd /home/wherever/ps/lib/
+</CODE><BR>
+(or wherever) &nbsp; and then either: <BR>
+<CODE>
+&nbsp; &nbsp; wget -O fonts.ps http://www.pjb.com.au/comp/free/fonts.ps.txt
+</CODE><BR> or: <BR> <CODE>
+&nbsp; &nbsp; curl http://www.pjb.com.au/comp/free/fonts.ps.txt -o fonts.ps
+</CODE></P>
+
+<A NAME="author"> <HR> </A>
+<H3> AUTHOR </H3>
+<P>
+Peter J Billam &nbsp;
+<A HREF="contact.html">www.pjb.com.au/comp/contact.html</A>
+</P>
+
+<A NAME="changes"><HR></A><H3>CHANGES</H3><PRE>
+ 20160601 FatSimple: add colon : and brackets ( and )
+ 20160531 first released version
+</PRE>
+
+<A NAME="see_also"> <HR> </A>
+<H3> SEE ALSO </H3>
+<P> &nbsp; &nbsp;
+<A HREF="text.html">text.ps</A>
+<BR> &nbsp; &nbsp;
+<A HREF="colours.html">colours.ps</A>
+<BR> &nbsp; &nbsp;
+<A HREF="include_run.html">include_run</A>
+<BR> &nbsp; &nbsp;
+<A HREF="line_drawing.html">line_drawing.ps</A>
+<BR> &nbsp; &nbsp;
+<A HREF="brownian.html">brownian.ps</A>
+<BR> &nbsp; &nbsp;
+<A HREF="http://www.pjb.com.au/">http://www.pjb.com.au/</A>
+<BR> &nbsp; &nbsp;
+the <I>PostScript Language Reference Manual</I> (Adobe).
+</P>
+
+<HR><CENTER><P>Back to <A HREF="index.html">P J B Computing</A> or to
+<A HREF="../index.html">www.pjb.com.au</A>&nbsp;.&nbsp;.&nbsp;.</CENTER></P>
+</DIV></BODY></HTML>

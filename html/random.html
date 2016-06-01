@@ -1,0 +1,152 @@
+<HTML><HEAD><TITLE>random.ps Manual</TITLE>
+<LINK rel=stylesheet type="text/css" href="styles.css" title="PJB Comp Styles">
+<META HTTP-EQUIV="Keywords"
+CONTENT="PostScript, random">
+</HEAD>
+<BODY LINK="#000066" VLINK="#000066" ALINK="#000066">
+<DIV>
+<H1><IMG SRC="logo.jpg" ALT=" " WIDTH=126 HEIGHT=52>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <I>random.ps</I>
+</H1>
+<CENTER>
+<TABLE ALIGN="center" WIDTH="85%" BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left">
+	<UL><LI>
+	<B><A HREF="#name">NAME</A></B>
+	</LI><LI>
+	<B><A HREF="#synopsis">SYNOPSIS</A></B>
+	</LI></UL>
+</TD><TD ALIGN="left">
+	<UL><LI>
+	<B><A HREF="#description">DESCRIPTION</A></B>
+	</LI><LI>
+	<B><A HREF="#subroutines">SUBROUTINES</A></B>
+	</LI></UL>
+</TD><TD ALIGN="left">
+	<UL><LI>
+	<B><A HREF="#install">INSTALL</A></B>
+	</LI><LI>
+	<B><A HREF="#author">AUTHOR</A></B>
+	</LI></UL>
+</TD><TD ALIGN="left">
+	<UL><LI>
+	<B><A HREF="#changes">CHANGES</A></B>
+	</LI><LI>
+	<B><A HREF="#see_also">SEE&nbsp;ALSO</A></B>
+	</LI></UL>
+</TD></TR></TABLE>
+</CENTER>
+
+
+<A NAME="name"> <HR> </A>
+<H3> NAME </H3>
+<P>
+&nbsp; &nbsp; &nbsp;
+random.ps - Some useful random-number stuff in PostScript
+</P>
+
+<A NAME="synopsis"> <HR> </A>
+<H3> SYNOPSIS </H3>
+<PRE>
+ (/home/wherever/ps/lib/random.ps) run
+ % to send it to a printer see <A HREF="include_run.html">include_run</A> . . .
+
+ /mean 43.2 def  /stddev 8.5 def
+ {  ...
+    mean stddev <A HREF="#grand">grand</A>   % gaussian random
+    ...  i n gt { exit } if
+ } loop
+
+ n <A HREF="#irand">irand</A>  % random integer 0 .. n-1
+
+ [ <I>an array</I> ] <A HREF="#randomget">randomget</A>   % random element
+
+</PRE>
+
+<A NAME="description"><HR></A><H3>DESCRIPTION</H3>
+<P>
+This module implements in PostScript
+a few simple
+<A HREF="#subroutines">subroutines</A>
+for using random numbers.
+
+</P>
+
+<A NAME="subroutines"> <HR> </A>
+<H3> SUBROUTINES </H3>
+<DL>
+<DT><B><A NAME="grand">
+mean standarddeviation grand</A></B>
+</DT><DD><P>
+This example leaves on the stack,
+a number from a Gaussian (or Normal) random distribution
+with the given <I>mean</I> and <I>standard deviation</I>.
+&nbsp;
+Thus, the density is
+&nbsp; &nbsp; <CODE>f(x) = exp(.5 * x**2) / sqrt(2 * pi)</CODE>
+</P><P>
+It uses the algorithm by Richard P. Brent (1973),
+Computer Centre, ANU, Canberra,
+published (1981) as CACM Algorithm 448
+</P>
+
+</DD><DT>
+<B><A NAME="irand">
+n irand</A></B>
+</DT><DD><P>
+This example leaves on the stack
+an integer from 0 to n-1
+</P>
+
+</DD><DT>
+<B><A NAME="randomget">
+[ an array ] randomget</A></B>
+</DT><DD><P>
+This example gets a random element from the given array. <BR>
+For example, the following executes one of the given procedures at random:<BR>
+&nbsp; &nbsp;
+<CODE>[ /bassclef /trebleclef /sharp /natural ] randomget cvx exec</CODE>
+</P>
+</DD></DL>
+
+<A NAME="install"> <HR> </A>
+<H3> INSTALL </H3>
+<P>
+To install: go to
+<A HREF="free/random.ps.txt">www.pjb.com.au/comp/free/random.ps.txt</A>
+and save the file to your local disc.<BR>
+Rename it to <I>random.ps</I> and move it into some appropriate
+directory such as <CODE>~/ps/lib</CODE>&nbsp;.&nbsp;.&nbsp;.
+
+<A NAME="author"> <HR> </A>
+<H3> AUTHOR </H3>
+<P>
+Peter J Billam
+<A HREF="http://www.pjb.com.au/comp/contact.html">
+www.pjb.com.au/comp/contact.html</A>
+</P>
+
+<A NAME="changes"><HR></A><H3>CHANGES</H3><PRE>
+ 20160501 first released version
+</PRE>
+
+<A NAME="see_also"> <HR> </A>
+<H3> SEE ALSO </H3>
+<UL><LI>
+<A HREF="line_drawing.html">line_drawing.ps</A>
+</LI><LI>
+<A HREF="brownian.html">brownian.ps</A>
+</LI><LI>
+<A HREF="colours.html">colours.ps</A>
+</LI><LI>
+<A HREF="include_run.html">include_run</A>
+</LI><LI>
+<A HREF="http://www.pjb.com.au/">http://www.pjb.com.au/</A>
+</LI><LI>
+the <I>PostScript Language Reference Manual</I> (Adobe).
+</LI></UL>
+</P>
+
+<HR><CENTER><P>Back to <A HREF="index.html">P J B Computing</A> or to
+<A HREF="../index.html">www.pjb.com.au</A>&nbsp;.&nbsp;.&nbsp;.</CENTER></P>
+</DIV></BODY></HTML>

@@ -1,0 +1,111 @@
+#! /usr/bin/perl
+#########################################################################
+#        This Perl script is Copyright (c) 2000, Peter J Billam         #
+#     c/o P J B Computing, GPO Box 669, Hobart TAS 7001, Australia      #
+#                                                                       #
+# Permission is granted  to any individual or institution to use, copy, #
+# modify or redistribute this software, so long as it is not resold for #
+# profit,  and provided this notice is retained.   Neither Peter Billam #
+# nor  P J B Computing  make any representations  about the suitability #
+# of this software for any purpose. It is provided "as is", without any #
+# express or implied warranty.                http://www.pjb.com.au     #
+#########################################################################
+
+%seen = ();
+
+while (<>) {
+	if (/^([^%]*)\(([\w\/.]+)\)\s+run(.*)$/) {
+		my $head = $1; my $file = $2; my $tail = $3;
+		if ($tail && $tail!~/^\s/) { print; next; }
+		if ($head) { print "$head\n"; }
+		if ($seen{$file}) { print "$tail\n"; next; }
+		&do_a_file($file);
+		print "$tail\n";
+	} else {
+		print;
+	}
+}
+
+sub do_a_file {  my ($file) = $_[$[];
+	return unless $file;
+	local *F;
+	if (! open (F, $file)) { die "can't open $file: $!\n"; }
+	$seen{$file}++;
+	while (<F>) {
+		if (/^([^%]*)\(([\w\/.]+)\)\s+run(.*)$/) {
+			my $head = $1; my $file = $2; my $tail = $3;
+			if ($tail && $tail!~/^\s/) { print; next; }
+			if ($head) { print "$head\n"; }
+			if ($seen{$file}) { print "$tail\n"; next; }
+			&do_a_file($file);
+			print "$tail\n";
+		} else {
+			print;
+		}
+	}
+	close F;
+}
+
+__END__
+
+=pod
+
+=head1 NAME
+
+include_run - Include all run-files into a PostScript file
+
+=head1 SYNOPSIS
+
+ $ grep run foo.ps
+ (/home/wherever/ps/lib/a_library.ps) run
+ $ include_run foo.ps | lpr
+ $ include_run foo.ps | mail -s 'Here is foo.ps' fred@bloggs.org
+ $ include_run foo.ps | gs -q -sDEVICE=pdfwrite -sOutputFile=foo.pdf -
+
+=head1 DESCRIPTION
+
+The PostScript language includes the I<run> keyword,
+which allows one file to be invoked from within another.
+This is similar to, for example, the I<require> instruction in Perl.
+
+Of course, this means that any PostScript which uses the I<run> keyword
+can only be viewed if the invoked file exists on the filesystem;
+therefore before the PostScript can be printed, e-mailed elsewhere,
+or converted to PDF to be put on a website,
+the I<run> statement must be removed and the
+contents of the invoked file must be included.
+I<include_run> performs this task.
+
+If a file is invoked by more than one I<run> statement
+it only gets included once;
+this behaviour is also similar to the I<require> instruction in Perl.
+
+I<include_run> does recurse; in other words, the
+invoked file can itself use a I<run> statement.
+
+=head1 RESTRICTIONS
+
+In order to dodge the general PostScript-parsing problem,
+the filename must be a literal string, enclosed in brackets (),
+and must be followed by its I<run> statement.
+I<include_run> can not cope with even slightly obfuscated PostScript.
+
+=head1 BUGS
+
+If a valid I<(...) run> command is part of a literal string,
+it will get included anyway.
+It could be argued that this is a feature, but in fact it's a bug.
+
+=head1 AUTHOR
+
+Peter J Billam <peter.billam@pjb.com.au>
+
+=head1 SEE ALSO
+
+http://www.pjb.com.au/comp/include_run.html,
+http://www.pjb.com.au/comp/line_drawing.html,
+http://www.pjb.com.au/comp/colours.html,
+perl(1).
+
+=cut
+

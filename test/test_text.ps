@@ -1,0 +1,76 @@
+%!PS-Adobe-3.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2014, Peter J Billam          %
+%                                                                       %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+
+(/home/pjb/ps/lib/text.ps) run
+(/home/pjb/ps/lib/colours.ps) run
+
+/Helvetica-Bold /Helvetica-Bold-Outline 1000 54 div
+/Helvetica-Bold findfont dup /UniqueID known {
+    /UniqueID get 1 add
+} {
+    pop 1
+} ifelse
+MakeOutlineFont
+
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+<</PageSize [ 842 1190 ] >> setpagedevice  % A3
+%%EndPageSetup
+
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+[ (xmax=) xmax ( ymax=) ymax ] warn
+
+
+%/Times-Roman findfont 18 scalefont setfont
+%/yline 500 def
+%(In every period there have been better or worse types employed in \
+%better or worse ways. The better types employed in better ways have \
+%been used by the educated printer acquainted with standards and history.)
+%180  {20 yline moveto show /yline yline 20 sub def }  BreakIntoLines
+
+/Times-Roman findfont 18 scalefont setfont
+20 380
+(In every period there have been better or worse types, employed in \
+better or worse ways. The better types employed in better ways have \
+been used by the educated printer, acquainted with standards and history.)
+180 JustifyText
+
+/Helvetica-Bold-Outline [ 50 0 90 100 0 0 ] selectfont
+150 80 moveto (Hello outline) show
+
+400 300 translate
+/Times-Bold findfont 22 scalefont setfont
+(Symphony No. 9 (The Choral Symphony)) 22 90 140 OutsideCircleText
+/Times-Roman findfont 15 scalefont setfont
+(Ludwig van Beethoven) 15 90 118 OutsideCircleText
+(Vienna Philharmonic Orchestra) 15 270 118 InsideCircleText
+
+-150 250 translate
+/Helvetica-BoldOblique findfont 40 scalefont setfont
+-150 0 moveto (Hello black disc) true charpath
+80 10 moveto        %to start of arc
+0 10 80 0 360 arc eofill
+
+/Helvetica-BoldOblique 70 selectfont
+newpath
+-200 150 moveto
+(Fill and Stroke) dup
+false charpath orange setrgbcolor fill
+-200 150 moveto
+% (Fill and Stroke)
+true charpath paleviolet setrgbcolor 4 setlinewidth 1 setlinejoin stroke
+
+
+showpage
+%%EOF

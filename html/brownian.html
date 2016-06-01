@@ -1,0 +1,273 @@
+<HTML><HEAD><TITLE>brownian.ps Manual</TITLE>
+<LINK rel=stylesheet type="text/css" href="styles.css" title="PJB Comp Styles">
+<META HTTP-EQUIV="Keywords"
+CONTENT="PostScript, line drawing, shading">
+</HEAD>
+<BODY LINK="#000066" VLINK="#000066" ALINK="#000066">
+<DIV>
+<A NAME="top"><HR></A>
+<H1><IMG SRC="logo.jpg" ALT=" " WIDTH=126 HEIGHT=52>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <I>brownian.ps</I>
+</H1>
+
+
+<TABLE ALIGN="center" WIDTH="85%" BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left">
+<ul>
+    <li><a href="#name">NAME</a></li>
+    <li><a href="#synopsis">SYNOPSIS</a></li>
+    <li><a href="#description">DESCRIPTION</a></li>
+</ul>
+</TD><TD ALIGN="left">
+<ul>
+    <li><a href="#subroutines">SUBROUTINES</a></li>
+    <li><a href="#example">EXAMPLE</a></li>
+    <li><a href="#download">DOWNLOAD</a></li>
+</ul>
+</TD><TD ALIGN="left">
+<ul>
+    <li><a href="#author">AUTHOR</a></li>
+    <li><a href="#changes">CHANGES</a></li>
+    <li><a href="#see_also">SEE ALSO</a></li>
+</ul>
+</TD></TR>
+</TABLE>
+
+
+
+<A NAME="name"><HR></A><H3>NAME</H3><P>
+&nbsp; &nbsp; &nbsp;
+brownian.ps - generate Brownian Curves and Landscapes, in PostScript
+</P>
+
+<A NAME="synopsis"><HR></A><H3>SYNOPSIS</H3><P>
+<PRE>
+(/home/pjb/ps/lib/brownian.ps) run
+% to send it to a printer see <A HREF="include_run.html">include_run</A> . . .
+usertime realtime add srand  % seed random number generator if you wish
+
+
+% and then, to generate a Brownian Curve:
+/redness 1.3 def   % 0=whitenoise, 1=pinknoise, 2=rednoise
+/n_harmonics 100 def
+x1 x2 y_scale redness n_harmonics new_brownian_curve
+newpath x1 y1 moveto /x x1 def {
+   /y x brownian_curve def  x y lineto
+   /x x delta_x add def x x2 gt { exit } if
+} loop stroke
+
+
+% or, to generate a Brownian Landscape:
+/redness 2.5 def   % 0=whitenoise, 1=pinknoise, 2=rednoise
+x1 y1 x2 y2 z_scale redness n_harmonics new_brownian_landscape
+/x x1 def { % plot
+   /y y1 def {
+      /z x y brownian_landscape def
+      newpath z setgray x y delta_x 0.7 mul 0 360 arc fill
+      /y y delta_y add def y y2 gt { exit } if
+   } loop
+   /x x delta_x add def x x2 gt { exit } if
+} loop
+</PRE></P>
+
+<A NAME="description"><HR></A><H3>DESCRIPTION</H3>
+<P>
+The PostScript file <B>brownian.ps</B> generates
+brownian curves and brownian landscapes,
+to create realistic-looking horizons and cloudscapes, islands,
+or subtly textured backgrounds.
+The scale and the roughness (white noise, pink noise, red noise etc)
+are easily specified.
+</P><P>
+<B>brownian.ps</B> uses Fourier Synthesis from the prescribed spectrum,
+which consumes far less CPU time and memory than Numerical Convolution in
+the time or space domain.  Fourier Synthesis is not usually used to generate
+brownian noise, because beyond the wavelength of the fundamental frequency
+the pattern repeats periodically; however, in a typical PostScript application,
+the user knows in advance over what range the curve must be valid,
+and the fundamental frequency can be chosen to cover this.
+</P><P>
+To install: go to
+<A HREF="http://www.pjb.com.au/comp/free/brownian.ps.txt">
+www.pjb.com.au/comp/free/brownian.ps.txt</A>
+and save the file to your local disc.<BR>
+Rename it to <I>brownian.ps</I> and move it into some appropriate
+directory such as <B>~/ps/lib</B>&nbsp;.&nbsp;.&nbsp;.
+</P>
+
+<A NAME="subroutines"><HR></A><H3>SUBROUTINES</H3><P>
+&nbsp; &nbsp; &nbsp;
+<A HREF="#item_new_brownian_curve">new_brownian_curve</A>,
+<A HREF="#item_brownian_curve">brownian_curve</A>,
+<A HREF="#item_new_brownian_landscape">new_brownian_landscape</A> and
+<A HREF="#item_brownian_landscape">brownian_landscape</A></P>
+
+<DL><DT><B><A NAME="item_new_brownian_curve">
+x1 x2 y_scale redness n_harmonics new_brownian_curve
+</A></B></DT><DD><P>
+Where the arguments are:<BR>
+<B>x1 x2</B>
+mark the range of <B>x</B> values over which the generated curve
+will be defined; outside this range the curve will repeat cyclically.<BR>
+<B>y_scale</B>
+is the approximate scale of <B>y</B> values which the generated curve
+will cover. Note that because the curve is random, the
+precise values of the maximum and minimum are not guaranteed.
+The <I>average</I> y-value of the resulting curve will be zero,
+but that does not mean that the minimum and maximum will be equal in size.
+The curve will begin and end at the same height.
+<BR>
+<B>redness</B>
+is the parameter which adjusts the roughness, or the fractal dimension,
+of the curve. It will usually lie in the range between 0 and 5 or 6;
+redness&nbsp;=&nbsp;0 gives whitenoise,
+redness&nbsp;=&nbsp;1 gives pinknoise, and
+redness&nbsp;=&nbsp;2 gives rednoise.
+See the <A HREF="#see_also">references</A> for what this means,
+for example Manfred Schroeder's book.<BR>
+<B>n_harmonics</B>
+is the number of harmonics which will be generated.
+Increasing this number makes the curve more finely detailed,
+but increases the CPU load.
+Generally, <B>n_harmonics</B> should be about a quarter of the
+number of points from the curve that you intend to plot.
+<BR>
+<P>
+Invoking <I>new_brownian_curve</I> leaves nothing on the stack;
+all the data describing the resulting curve is stored in variables
+internal to the subroutine.
+It is therefore only possible to handle one brownian curve at once.
+</P>
+
+</DD><DT><B><A NAME="item_brownian_curve ">
+x brownian_curve</A></B></DT><DD><P>
+The above invocation leaves <B>y</B> on the stack,
+assuming <A HREF="#item_new_brownian_curve">new_brownian_curve</A>
+has already been called.
+</P>
+
+</DD><DT><B><A NAME="item_new_brownian_landscape">
+x1 y1 x2 y2 z_scale redness n_harmonics new_brownian_landscape
+</A></B></DT><DD><P>
+Where the arguments are:<BR>
+<B>x1 x2</B>
+mark the range of <B>x</B> values over which the generated landscape
+will be defined; outside this range the surface will repeat cyclically.<BR>
+<B>y1 y2</B>
+mark the range of <B>y</B> values over which the generated surface
+will be defined; outside this range the landscape will repeat cyclically.<BR>
+<B>z_scale</B>
+is the approximate scale of <B>z</B> values which the generated landscape
+will cover. Note that because the surface is random, the
+precise values of the maximum and minimum are not guaranteed.
+The <I>average</I> z-value of the resulting landscape will be zero,
+but that does not mean that the minimum and maximum will be equal in size.
+<BR>
+<B>redness</B>
+is the parameter which adjusts the roughness, or the fractal dimension,
+of the landscape. It will usually lie in the range between 0 and 5 or 6;
+redness&nbsp;=&nbsp;0 gives whitenoise,
+redness&nbsp;=&nbsp;1 gives pinknoise, and
+redness&nbsp;=&nbsp;2 gives rednoise.
+See the <A HREF="#see_also">references</A> for what this means,
+for example Manfred Schroeder's book.<BR>
+<B>n_harmonics</B>
+is the number of harmonics which will be generated in the larger of the
+two independent variable ranges.
+Increasing this number makes the surface more finely detailed,
+but rapidly increases the CPU load&nbsp;!
+Generally, <B>n_harmonics</B> should be about a quarter of the
+number of points that you intend to plot in the larger of the <B>x</B>
+and <B>y</B> ranges.
+<BR>
+<P>
+Invoking <I>new_brownian_landscape</I> leaves nothing on the stack;
+all the data describing the resulting surface is stored in variables
+internal to the subroutine.
+It is therefore only possible to handle one brownian landscape at once.
+</P>
+
+</DD><DT><B><A NAME="item_brownian_landscape">
+x y brownian_landscape</A></B></DT><DD>
+The above invocation leaves <B>z</B> on the stack,
+assuming <A HREF="#item_new_brownian_landscape">new_brownian_landscape</A>
+has already been called.
+
+</DD></DL>
+
+<A NAME="example"><HR></A><H3>EXAMPLE</H3><P>
+As an example, see
+<A HREF="http://www.pjb.com.au/comp/free/sample4.ps.txt">
+www.pjb.com.au/comp/free/sample4.ps.txt</A>&nbsp;.&nbsp;. &nbsp;.
+</P><P>
+To install: save the file to your local disc, rename it to
+<I>sample4.ps</I> and edit it so that the two
+<B>run</B> statements near the beginning point to the directory where
+<A HREF="http://www.pjb.com.au/comp/free/brownian.ps.txt">brownian.ps</A> and
+<A HREF="http://www.pjb.com.au/comp/free/colours.ps.txt">colours.ps</A>
+are installed on your system.
+Then use GhostView or something like it to view your <I>sample4.ps</I>.
+</P><P>
+If you wish to print it out, feel free to use something like
+<A HREF="http://www.pjb.com.au/comp/include_run.html">include_run</A>
+to roll the run files into <I>sample4.ps</I> first.
+</P><P>
+For easy viewing, PDF versions of the results are in
+<A HREF="free/sample4.pdf">sample4.pdf</A>&nbsp;.&nbsp;.&nbsp;.
+</P>
+
+<A NAME="download"><HR></A><H3>DOWNLOAD</H3><P>
+To install: go to
+<A HREF="http://www.pjb.com.au/comp/free/brownian.ps.txt">
+www.pjb.com.au/comp/free/brownian.ps.txt</A>
+and save the file to your local disc.<BR>
+Rename it to <I>brownian.ps</I> and move it into some appropriate
+directory such as <B>~/ps/lib</B>&nbsp;.&nbsp;.&nbsp;.
+</P>
+
+<A NAME="author"><HR></A><H3>AUTHOR</H3><P>
+Peter J Billam, &nbsp;
+<A HREF="http://www.pjb.com.au/comp/contact.html">
+www.pjb.com.au/comp/contact.html</A>
+</P>
+
+<A NAME="changes"><HR></A><H3>CHANGES</H3>
+<PRE>
+20030130 185041 pjb Brownian Curves and Landscapes
+20030130 211931 pjb curves do redness correctly
+20030201 204532 pjb landscapes seem to work but tend downwards
+20030202 085915 pjb bugs fixed in phase during synthesis
+20030301 192752 pjb add -ve freqs, eliminating down-trend !
+20030304 194855 pjb n=0,m!=0 and n!=0,m=0 components too
+20030322 144519 pjb bug fixed (I think) with 1 add in landscape
+20030324 164606 pjb add brownian_island routine
+</PRE>
+
+<A NAME="see_also"><HR></A><H2>SEE ALSO</H2><P>
+</P><UL><LI>
+<I>The Fractal Geometry of Nature</I>,
+Benoit Mandelbrot, Freeman pp251,437
+</LI><LI>
+<I>Fractals, Chaos, Power Laws</I>,
+Manfred Schroeder, Freeman pp132-133
+</LI><LI>
+<I>The Science of Fractal Images</I>,
+Peitgen and Saupe (Editors), Springer, 1988
+</LI><LI>
+The <I>PostScript Language Reference Manual</I> (Adobe).
+</LI><LI>
+<A HREF="colours.html">colours.ps</A>
+</LI><LI>
+<A HREF="line_drawing.html">line_drawing.ps</A>
+</LI><LI>
+<A HREF="include_run.html">include_run</A>
+</LI><LI>
+<A HREF="evol.html#ps_evol">ps_evol</A>
+</LI><LI>
+<A HREF="http://www.pjb.com.au/">http://www.pjb.com.au/</A>
+</LI></UL>
+
+
+<HR><CENTER><P>Back to <A HREF="index.html">P J B Computing</A> or to
+<A HREF="../index.html">www.pjb.com.au</A>&nbsp;.&nbsp;.&nbsp;.</CENTER></P>
+</DIV></BODY></HTML>

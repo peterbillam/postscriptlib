@@ -1,0 +1,172 @@
+<HTML><HEAD><TITLE>Perl versus PostScript</TITLE>
+<LINK rel=stylesheet type="text/css" href="styles.css" title="PJB Comp Styles">
+<META HTTP-EQUIV="Keywords"
+CONTENT="Perl, PostScript, P J B Computing, Peter Billam">
+</HEAD><BODY LINK="#000066" VLINK="#000066" ALINK="#000066"><DIV>
+
+<H1><IMG SRC="logo.jpg" ALT=" " WIDTH=126 HEIGHT=52>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B><I>Perl versus PostScript</I></B></H1>
+
+<HR>
+
+<P><FONT SIZE="+1">
+This compares the basic programming structures for<B> &nbsp;
+<A HREF="#loops">loops</A>, &nbsp;
+<A HREF="#arrays">arrays</A>, &nbsp;
+<A HREF="#assocarrays">associative&nbsp;arrays</A>, &nbsp;
+<A HREF="#branching">branching</A>, &nbsp;
+<A HREF="#local">local variables</A>, &nbsp;
+<A HREF="#sub">subroutines</A>, &nbsp;
+<A HREF="#require">require</A></B> &nbsp; and <B> &nbsp;
+<A HREF="#debug">debugging</A></B> &nbsp;
+of Perl and PostScript.
+</FONT></P></B><P><FONT SIZE="+1">
+The two languages differ most obviously in punctuation,
+and in word order (PostScript is of course stack-based).
+They are similarly (i.e. very) concise :-)
+</FONT></P><PRE>
+<A NAME="loops"><HR></A>
+# Perl loops
+$i = 1;
+while () {
+   $i++;
+   if ($i &gt; $n) { last; }
+}
+# or
+foreach (@an_array) {
+   # the array element is in $_
+   &amp;do_something($_);
+}
+
+% PostScript loops
+/i 1 def
+{
+   /i i 1 add def
+   i n gt { exit } if
+} loop
+% or
+an_array {
+   % the array element is on the stack
+   do_something
+} forall
+
+<A NAME="arrays"><HR></A>
+# Perl arrays
+@b = (4, 3, 2, 1, 'bang');
+$n = scalar @b;  # sets n to 5
+$a = $b[4];
+$b[4] = 'whimper';
+foreach $x (@b) {
+}
+
+% PostScript arrays
+/b [4 3 2 1 (bang)] def
+/n b length def  % sets n to 5
+/a b 4 get def
+b 4 (whimper) put
+b { /x exch def
+} forall
+
+<A NAME="assocarrays"><HR></A>
+# Perl associative arrays
+%phonenums = ('Fred', '1234 5678', 'Gina', '2345 6789');
+$x = $phonenums{'Gina'};
+$phonenums{'Harry'} = '3456 7890';
+while (($key,$value) = each %phonenums) {
+   &amp;do_something($key,$value);
+}
+
+% Level 2 PostScript dictionaries
+/phonenums &lt;&lt; (Fred) (1234 5678) (Gina) (2345 6789) &gt;&gt; def
+/x phonenums (Gina) get def
+phonenums (Harry) (3456 7890) put
+phonenums {
+   do_something    % the key and value are on the stack
+} forall
+
+<A NAME="branching"><HR></A>
+# Perl branching
+if ($i &gt; $n) {
+} else {
+}
+
+% PostScript branching
+i n gt {
+} {
+} ifelse
+
+<A NAME="local"><HR></A>
+# Perl local variables
+{ local ($i,$j) = 1,1;
+}
+
+% PostScript begin a new current dictionary
+10 dict begin   % this can hold up to ten new local variables
+   /i 1 def  /j 1 def
+end
+<!--save   % saves current state of all variables (except strings) on the stack
+   /i 1 def /j 1 def
+restore
+% but it's Much Faster to work on the stack when you can, and choose
+% not-conflicting variable names when the stack gets too confusing ...
+-->
+<A NAME="sub"><HR></A>
+# Perl subroutines
+sub do_something {
+   my ($arg1, $arg2, $arg3) = @_;
+   $some_result = 42;
+   return $some_result;
+}
+$x = &amp;do_something($arg1, $arg2, $arg3);
+
+% PostScript subroutines
+/do_something {
+   20 dict begin   % this can hold up to twenty new local variables
+      [ /arg3 /arg2 /arg1 ] { exch def } forall
+      /some_result 42 def
+      some_result   % now it's on the stack
+   end
+} def
+/x  arg1 arg2 arg3 do_something  def
+<!--% If working the stack and choosing not-conflicting variable names
+% isn't good enough, then you'll have to save variable state ...
+/do_something {
+   save 3 cycle     % save current variable state (3 because 3 arguments)
+   /arg3 exch def /arg2 exch def /arg1 exch def
+   /some_result 42 def
+   some_result
+   1 cycle restore  % restore variable state
+} def
+/x arg1 arg2 arg3 do_something def
+-->
+<A NAME="require"><HR></A>
+# 'requiring' a Perl library
+require '/home/fred/pl/a_library.pl';
+
+% 'running' a PostScript file (assuming of course there is a filesystem)
+(/home/fred/ps/a_library.ps) run
+
+<A NAME="debug"><HR></A>
+# debugging a Perl script
+warn "my_subroutine: gloop=$gloop gleep=$gleep\n";
+
+% debugging a PostScript file
+(my_subroutine: gloop=) = gloop = (gleep=) = gleep = flush
+
+<HR></PRE>
+<P>
+References:
+<I>Programming Perl</I>, Larry Wall, Tom Christiansen and Randall Schwartz,
+O'Reilly, 1996, and the
+<I>PostScript Language Reference Manual</I>, Adobe Systems Incorporated,
+Addison Wesley, 1991.<BR>
+See also
+<A HREF="http://www.faqs.org/faqs/postscript/faq/">
+www.faqs.org/faqs/postscript/faq/</A>
+</P>
+
+<HR>
+
+<CENTER><P>Back to <A HREF="index.html">P J B Computing</A> or to
+<A HREF="../index.html">www.pjb.com.au</A>&nbsp;.&nbsp;.&nbsp;.</CENTER></P>
+</DIV></BODY></HTML>

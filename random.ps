@@ -1,0 +1,97 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2001, Peter J Billam          %
+%     c/o P J B Computing, GPO Box 669, Hobart TAS 7001, Australia      %
+%                                                                       %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit,  and provided this notice is retained.   Neither Peter Billam %
+% nor  P J B Computing  make any representations  about the suitability %
+% of this software for any purpose. It is provided "as is", without any %
+% express or implied warranty.                http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Algorithm by  Richard P. Brent (1973), Computer Centre, ANU, Canberra
+% Published (1981) as CACM Algorithm 448
+% Translated into Postscript (2001) by  Peter Billam, www.pjb.com.au
+%
+% Except on the first call, gauss_rand returns a pseudo-random number
+% having a Gaussian (i.e. normal) distribution with zero mean and unit
+% standard deviation.  Thus, the density is
+%   f(x) = exp(.5 * x**2) / sqrt(2 * pi)
+% The first call initialises gauss_rand and returns zero.
+%
+/gauss_rand_d [
+	.674489750 .475859630 .383771164
+	.328611323 .291142827 .263684322
+	.242508452 .225567444 .211634166
+	.199924267 .189910758 .181225181
+	.173601400 .166841909 .160796729
+	.155349717 .150409384 .145902577
+	.141770033 .137963174 .134441762
+	.131172150 .128125965 .125279090
+	.122610883 .120103560 .117741707
+	.115511892 .113402349 .111402720
+	.109503852 .107697617
+	.105976772 .104334841 .102766012
+	.101265052 .099827234 .098448282
+	.097124309 .095851778 .094627461
+	.093448407 .092311909 .091215482
+	.090156838 .089133867 .088144619
+	.087187293 .086260215 .085361834
+	.084490706 .083645487 .082824924
+	.082027847 .081253162 .080499844
+	.079766932 .079053527 .078358781
+	.077681899
+] def
+/gauss_rand_u 0 def
+/gauss_rand_r 0.5 1024.0 div 1024.0 div 1024.0 div def   % rand scaling factor
+/gauss_rand_x () def
+usertime realtime add srand
+/gauss_rand {
+	/gauss_rand_a 0 def   % displacement
+	/gauss_rand_i -1 def  % counter
+	{
+		/gauss_rand_u gauss_rand_u dup add def
+		gauss_rand_u 1.0 lt { exit } if
+		/gauss_rand_u gauss_rand_u 1.0 sub def
+		/gauss_rand_i gauss_rand_i 1 add def
+		/gauss_rand_a gauss_rand_a gauss_rand_d gauss_rand_i get sub def
+	} loop
+	{
+		/gauss_rand_w gauss_rand_d gauss_rand_i 1 add get gauss_rand_u mul def
+		/gauss_rand_v gauss_rand_w 0.5 gauss_rand_w mul gauss_rand_a sub mul def
+		{
+			/gauss_rand_u rand gauss_rand_r mul def
+			% accept w as random sample if v<u
+			gauss_rand_v gauss_rand_u le { /gauss_rand_x (exit) def exit } if
+			/gauss_rand_v rand gauss_rand_r mul def
+			gauss_rand_v gauss_rand_u le { exit } if
+		} loop
+		gauss_rand_x (exit) eq { /gauss_rand_x () def exit } if
+		% reject u and form a new uniform u from v and u
+		/gauss_rand_u gauss_rand_v gauss_rand_u sub 1.0 gauss_rand_u sub div def
+	} loop
+	% form new u (to be used on next call) from u and v
+	/gauss_rand_u gauss_rand_u gauss_rand_v sub 1.0 gauss_rand_v sub div def
+	/gauss_rand_u gauss_rand_u dup add def
+	% use top bit of u for sign, return normal variate
+	gauss_rand_u 1.0 lt {
+		gauss_rand_a gauss_rand_w sub
+	} {
+		/gauss_rand_u gauss_rand_u 1.0 sub def
+		gauss_rand_w gauss_rand_a sub
+	} ifelse
+} bind def
+gauss_rand pop  % initialise, and discard the resulting zero
+
+/grand {  % usage:  mean stddev grand
+	gauss_rand mul add
+} bind def
+
+/irand {   % usage: n irand   ->  a random integer 0 .. n-1
+	rand exch round cvi mod
+} bind def
+
+/randomget {   % usage:  [ an array ] randomget
+	dup length  rand  exch mod  get
+} bind def

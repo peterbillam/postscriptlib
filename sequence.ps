@@ -1,0 +1,73 @@
+%%BeginResource: procset sequence
+%
+% See http://www.pjb.com.au/comp/sequence.html
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.      http://www.pjb.com.au   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% see:  ~/lua/lib/Sequence.lua  but returning an array not a closure
+
+/aaba {  % usage: [ something somethingelse ] n aaba
+} bind def
+
+/cycle { % usage: [ array of things ] n cycle
+} bind def
+
+/leibnitz { % usage : [ array of things ] n leibnitz
+} bind def
+
+/morse_thue { % usage : [ array of things ] n morse_thue
+  /morse_thue_new_n exch def /morse_thue_seed_a exch def
+  /morse_thue_seed_n morse_thue_seed_a length def
+  /morse_thue_new_a  morse_thue_new_n array def
+  morse_thue_new_a 0 morse_thue_seed_a putinterval  % bootstrap
+  /morse_thue_new_i   morse_thue_seed_n def  % and adjust pointer
+  /morse_thue_indexes_a  morse_thue_new_n array def
+  /morse_thue_indexes_i 0 def {
+    morse_thue_indexes_i morse_thue_seed_n ge { exit } if
+    morse_thue_indexes_a morse_thue_indexes_i morse_thue_indexes_i put
+    /morse_thue_indexes_i  morse_thue_indexes_i 1 add  def
+  } loop
+  {
+    morse_thue_new_i morse_thue_new_n ge { exit } if
+    morse_thue_indexes_a  morse_thue_new_i
+      morse_thue_indexes_a morse_thue_new_i morse_thue_seed_n idiv get
+      morse_thue_new_i add  morse_thue_seed_n  mod
+    put
+    morse_thue_new_a  morse_thue_new_i
+      morse_thue_seed_a  morse_thue_indexes_a morse_thue_new_i get  get
+    put
+    /morse_thue_new_i     morse_thue_new_i     1 add def
+  } loop
+  morse_thue_new_a  % return
+} bind def
+
+/rabbit { % usage : [ something somethingelse ] n rabbit
+  /rabbit_new_n exch def /rabbit_seed_a exch def
+  /rabbit_new_a  rabbit_new_n array def
+  /rabbit_pattern [ [ 0 1 0 0 1 ] [ 0 1 0 ] ] def
+  /rabbit_pattern_choice   0 def   % 0..1
+  /rabbit_pattern_choice_i 0 def   % 0..4 or 0..2
+  /rabbit_new_i 0 def {
+    /rabbit_choice rabbit_pattern  rabbit_pattern_choice get   % time-saver
+
+    /rabbit_new_i rabbit_new_i 1 add def
+    rabbit_new_i rabbit_new_n ge { exit } if
+    /rabbit_pattern_choice_i rabbit_pattern_choice_i 1 add def
+	rabbit_pattern_choice_i rabbit_choice length ge {
+      /rabbit_pattern_choice rabbit_pattern_choice 1 add 2 mod def % 0 or 1
+      /rabbit_pattern_choice_i 0 def
+    } if
+  } loop
+  rabbit_new_a   % return
+} bind def
+
+/random { % usage : [ array of things ] n random
+} bind def
+
+%%EndResource
+

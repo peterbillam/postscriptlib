@@ -1,0 +1,158 @@
+<HTML><HEAD><TITLE>include_run</TITLE>
+<LINK rel=stylesheet type="text/css" href="styles.css" title="PJB Comp Styles">
+<META HTTP-EQUIV="Keywords"
+CONTENT="PostScript, line_drawing, colours.ps">
+</HEAD>
+<BODY LINK="#000066" VLINK="#000066" ALINK="#000066">
+<DIV>
+<H1><IMG SRC="logo.jpg" ALT=" " WIDTH=126 HEIGHT=52>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <I>include_run</I>
+</H1>
+<CENTER>
+<TABLE ALIGN="center" WIDTH="85%" BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left">
+	<UL><LI>
+	<B><A HREF="#readme">README</A></B>
+	</LI><LI>
+	<B><A HREF="#name">NAME</A></B>
+	</LI><LI>
+	<B><A HREF="#synopsis">SYNOPSIS</A></B>
+	</LI></UL>
+</TD><TD ALIGN="left">
+	<UL><LI>
+	<B><A HREF="#description">DESCRIPTION</A></B>
+	</LI><LI>
+	<B><A HREF="#restrictions">RESTRICTIONS</A></B>
+	</LI><LI>
+	<B><A HREF="#bugs">BUGS</A></B>
+	</LI></UL>
+</TD><TD ALIGN="left">
+	<UL><LI>
+	<B><A HREF="#author">AUTHOR</A></B>
+	</LI><LI>
+	<B><A HREF="#see_also">SEE&nbsp;ALSO</A></B>
+	</LI><LI>
+	<B><A HREF="#changes">CHANGES</A></B>
+	</LI></UL>
+</TD></TR></TABLE>
+</CENTER>
+
+<A NAME="readme"><HR></A><H2>README</H2>
+<P>
+The PostScript language includes the <I>run</I> keyword,
+which allows one file to be invoked from within another. This is
+similar to, for example, the <I>require</I> instruction in Perl.
+</P><P>
+Of course, this means that any PostScript which uses the <I>run</I>
+keyword can only be viewed if the invoked file exists on the filesystem;
+therefore before that PostScript can be printed, e-mailed elsewhere,
+or converted to PDF to be put on a website,
+the <I>run</I> statement must be removed
+and the <B>contents</B> of the invoked file must be inserted.
+<I>include_run</I> performs this task.
+</P><P>
+If a file is invoked by more than one <I>run</I> statement
+it only gets included once;
+this behaviour is also similar to the <I>require</I> instruction in Perl.
+</P><P>
+<B>To install:</B> &nbsp; go to
+<A HREF="http://www.pjb.com.au/comp/free/include_run">
+www.pjb.com.au/comp/free/include_run</A>
+and save the file to your local disc.<BR>
+Edit the first line if necessary to reflect where
+<I>perl</I> is installed on your system,<BR>
+make it executable,
+and move it to some directory in your $PATH&nbsp;.&nbsp;.&nbsp;.
+</P>
+
+<A NAME="name"><HR></A>
+<H2>NAME</H2>
+<P>
+include_run - Include all run-files into a PostScript file
+</P>
+
+<A NAME="synopsis"><HR></A>
+<H2>SYNOPSIS</H2><P>
+<PRE> $ grep run foo.ps
+ (/home/wherever/ps/lib/a_library.ps) run
+ $ include_run foo.ps | lpr
+ $ include_run foo.ps | mail -s 'Here is foo.ps' fred@bloggs.org
+ $ include_run foo.ps | gs -q -sDEVICE=pdfwrite -sOutputFile=foo.pdf -
+</PRE></P>
+
+<A NAME="description"><HR></A>
+<H2>DESCRIPTION</H2>
+<P>
+The PostScript language includes the <I>run</I> keyword,
+which allows one file to be invoked from within another. This is
+similar to, for example, the <I>require</I> instruction in Perl.
+</P><P>
+Of course, this means that any PostScript which uses the <I>run</I>
+keyword can only be viewed if the invoked file exists on the filesystem;
+therefore before the PostScript can be printed, e-mailed elsewhere, or
+converted to PDF to be put on a website,
+the <I>run</I> statement must be removed
+and the contents of the invoked file must be included.
+<I>include_run</I> performs this task.
+
+</P><P>
+If a file is invoked by more than one <I>run</I> statement
+it only gets included once;
+this behaviour is also similar to the <I>require</I> instruction in Perl.
+
+</P><P>
+<I>include_run</I> does recurse; in other words, the 
+invoked file can itself use a <I>run</I> statement.
+</P>
+
+<A NAME="restrictions"><HR></A>
+<H2>RESTRICTIONS</H2>
+<P>
+In order to dodge the general PostScript-parsing problem,
+the filename must be a literal string, enclosed in brackets (),
+and must be followed by its <I>run</I> statement;
+<I>include_run</I> can not cope with even slightly obfuscated PostScript.
+</P>
+
+<A NAME="bugs"><HR></A>
+<H2>BUGS</H2>
+<P>
+If a valid <I>(...) run</I> command is part of a literal string,
+it will get included anyway.
+It could be argued that this is a feature, but in fact it's a bug.
+</P>
+
+<A NAME="author"> <HR> </A>
+<H2> AUTHOR </H2>
+<P>
+Peter J Billam
+<A HREF="http://www.pjb.com.au/comp/contact.html">
+www.pjb.com.au/comp/contact.html</A>
+</P>
+
+<A NAME="see_also"> <HR> </A>
+<H2> SEE ALSO </H2>
+<P>
+See also
+<UL><LI>
+<A HREF="line_drawing.html">line_drawing.ps</A>
+</LI><LI>
+<A HREF="colours.html">colours.ps</A>
+</LI><LI>
+<A HREF="brownian.html">brownian.ps</A>
+</LI><LI>
+<A HREF="http://www.pjb.com.au/">http://www.pjb.com.au/</A>
+</LI><LI>
+The <I>PostScript Language Reference Manual</I> (Adobe)
+</LI></UL>
+</P>
+
+<A NAME="changes"><HR></A><H2>CHANGES</H2>
+<PRE>
+20030613 Include all run-files into a PostScript file
+20030613 will now recurse
+</PRE>
+
+<HR><CENTER><P>Back to <A HREF="index.html">P J B Computing</A> or to
+<A HREF="../index.html">www.pjb.com.au</A>&nbsp;.&nbsp;.&nbsp;.</CENTER></P>
+</DIV></BODY></HTML>

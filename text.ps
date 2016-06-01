@@ -1,0 +1,317 @@
+%%BeginResource: procset text
+%
+% See http://www.pjb.com.au/comp/text.html
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2014, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained.  It is provided "as is" %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/warn {  % usage [(i=) i ( ix=) ix] warn
+  1 dict begin
+    { /x exch def
+      x type (integertype) eq { x 10 20 string cvrs print } if
+      x type (realtype)    eq { x 10 20 string cvrs print } if
+      x type (stringtype)  eq { x print } if
+      x type (arraytype)   eq { x == } if
+      x type (dicttype)    eq { x == } if
+      x type (nulltype)    eq { (null) print } if
+    } forall
+  end
+} bind def
+
+% /i 42 def  /r 3.1234 def /s (hello) def /a [ (a) (b) (c) ] def
+% [(i=) i ( r=) r ( s=) s ( a=) a ] warn
+
+% luser- -droog in ~/News/comp.lang.postscript 20160516
+/kcharpath {   % proc string bool  .  -
+  {text::bool text::str text::proc}{exch def}forall
+  text::str length 0 gt {
+    currentpoint   % for later moveto...
+    text::str 0 1 getinterval dup  % first char
+      text::bool charpath
+      stringwidth  % for later rmoveto...
+    4 2 roll moveto rmoveto
+    1  1  text::str length 1 sub  { /text::idx exch def
+      text::str text::idx 1 sub get  % previous char
+      text::str text::idx get        %   this   char
+      text::proc % which usually begins pop pop to get rid of those 2 chars
+      currentpoint   % for later moveto...
+      text::str text::idx 1 getinterval dup
+        text::bool charpath
+        stringwidth  % for later rmoveto...
+      4 2 roll moveto rmoveto
+    } for
+  } if
+} bind def
+
+% NAH! for left-to-right, use kshow, with one initial call to paintproc
+% For right-to-left, use kshow with a null output
+%    gsave nulldevice ... grestore
+% to build an array of positions
+% then for-loop explicitly end-to-beginning, using getinterval and moveto
+% Code-to-char is done by put, eg:    /s ( ) def  s 0 111 put  s show
+/kcharbychar {   % kernproc paintproc string bool  kcharbychar
+  % The idea is: for each char, call some `paintproc` which can eg
+  %   clip  ( usually; but not always, perhaps stroke... ) 
+  %   % pathbbox and convert llx lly urx ury to llx lly width height for fill
+  %   clippath pathbbox 2 index sub exch 3 index sub exch
+  %   then call rectfill or rectgradientfill
+  % So kernproc is called _between_ characters (as in kshow) ;
+  %   paintproc is called _on_ each character, with its current path set
+  % { clip clippath pathbbox 2 index sub exch 3 index sub exch
+  %   black white false 0.5 rectgradientfill }
+% needs a complete rethink so as also to be able to print right-to-left !
+  { text::bool text::str
+    text::paintproc text::kernproc }{exch def} forall
+  text::str length 0 gt {
+    currentpoint
+    text::str 0 1 getinterval dup
+      text::bool charpath
+      gsave text::paintproc grestore
+      stringwidth newpath
+    4 2 roll moveto rmoveto
+    1 1 text::str length 1 sub { /text::idx exch def
+      text::str text::idx 1 sub get
+      text::str text::idx get
+      text::kernproc
+      currentpoint
+      text::str text::idx 1 getinterval dup
+        text::bool charpath
+        gsave text::paintproc grestore
+        stringwidth newpath
+      4 2 roll moveto rmoveto
+    } for
+  } if
+} bind def
+
+/pathbboxwh where { pop } {  % might also be set by colours.ps ...
+  /pathbboxwh {
+    % returns llx lly width height, for rectfill or rectgradientfill
+    pathbbox 2 index sub exch 3 index sub exch
+  } bind def
+} ifelse
+
+% Postscript Language Tutorial and Cookbook p.167
+/OutsideCircleText {  % usage: str ptsize centreangle radius OutsideCircleText
+	circletextdict begin
+	[ /radius /centreangle /ptsize /str ] { exch def } forall
+	/xradius radius ptsize 3.5 div add def
+	gsave
+		centreangle str findhalfangle add rotate
+		str {
+			/charcode exch def
+			(?) dup 0 charcode put outsideplacechar
+		} forall
+	grestore
+	end
+} def
+
+/InsideCircleText {  % usage: str ptsize centreangle radius InsideCircleText
+	circletextdict begin
+	[ /radius /centreangle /ptsize /str ] { exch def } forall
+	/xradius radius ptsize 3.5 div sub def
+	gsave
+		centreangle str findhalfangle sub rotate
+		str {
+			/charcode exch def
+			(?) dup 0 charcode put insideplacechar
+		} forall
+	grestore
+	end
+} def
+
+/circletextdict 16 dict def
+circletextdict begin
+	/findhalfangle {
+		stringwidth pop 2 div
+		2 xradius mul pi mul div 360 mul
+	} def
+	/outsideplacechar {
+		/char exch def
+		/halfangle char findhalfangle def
+		gsave
+			halfangle neg rotate
+			xradius 0 translate
+			-90 rotate
+			char stringwidth pop 2 div neg 0 moveto
+			char show
+		grestore
+		halfangle 2 mul neg rotate
+	} def
+	/insideplacechar {
+		/char exch def
+		/halfangle char findhalfangle def
+		gsave
+			halfangle rotate
+			xradius 0 translate
+			90 rotate
+			char stringwidth pop 2 div neg 0 moveto
+			char show
+		grestore
+		halfangle 2 mul rotate
+	} def
+	/pi 3.14159256 def
+end
+
+% Postscript Language Tutorial and Cookbook p.179
+/wordbreak ( ) def
+/BreakIntoLines {
+	/proc       exch def  % will be executed at each end-of-line
+	/linewidth  exch def
+	/textstring exch def
+	/breakwidth wordbreak stringwidth pop def
+	/curwidth 0 def
+	/lastwordbreak 0 def
+	/startchar 0 def
+	/restoftext textstring def
+	{   % loop
+		restoftext wordbreak search {   % if?
+			/nextword exch def pop
+			/restoftext exch def
+			/wordwidth nextword stringwidth pop def
+			curwidth wordwidth add linewidth gt {   %if?
+				textstring startchar  lastwordbreak startchar sub  
+				  getinterval proc
+				/startchar lastwordbreak def
+				/curwidth wordwidth breakwidth add def
+			} {   % else?
+				/curwidth curwidth wordwidth add breakwidth add def
+			} ifelse
+			/lastwordbreak lastwordbreak nextword length add 1 add def
+		} {   % else?
+			pop exit
+		} ifelse
+	} loop
+	/lastchar textstring length def
+	textstring startchar lastchar startchar sub getinterval proc
+} def
+
+/currentfontsize { currentfont /FontMatrix get 0 get 1000 mul } def
+
+/JustifyText {   % usage: x y textstring linewidth JustifyText
+	/linewidth  exch def
+	/textstring exch def
+	/y exch def
+	/xline exch def
+	% invokes BreakIntoLines with a proc that looks at the linestring,
+	% measures its stringwidth, subracts that from linewidth,
+	% divides the result by the length, then invokes ashow with that ax
+	/yline y def
+	% invocation of BreakIntoLines starts here:
+	textstring linewidth
+ 	{
+	  /linestring exch def
+	  /ax linewidth linestring stringwidth pop sub linestring length div def
+	  xline yline moveto
+	  ax 0 linestring ashow
+	  /yline  yline currentfontsize 1.04 mul sub  def
+	}
+	BreakIntoLines
+} def
+
+% Postscript Language Tutorial and Cookbook p.203
+% /makeoutlinedict 7 dict def
+/MakeOutlineFont {
+	% usage: basefontname newfontname strokewidth uniqueid MakeOutlineFont
+	% strokewidth is specified in the character-coordinate-system (1000 units)
+	% makeoutlinedict begin
+	7 dict begin
+	[ /uniqueid /strokewidth /newfontname /basefontname ] { exch def } forall
+	/basefontdict basefontname findfont def
+	/numentries   basefontdict maxlength 1 add def
+	basefontdict /UniqeID known not { /numentries numentries 1 add def } if
+	/outfontdict numentries dict def
+	basefontdict {
+		exch dup /FID ne {
+			exch outfontdict 3 1 roll put
+		} {
+			pop pop
+		} ifelse
+	} forall
+	outfontdict /FontName    newfontname put
+	outfontdict /PaintType   2 put
+	outfontdict /StrokeWidth strokewidth put
+	outfontdict /UniqeID     uniqueid    put
+	newfontname outfontdict definefont pop
+	end
+} def
+
+% all the following are taken from muscript -p  or muscript.ps
+/rightshow where { pop } {  % might also be set by muscript.ps ...
+  /rightshow {    % usage: x y font fontsize (string) rightshow
+    5 dict begin
+      [ /s /fontsize /font /y /x ] { exch def } forall
+      gsave font findfont  fontsize scalefont  setfont
+      x s stringwidth pop sub  y moveto s show grestore
+    end
+  } bind def
+
+  /leftshow { % usage: x y font fontsize (string) leftshow
+    5 dict begin
+      [ /s /fontsize /font /y /x ] { exch def } forall
+      gsave font findfont  fontsize scalefont  setfont
+      x y moveto s show grestore
+    end
+  } bind def
+
+  /centreshow { % usage: x y font fontsize (string) centreshow
+    3 dict begin
+      [ /s /fontsize /font ] { exch def } forall
+      gsave moveto font findfont fontsize scalefont setfont
+      gsave s false charpath flattenpath pathbbox grestore
+      exch 4 -1 roll pop pop s stringwidth pop -0.5 mul  % dx/2
+      3 1 roll sub 0.5 mul % dy/2
+      rmoveto s show grestore
+    end
+  } bind def
+
+  /centrexshow {  % usage: x y font fontsize (string) centrexshow
+    5 dict begin
+      [ /s /fontsize /font /y /x ] { exch def } forall
+      gsave font findfont  fontsize scalefont  setfont
+      x s stringwidth pop 0.5 mul sub  y moveto s show grestore
+    end
+  } bind def
+
+  /Times-Roman findfont dup length dict begin
+    { 1 index /FID ne { def } { pop pop } ifelse } forall
+    /Encoding ISOLatin1Encoding def currentdict
+  end /Times-Roman-ISO exch definefont pop
+  /Times-Bold findfont dup length dict begin
+    { 1 index /FID ne { def } { pop pop } ifelse } forall 
+    /Encoding ISOLatin1Encoding def currentdict
+  end /Times-Bold-ISO exch definefont pop
+  /Times-BoldItalic findfont dup length dict begin
+    { 1 index /FID ne { def } { pop pop } ifelse } forall 
+    /Encoding ISOLatin1Encoding def currentdict
+  end /Times-BoldItalic-ISO exch definefont pop
+  /Times-Italic findfont dup length dict begin
+    { 1 index /FID ne { def } { pop pop } ifelse } forall 
+    /Encoding ISOLatin1Encoding def currentdict
+  end /Times-Italic-ISO exch definefont pop
+
+} ifelse
+
+/Helvetica findfont dup length dict begin
+  { 1 index /FID ne { def } { pop pop } ifelse } forall
+  /Encoding ISOLatin1Encoding def currentdict
+end /Helvetica-ISO exch definefont pop
+/Helvetica-Bold findfont dup length dict begin
+  { 1 index /FID ne { def } { pop pop } ifelse } forall 
+  /Encoding ISOLatin1Encoding def currentdict
+end /Helvetica-Bold-ISO exch definefont pop
+/Helvetica-BoldOblique findfont dup length dict begin
+  { 1 index /FID ne { def } { pop pop } ifelse } forall 
+  /Encoding ISOLatin1Encoding def currentdict
+end /Helvetica-BoldOblique-ISO exch definefont pop
+/Helvetica-Oblique findfont dup length dict begin
+  { 1 index /FID ne { def } { pop pop } ifelse } forall 
+  /Encoding ISOLatin1Encoding def currentdict
+end /Helvetica-Oblique-ISO exch definefont pop
+
+%%EndResource
+

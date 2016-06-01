@@ -1,0 +1,284 @@
+%%BeginResource: procset colours
+%
+% See http://www.pjb.com.au/comp/colours.html
+%
+% (/home/wherever/ps/lib/line_drawing.ps) run
+% (/home/wherever/ps/lib/colours.ps) run
+% palegreen setrgbcolor
+% blue 0.6 grey 0.4 rgbmix setrgbcolor
+% /darkskin paleorange 0.4 brown 0.6 rgbmix rgbdef
+% darkskin setrgbcolor
+% /contourcolour [ 0 blue 50 yellow 100 green 150 grey 200 white ]
+%    altitude rgbinterpolate rgbdef
+% /equivalentgray palegreen rgb2gray def
+% orange equivalentgray adjustbrightness setrgbcolor
+% orange palegreen rgb2gray adjustbrightness setrgbcolor
+% x y width height startrgb endrgb vertical convexity rectgradientfill
+% % vertical is boolean (false means horizontal)
+%
+% See also line_drawing.ps, see www.pjb.com.au/comp/line_drawing.html
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2000, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.      http://www.pjb.com.au   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/white       { 1    1    1    } def
+/lightgrey   { 0.95 0.95 0.95 } def
+/lightgray   { 0.95 0.95 0.95 } def
+/grey        { 0.9  0.9  0.9  } def
+/gray        { 0.9  0.9  0.9  } def
+/mediumgrey  { 0.8  0.8  0.8  } def
+/mediumgray  { 0.8  0.8  0.8  } def
+/darkgrey    { 0.6  0.6  0.6  } def
+/darkgray    { 0.6  0.6  0.6  } def
+/black       { 0    0    0    } def
+
+/darkred     { 0.6  0    0    } def
+/red         { 1    0    0    } def
+/palered     { 1    0.75 0.75 } def
+/pink        { 1    0.75 0.75 } def
+
+/darkorange  { 1    0.4  0.0  } def
+/orange      { 1    0.7  0.0  } def
+/paleorange  { 1    0.85 0.75 } def
+
+/darkbrown   { 0.5  0.4  0.4  } def
+/brown       { 0.7  0.55 0.55 } def
+/palebrown   { 0.88 0.84 0.82 } def
+
+/yellow      { 1    1    0    } def
+
+/darkgreen   { 0    .6   0    } def
+/green       { 0    1    0    } def
+/palegreen   { 0.75 1    0.75 } def
+
+/darkblue    { 0    0    0.6  } def
+/blue        { 0    0    1    } def
+/paleblue    { 0.75 0.75 1    } def
+
+/darkviolet  { 0.5  0.15 0.5  } def
+/violet      { 0.7  0.2  0.7  } def
+/paleviolet  { 1    0.75 1    } def
+
+/randomrgb {   % usage: [ red black grey ] randomrgb
+  dup length 3.0 div 0.01 add floor  rand exch round cvi mod  3 mul
+  /random_rgb_i exch def
+  dup random_rgb_i       get exch
+  dup random_rgb_i 1 add get exch
+      random_rgb_i 2 add get
+} bind def
+
+/rgbget {   % usage: [ red black grey ] 1 rgbget  ->  black
+  /rgbget_i exch 3 mul def
+  dup  rgbget_i        get exch
+  dup  rgbget_i 1 add  get exch
+       rgbget_i 2 add  get
+} bind def
+
+/rgbmix { % usage : colour1 weight1 colour2 weight2 rgbmix
+	/rgbmix_w2 exch def /rgbmix_b2 exch def
+	/rgbmix_g2 exch def /rgbmix_r2 exch def
+	/rgbmix_w1 exch def /rgbmix_b1 exch def
+	/rgbmix_g1 exch def /rgbmix_r1 exch def
+	% normalise weights ...
+	rgbmix_w1 0.0 lt { /rgbmix_w1 0.0 def } if
+	rgbmix_w2 0.0 lt { /rgbmix_w2 0.0 def } if
+	/rgbmix_tot rgbmix_w1 rgbmix_w2 add def
+	/rgbmix_w1 rgbmix_w1 rgbmix_tot div def
+	/rgbmix_w2 rgbmix_w2 rgbmix_tot div def
+	% leave mixed colour on stack ...
+	rgbmix_r1 dup mul rgbmix_w1 mul rgbmix_r2 dup mul rgbmix_w2 mul add sqrt
+	rgbmix_g1 dup mul rgbmix_w1 mul rgbmix_g2 dup mul rgbmix_w2 mul add sqrt
+	rgbmix_b1 dup mul rgbmix_w1 mul rgbmix_b2 dup mul rgbmix_w2 mul add sqrt
+} bind def
+
+/rgbinterpolate {  % usage: [ a1 colour1 .. aN colourN ] a rgbinterpolate
+	% It is expected that a1,a2..aN are in ascending order !
+	% If a is a1 or less, colour1 will be returned,
+	% if a is between a1 and a2, rgbmix is used to interpolate between them,
+	% If a is a2 colour2 will be returned,
+	% if a is between a2 and a3, rgbmix is used to interpolate between them,
+	% if a is aN or more, colourN will be returned.  eg:
+	% [ .5 paleblue .51 white 1.0 mediumgray ] z rgbinterpolate setrgbcolor
+	% would transform a brownian landscape into sky with clouds ...
+	/colours_a exch def /colours_array exch def
+	/colours_n colours_array length def 
+	colours_a colours_array 0 get le {
+		colours_array 1 get colours_array 2 get colours_array 3 get
+	} {
+		colours_a colours_array colours_n 4 sub get ge {
+			colours_array colours_n 3 sub get
+			colours_array colours_n 2 sub get
+			colours_array colours_n 1 sub get
+		} {
+			/colours_i 0 def {
+				colours_i colours_n ge { exit } if
+				colours_a colours_array colours_i get ge
+				colours_a colours_array colours_i 4 add get le and {
+					colours_array colours_i 1 add get
+					colours_array colours_i 2 add get
+					colours_array colours_i 3 add get
+					colours_array colours_i 4 add get colours_a sub
+					colours_array colours_i 5 add get
+					colours_array colours_i 6 add get
+					colours_array colours_i 7 add get
+					colours_a colours_array colours_i get sub
+					rgbmix exit
+				} if
+				/colours_i colours_i 4 add def
+			} loop
+		} ifelse
+	} ifelse
+} bind def
+
+% currentcolorspace 0 get 256 string cvs % e.g. DeviceGray or DeviceRGB
+
+/nonlinearise { % usage: weight halfpoint nonlinearise
+	% weight is 0..1   halfpoint is 0..1
+	% weight=0 returns 0   weight=halfpoint returns 0.5   weight=1 returns 1
+	0.5 ln exch abs ln div exp
+	% BUG must defend exp against out-of-range args
+} bind def
+
+/nonlinearrgbmix { % usage : colour1 colour2 weight halfpoint nonlinearrgbmix
+	% eg. red blue weight .75 nonlinearrgbmix   produces mostly reddish
+	%     red blue weight .25 nonlinearrgbmix   produces mostly blueish
+	nonlinearise dup 3 1 roll 1.0 exch sub rgbmix
+} bind def
+
+/rgbdef { % usage: /name_of_colour r g b rgbdef
+	/rgbdef_b exch def /rgbdef_g exch def /rgbdef_r exch def
+	% This is Really Ugly stuff; Postscript is not made for string handling.
+	/rgbdef_s 60 string def
+	(                                                            )
+ 	rgbdef_s copy
+	0 rgbdef_r 60 string cvs dup length /rgbdef_l exch def putinterval
+	rgbdef_s 20 rgbdef_g 40 string cvs putinterval
+	rgbdef_s 40 rgbdef_b 20 string cvs putinterval
+	rgbdef_s 60 string copy cvx def
+} bind def
+
+/callibrate_rgb2gray 0.15 def  % user-settable 0..1
+
+/rgb2gray { % usage: /equivalentgray r g b rgb2gray def
+	callibrate_rgb2gray 0.0 eq {
+		.11 mul 3 1 roll .59 mul 3 1 roll .3 mul add add
+	} {
+		/rgb2gray_b exch def /rgb2gray_g exch def /rgb2gray_r exch def
+		rgb2gray_r rgb2gray_g ge rgb2gray_r rgb2gray_b ge and {
+			/rgb2gray_g rgb2gray_r rgb2gray_g sub callibrate_rgb2gray mul
+			rgb2gray_g add def
+			/rgb2gray_b rgb2gray_r rgb2gray_b sub callibrate_rgb2gray mul
+			rgb2gray_b add def
+		} {
+			rgb2gray_g rgb2gray_r ge rgb2gray_g rgb2gray_b ge and {
+				/rgb2gray_r rgb2gray_g rgb2gray_r sub callibrate_rgb2gray mul
+				rgb2gray_r add def
+				/rgb2gray_b rgb2gray_g rgb2gray_b sub callibrate_rgb2gray mul
+				rgb2gray_b add def
+			} {
+				/rgb2gray_r rgb2gray_b rgb2gray_r sub callibrate_rgb2gray mul
+				rgb2gray_r add def
+				/rgb2gray_g rgb2gray_b rgb2gray_g sub callibrate_rgb2gray mul
+				rgb2gray_g add def
+			} ifelse
+		} ifelse
+		rgb2gray_r .3 mul rgb2gray_g .59 mul rgb2gray_b .11 mul add add
+	} ifelse
+} bind def
+
+/rgbdup { % usage: r g b rgbdup -> r g b r g b
+	3 copy
+} bind def
+
+/adjustbrightness { % usage: r g b graylevel adjustbrightness
+  10 dict begin
+    % find rgb2gray, and scale. If any component is >1, then scale back
+    % to set it =1, then mix with white to get desired graylevel.
+    [ /gray /b /g /r ] { exch def } forall
+    gray 1.0  gt { /gray 1.0  def } if
+    gray 0.01 lt { /gray 0.01 def } if
+    r g b rgb2gray gray div /a exch def
+    a 0.01 lt { /a 0.01 def } if
+    /b b a div def
+    /g g a div def
+    /r r a div def
+
+    /max r def
+    max g lt { /max g def } if
+    max b lt { /max b def } if
+    max 1.0 gt {  % we must decrease the saturation (mix with white)
+      /r r max div def
+      /g g max div def
+      /b b max div def
+      % we mix linearly :-(
+      % could also 2) binary search using rgbmix or 3) explicitly
+      callibrate_rgb2gray .98 gt { /callibrate_rgb2gray .98 def } if
+      /w 1.0 gray sub
+      1.0 0.3 r mul .59 g mul .11 b mul add add sub
+      div 1.0 callibrate_rgb2gray sub div def
+      /r r w mul 1.0 add w sub def
+      /g g w mul 1.0 add w sub def
+      /b b w mul 1.0 add w sub def
+    } if
+    r g b % return
+  end
+} def  % not bind in case the user wants to overwrite rgb2gray ...
+
+% 20140703
+% interpolation is quadratic in x (0<x<1) : convexity*x*x + (1-convexity)*x
+/rectgradientinterp {   % convexity x rectgradientinterp => a*x*x + (1-a)*x
+	dup dup mul              %  convexity x x*x
+	3 2 roll dup             % x x*x convexity convexity
+	neg 1.0 add 4 1 roll mul % convexity-1 x  convexity*x*x
+	3 1 roll mul add         % convexity*x*x + (1-convexity)*x
+} def
+/rectgradientfill {
+  % x y width height startrgb endrgb vertical? convexity rectgradientfill
+  20 dict begin
+    [ /convexity /vertical  /end_b /end_g /end_r
+      /start_b /start_g /start_r  /height /width ] { exch def } forall
+    convexity  1.0 gt { /convexity  1.0 def } if
+    convexity -1.0 lt { /convexity -1.0 def } if
+    gsave translate
+      width height scale
+      end_r end_g end_b setrgbcolor
+      % steps chosen so fastest-changing RGB component increments by 0.005
+      /big end_b start_b sub abs def
+      /tmp end_g start_g sub abs def
+      tmp big gt { /big tmp def } if   % find biggest change
+      /tmp end_r start_r sub abs def
+      tmp big gt { /big tmp def } if
+      /n big 0.005 div ceiling def % num of steps
+      /i 0 def {   % 20160425   0 not 1
+        /z i n div def  % 0<x<1
+        /r start_r  end_r start_r sub z mul  add def
+        /g start_g  end_g start_g sub z mul  add def
+        /b start_b  end_b start_b sub z mul  add def
+        r g b setrgbcolor
+        /thisf  convexity z  rectgradientinterp def
+        /nextf  convexity i 1 add n div  rectgradientinterp 0.005 add def
+        nextf 1 gt { /nextf 1.0 def } if
+        vertical { 0 thisf 1.0 nextf thisf sub rectfill
+        } {        thisf 0 nextf thisf sub 1.0 rectfill
+        } ifelse
+        /i i 1 add def
+        i n gt { exit } if
+      } loop
+	grestore
+  end
+} bind def
+
+/pathbboxwh where { pop } {  % might also be set by text.ps ...
+  /pathbboxwh {
+    % returns llx lly width height, for rectfill or rectgradientfill
+    pathbbox 2 index sub exch 3 index sub exch
+  } bind def
+} ifelse
+
+%%EndResource
+

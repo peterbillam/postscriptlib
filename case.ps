@@ -1,0 +1,33 @@
+%!
+% http://www.acumentraining.com/acumenjournal.html
+% Case statements: see April 2001
+% http://www.acumentraining.com/resources.html
+% http://www.acumentraining.com/resources.html#PSResources
+
+/case {      %  <<dict>>  key  =>  ---
+  {                     % We'll do this in a stopped context
+    2 copy known not {  % Does our key not exist?
+      pop /Default      % Replace the key with "/Default"
+      2 copy known not { stop } if  % If "Default" is missing, exit
+    } if
+    get exec            % Get the proc and execute it
+  } stopped
+} bind def
+
+% Sample usage
+%  /CompanyProcs
+%  <<
+%    (Hot Doggie Portapotties)       { (PottyProc) = }
+%    (Monstrous Heights Real Estate) { (MonstrousProc) = }
+%    (Out of My Mind, Inc.)          { (Crazy) = }
+%    /Default                        { (Default) = }
+%  >> def
+%
+%
+%  [ (Hot Doggie Portapotties)
+%    (Albequerque Turkey)
+%    (Monstrous Heights Real Estate)
+%    (Out of My Mind, Inc.)
+%    (Gorilla My Dreams Parties)
+%  ]
+%  { CompanyProcs exch case } forall

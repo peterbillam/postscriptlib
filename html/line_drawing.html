@@ -1,0 +1,408 @@
+<HTML><HEAD><TITLE>line_drawing.ps Manual</TITLE>
+<LINK rel=stylesheet type="text/css" href="styles.css" title="PJB Comp Styles">
+<META HTTP-EQUIV="Keywords"
+CONTENT="PostScript, line drawing, shading">
+</HEAD>
+<BODY LINK="#000066" VLINK="#000066" ALINK="#000066">
+<DIV>
+<H1><IMG SRC="logo.jpg" ALT=" " WIDTH=126 HEIGHT=52>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <I>line_drawing.ps</I>
+</H1>
+
+<CENTER>
+<TABLE ALIGN="center" WIDTH="85%" BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left">
+    <UL><LI>
+    <B><A HREF="#name">NAME</A></B>
+    </LI><LI>
+    <B><A HREF="#synopsis">SYNOPSIS</A></B>
+    </LI></UL>
+</TD><TD ALIGN="left">
+    <UL><LI>
+    <B><A HREF="#description">DESCRIPTION</A></B>
+    </LI><LI>
+    <B><A HREF="#tutorial">TUTORIAL</A></B>
+    </LI></UL>
+</TD><TD ALIGN="left">
+    <UL><LI>
+    <B><A HREF="#subroutines">SUBROUTINES</A></B>
+<!--    <A HREF="#item_longcurveto">longcurveto</A>,
+    <A HREF="#item_longcurve">longcurve</A>,
+    <A HREF="#item_reversecurve">reversecurve</A>,
+    <A HREF="#item_pointdef">pointdef</A>,
+    <A HREF="#item_pointadd">pointadd</A>,
+    <A HREF="#item_pointdup">pointdup</A>,
+    <A HREF="#item_interpolate2">interpolate2</A>,
+    <A HREF="#item_interpolate3">interpolate3</A>,
+    <A HREF="#item_fuzzygraystroke">fuzzygraystroke</A>,
+    <A HREF="#item_fuzzygrayfill">fuzzygrayfill</A>,
+    <A HREF="#item_fuzzyrgbstroke">fuzzyrgbstroke</A> and
+    <A HREF="#item_fuzzyrgbfill">fuzzyrgbfill</A>
+-->
+    </LI><LI>
+    <B><A HREF="#author">AUTHOR</A></B>
+    </LI></UL>
+</TD><TD ALIGN="left">
+    <UL><LI>
+    <B><A HREF="#changes">CHANGES</A></B>
+    </LI><LI>
+    <B><A HREF="#see_also">SEE&nbsp;ALSO</A></B>
+    </LI></UL>
+</TD></TR></TABLE>
+</CENTER>
+
+<A NAME="name"><HR></A><H3>NAME</H3><P>
+&nbsp; &nbsp; &nbsp; line_drawing.ps - Line Drawing in PostScript
+</P>
+
+<A NAME="synopsis"><HR></A><H3>SYNOPSIS</H3>
+<PRE> %!PS-Adobe-2.0
+ %%EndComments
+ %%BeginProlog
+ (/home/wherever/ps/lib/line_drawing.ps) run
+ (/home/wherever/ps/lib/colours.ps) run
+ %%EndProlog
+ %%Page: 1 1
+ /brow { 67 mm 200 mm } def   % define some Points in x,y
+ /nose { 34 mm 100 mm } def
+ /ear { 124 mm 145 mm } def
+ /nose2brow { 10 20 60 1 /bridge 15 -65 15 50 60 5 } def   % define the Curves
+ /brow2ear  { 10 20 60 1 /bridge 15 -45 } def
+ /eye brow nose .4 brow .4 ear .2 interpolate3 pointdef
+ /darkskin paleorange .4 brown .6 rgbmix rgbdef  % mix some Colours
+ newpath nosetip moveto  % run the Curves ...
+ [ nose2brow ] brow longcurveto [ brow2ear ] ear longcurveto
+ % make closedpaths round areas; clip, fill, fuzzystroke &amp; fuzzyfill
+ closepath darkskin setrgbcolor fill
+ % run the Curves again, and this time stroke or fuzzystroke them
+ black setrgbcolor
+ newpath nose moveto [ nose2brow ] brow longcurveto stroke
+ showpage
+ %%EOF
+</PRE>
+<A NAME="description"><HR></A><H3> DESCRIPTION</H3>
+<P>
+This module implements various routines to do in PostScript
+what an artist does when sketching with, say, pencil and paper.
+</P><P>
+The artist thinks something like
+"well, starting at this point,
+first there's about this distance of that curvature to the left,
+then about that distance of a much tighter curvature to the left,
+then a much longer listance of this fairly gentle curve to the right,
+etc, etc,
+ending up finally at that point."
+The main subroutine
+<A HREF="#item_longcurveto">longcurveto</A>
+implements that process in PostScript.
+</P><P>
+Using <I>line_drawing.ps</I>
+is of course much slower than sketching with pencil and paper,
+it's closer to some of the older print-making techniques like
+<I>mezzotint</I> (as used by Escher) offering complete control of greyscale,
+extremely fine detail, and perfect reproducibility.
+</P><P>
+<B>To install:</B> go to
+<A HREF="http://www.pjb.com.au/comp/free/line_drawing.ps.txt">
+www.pjb.com.au/comp/free/line_drawing.ps.txt</A>
+and save the file to your local disc.<BR>
+Rename it to <I>line_drawing.ps</I> and move it into some appropriate
+directory such as <CODE>~/ps/lib</CODE>&nbsp;.&nbsp;.&nbsp;.
+</P>
+
+<A NAME="tutorial"><HR></A><H3>TUTORIAL</H3>
+<P>
+Hints for drawing, in nine easy steps (-;
+<OL><LI>
+at each junction of 3 colours, put a Point (eg "nosetip", "brow")
+</LI><LI>
+at each boundary of 2 colours, put a Curve (eg "nosetip2brow")
+</LI><LI>
+define at least 3 Points in x,y (eg "/brow { 67 mm 200 mm } def")
+</LI><LI>
+define the Curves (eg "/nosetip2brow { 10 20 60 1 /bridge 15 -45 } def")
+</LI><LI>
+define any remaining Points by interpolate2, interpolate3 and pointadd
+</LI><LI>
+define any Colours ("/darkskin paleorange .4 brown .6 rgbmix rgbdef")
+</LI><LI>
+run all the Curves and interpolations to calculate all Point positions
+(eg "nosetip moveto [ nosetip2brow ] brow longcurveto")
+</LI><LI>
+make closedpaths round areas; clip, fill, fuzzystroke & fuzzyfill in them
+</LI><LI>
+run the Curves again, and this time stroke or fuzzystroke them
+</LI></OL>
+As examples, see
+<A HREF="free/sample1.ps.txt">sample1.ps.txt</A> and
+<A HREF="free/sample2.ps.txt">sample2.ps.txt</A> and
+<A HREF="free/sample3.ps.txt">sample3.ps.txt</A>&nbsp;.&nbsp;.&nbsp;.
+Save the file to your local disc, rename it to <I>sample1.ps</I> or
+<I>sample2.ps</I> or  <I>sample3.ps</I> and edit it so that the
+<B>run</B> statement(s) near the beginning point to the directory where
+<A HREF="http://www.pjb.com.au/comp/free/line_drawing.ps.txt">
+line_drawing.ps</A> and
+<A HREF="http://www.pjb.com.au/comp/free/colours.ps.txt">colours.ps</A>
+are installed on your system.
+Then use GhostView or equivalent to view it.
+</P><P>
+If you wish to print it out, feel free to use something like
+<A HREF="http://www.pjb.com.au/comp/include_run.html">include_run</A>
+to roll the run files in.
+</P><P>
+For easy viewing, PDF versions of the results are in
+<A HREF="free/sample1.pdf">sample1.pdf</A> and
+<A HREF="free/sample2.pdf">sample2.pdf</A> and
+<A HREF="free/sample3.pdf">sample3.pdf</A>&nbsp;.&nbsp;.&nbsp;.
+</P>
+
+
+
+<A NAME="subroutines"><HR></A><H3>SUBROUTINES</H3>
+<P><B> &nbsp; &nbsp;
+<A HREF="#item_longcurveto">longcurveto</A>, &nbsp;
+<A HREF="#item_longcurve">longcurve</A>, &nbsp;
+<A HREF="#item_reversecurve">reversecurve</A>,<BR> &nbsp; &nbsp;
+<A HREF="#item_pointdef">pointdef</A>, &nbsp;
+<A HREF="#item_pointadd">pointadd</A>, &nbsp;
+<A HREF="#item_pointdup">pointdup</A>, &nbsp;
+<A HREF="#item_interpolate2">interpolate2</A>, &nbsp;
+<A HREF="#item_interpolate3">interpolate3</A>,<BR> &nbsp; &nbsp;
+<A HREF="#item_fuzzygraystroke">fuzzygraystroke</A>, &nbsp;
+<A HREF="#item_fuzzygrayfill">fuzzygrayfill</A>, &nbsp;
+<A HREF="#item_fuzzyrgbstroke">fuzzyrgbstroke</A>, &nbsp;
+<A HREF="#item_fuzzyrgbfill">fuzzyrgbfill</A>.
+</B></P>
+<DL>
+<DT><B><A NAME="item_longcurveto">
+[ l c l c (pushxy) l c /apoint l c ] xto yto longcurveto</A></B>
+</DT><DD><P>
+Where the arguments are:<BR>
+<B>l</B>
+is the nominal length of the segment in mm (will be scaled !)<BR>
+<B>c</B>
+is the rightwards curvature of the segment in Radians/Metre (ditto)<BR>
+<B>pushxy</B>
+causes the x,y at that point to be left on the stack; afterwards
+it can be used for example by <CODE>moveto</CODE><BR>
+<B>/apoint</B>
+any nametype (e.g. <I>/thispoint</I>) causes that name to be defined, as in a
+<A HREF="#item_pointdef">pointdef</A><BR>
+<B>xto, yto</B>
+cause the curve to be scaled and rotated to end at position xto, yto<BR>
+</P><P>
+<B>longcurveto</B> starts at the current point.
+Firstly, without affecting the <CODE>currentpath</CODE>,
+it draws the curve as specified, i.e.
+this distance at this curvature,
+that distance at that curvature, and so on;
+it then notes the point at which it ends up,
+and scales and rotates so as to transform this
+into the desired endpoint <I>xto yto</I>.
+Then, secondly, it redraws the curve,
+adding it to the <I>currentpath</I>,
+and defining points such as <I>/apoint</I> as it goes.
+It leaves the <I>currentpoint</I> at <I>xto yto</I>.
+</P><P>
+<B>longcurveto</B>, <B>longcurve</B> and <B>reversecurve</B>
+can, unfortunately, not be used to create a
+<CODE>userpath</CODE>; they append to the <CODE>currentpath</CODE>.
+See the PostScript Language Reference Manual for more about
+<CODE>userpath</CODE>s.
+</P>
+
+</DD><DT>
+<B><A NAME="item_longcurve">
+angle [ l c l c l c (pushxy) l c l c ] longcurve</A></B>
+</DT><DD><P>
+Where the arguments are:<BR>
+the curve starts at angle <B>angle</B> from the current point<BR>
+<B>l</B> is the length of the segment in mm<BR>
+<B>c</B> is the rightwards curvature of the segment in Radians per Metre<BR>
+<B>pushxy</B>
+causes the x,y at that point to be left on the stack afterwards<BR>
+any nametype (e.g. <I>/thispoint</I>)
+causes it to be defined as in a
+<A HREF="#item_pointdef">pointdef</A>
+</P>
+
+</DD><DT>
+<B><A NAME="item_reversecurve">[ l1 c1 l2 c2 /name l3 c3 ] reversecurve</A></B>
+</DT><DD><P>
+The above invocation leaves
+<CODE>[ l3 -c3 /name l2 -c2 l1 -l1 ]</CODE> on the stack.
+When a path (as used by
+<A HREF="#item_longcurveto">longcurveto</A>
+has been defined, it is often useful to be able to use
+it in either direction; e.g. once in outlining the area to one side of
+it, and once in outlining the area to the other side.
+<B>reversecurve</B> offers an easy way to reverse a path.
+</P>
+
+</DD><DT>
+<B><A NAME="item_pointdef">/name_of_point x y pointdef</A></B>
+</DT><DD><P>
+The above invocation leaves
+<CODE>name_of_point</CODE> defined as <CODE>{ x y }</CODE>
+so it's like a two-dimensional version of <CODE>def</CODE>. For example,<BR>
+<CODE>&nbsp;&nbsp;/point_name currentpoint pointdef</CODE><BR>
+</P>
+
+</DD><DT>
+<B><A NAME="item_pointadd">x1 y1 x2 y2 pointadd</A></B>
+</DT><DD><P>
+The above invocation leaves
+<CODE>x1_plus_x2 y1_plus_y2</CODE> on the stack,
+and is often useful to place a second point at a known increment
+away from a first.
+It's like a two-dimensional version of <CODE>add</CODE>
+</P>
+
+</DD><DT>
+<B><A NAME="item_pointdup">x y pointdup</A></B>
+</DT><DD><P>
+The above invocation leaves <CODE>x y x y</CODE> on the stack,
+and is handy if a point needs to be used now
+but also left on the stack to come back to later.
+It's like a two-dimensional version of <CODE>dup</CODE>
+</P>
+
+</DD><DT>
+<B><A NAME="item_interpolate2">x1 y1 weight1 x2 y2 weight2 interpolate2</A></B>
+</DT><DD><P>
+The above invocation leaves on the stack,
+ready for <I>moveto</I> or <I>pointdef</I>,
+the <CODE>x y</CODE> of a point which is on the straight line
+between <CODE>x1 y1</CODE> and <CODE>x2 y2</CODE>.
+If <CODE>weight1</CODE> and <CODE>weight2</CODE> are both 0.5
+then the interpolated point will be half way,
+but if <CODE>weight1</CODE> is 0.9 and <CODE>weight2</CODE> is 0.1
+then the interpolated point will be much closer to <CODE>x1 y1</CODE>.
+</P><P>
+The weights don't have to add up to one,
+they get normalised to total 1.0 automatically.
+</P>
+
+</DD><DT>
+<B><A NAME="item_interpolate3">
+x1 y1 weight1 x2 y2 weight2 x3 y3 weight3 interpolate3</A></B>
+</DT><DD><P>
+The above invocation leaves on the stack,
+ready for <I>moveto</I> or <I>pointdef</I>,
+the <CODE>x y</CODE> of a point which is in the area
+between <CODE>x1 y1</CODE> and <CODE>x2 y2</CODE> and <CODE>x3 y3</CODE>.
+If <CODE>weight1</CODE> and <CODE>weight2</CODE>  and 
+<CODE>weight3</CODE> are all 0.333
+then the interpolated point will be in the middle,
+but if <CODE>weight1</CODE> is 0.7 and <CODE>weight2</CODE> is 0.2
+and <CODE>weight2</CODE> is 0.1
+then the interpolated point will be much closer to <CODE>x1 y1</CODE>.
+</P><P>
+The weights don't have to add up to one, 
+they get normalised to total 1.0 automatically.
+</P>
+
+</DD><DT><B><A NAME="item_fuzzygraystroke">
+innergray outgray inwidth outwidth fuzzygraystroke</A></B>
+</DT><DD><P>
+The above invocation strokes a fuzzy grey line along the currentpath.
+At its centre, the line will be of a <CODE>innergray</CODE>
+greyness, and this shade will be of width <CODE>inwidth</CODE>.
+At its outer fuzzy edges, which will be of width <CODE>outwidth</CODE>,
+the line will be of a <CODE>outgray</CODE> greyness;
+so that will usually be chosen to be the same shade as the background.
+This subroutine is useful for shading.
+</P>
+
+</DD><DT><B><A NAME="item_fuzzygrayfill">
+innergray outergray fuzzwidth fuzzygrayfill</A></B>
+</DT><DD><P>
+The above invocation fills the <I>currentpath</I> with <CODE>innergray</CODE>.
+Outside the <I>currentpath</I>, the greyness fades,
+over the width <CODE>fuzzwidth</CODE>, into an <CODE>outgray</CODE> greyness;
+so that will usually be chosen to be the same shade as the background.
+This subroutine is also useful for shading.
+</P>
+
+</DD><DT>
+<B><A NAME="item_fuzzystroke">fuzzystroke</A></B>
+</DT><DD><P>
+This is just a synonym for
+<A HREAF="#item_fuzzyrgbstroke">fuzzyrgbstroke</A>.
+</P>
+
+</DD><DT><B><A NAME="item_fuzzyrgbstroke">
+incolour outcolour inwidth outwidth fuzzyrgbstroke</A></B>
+</DT><DD><P>
+The above invocation strokes a fuzzy coloured line along the currentpath.
+At its centre, the line will be of a <CODE>incolour</CODE>
+rgb colour, and this shade will be of width <CODE>inwidth</CODE>.
+At its outer fuzzy edges, which will be of width <CODE>outwidth</CODE>,
+the line will be of a <CODE>outcolour</CODE> colour;
+so that will usually be chosen to be the same colour as the background.
+This subroutine is useful for shading in colour.
+See also <A HREF="colours.html">colours.ps</A>.
+</P>
+
+</DD><DT><B><A NAME="item_fuzzyrgbfill">
+innercolour outercolour fuzzwidth fuzzyrgbfill</A></B>
+</DT><DD><P>
+The above invocation fills the <I>currentpath</I> with
+<CODE>innercolour</CODE>.
+Outside the <I>currentpath</I>, this colour shades,
+over the width <CODE>fuzzwidth</CODE>, into <CODE>outcolour</CODE>;
+so that will usually be chosen to be the same colour as the background.
+This subroutine is also useful for shading in colour.
+See also <A HREF="colours.html">colours.ps</A>.
+</P>
+</DD></DL>
+
+<A NAME="author"><HR></A><H3>AUTHOR</H3>
+<P>
+&nbsp; &nbsp;
+Peter J Billam &nbsp;
+<A HREF="contact.html">www.pjb.com.au/comp/contact.html</A>
+</P>
+
+
+<A NAME="changes"><HR></A><H3>CHANGES</H3>
+<PRE>
+ 20031122 in longcurve, prevent div by 0 if curvature=0
+ 20030313 roll some stuff out to colours.ps
+ 20010116 add subroutine pointdup
+ 20010108 move gray0..gray9 defs in
+ 20001224 add interpolate2
+ 20001221 /name first in pointdef and rgbdef
+ 20001218 rgb is now the default, not gray
+ 20001216 add reversecurve
+ 20001214 fuzzyrgbfill fuzzyrgbstroke and colours.ps
+ 20001212 copyright notice
+ 20001212 /names allowed in longcurve arrays
+ 20001211 fixed various bugs in pointdef
+ 20001211 fuzzystroke, fuzzyfill, longcurveto
+ 20001209 more consistent calling syntax
+ 20001208 Line-Drawing PS Library (smooth+longcurve)
+</PRE>
+
+<A NAME="see_also"><HR></A><H3>SEE ALSO</H3>
+<UL><LI>
+<A HREF="colours.html">colours.ps</A>
+</LI><LI>
+<A HREF="brownian.html">brownian.ps</A>
+</LI><LI>
+<A HREF="include_run.html">include_run</A>
+</LI><LI>
+<A HREF="http://search.cpan.org/src/PJB/Math-Evol-1.06/bin/ps_evol">ps_evol</A>
+</LI><LI>
+<A HREF="http://search.cpan.org/perldoc?Math::Evol">Math::Evol.pm</A>
+</LI><LI>
+<A HREF="http://search.cpan.org/perldoc?Term::Clui">Term::Clui.pm</A>
+</LI><LI>
+<A HREF="http://www.pjb.com.au/">www.pjb.com.au</A>
+</LI><LI>
+The <I>PostScript Language Reference Manual</I> (Adobe).
+</LI></UL>
+
+<HR><CENTER><P>Back to <A HREF="index.html">P J B Computing</A> or to
+<A HREF="../index.html">www.pjb.com.au</A>&nbsp;.&nbsp;.&nbsp;.</CENTER></P>
+</DIV></BODY></HTML>
