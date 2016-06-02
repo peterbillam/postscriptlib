@@ -60,19 +60,20 @@ fonts.ps - Some useful fonts in PostScript
  <A HREF="#TimesBoldItalicSmallCaps">/TimesBoldItalicSmallCaps</A> 30 selectfont
     50 550 moveto (TimesBoldItalicSmallCaps) show
  <A HREF="#HelveticaSmallCaps">/HelveticaSmallCaps</A> 30 selectfont
-    50 450 moveto (HelveticaSmallCaps) show
+    50 470 moveto (HelveticaSmallCaps) show
  <A HREF="#HelveticaItalicSmallCaps">/HelveticaItalicSmallCaps</A> 30 selectfont
-    50 400 moveto (HelveticaItalicSmallCaps) show
+    50 420 moveto (HelveticaItalicSmallCaps) show
  <A HREF="#HelveticaBoldSmallCaps">/HelveticaBoldSmallCaps</A> 30 selectfont
-    50 350 moveto (HelveticaBoldSmallCaps) show
+    50 370 moveto (HelveticaBoldSmallCaps) show
  <A HREF="#HelveticaBoldItalicSmallCaps">/HelveticaBoldItalicSmallCaps</A> 30 selectfont
-    50 300 moveto (HelveticaBoldItalicSmallCaps) show
+    50 320 moveto (HelveticaBoldItalicSmallCaps) show
+ <A HREF="#Bitfont5x7">/Bitfont5x7</A> 30 selectfont
+    50 240 moveto (BITFONT5X7) show
  <A HREF="#FatSimple">/FatSimple</A> 30 selectfont
-    50 200 moveto (FatSimple) show
+    50 160 moveto (FatSimple) show
  <A HREF="#FatSimpleItalic">/FatSimpleItalic</A> 30 selectfont
-    50 150 moveto (FatSimpleItalic) show
-  <A HREF="#Bitfont5x7">/Bitfont5x7</A> 30 selectfont
-    50  50 moveto (BITFONT5x7) show
+    50 110 moveto (FatSimpleItalic) show
+ showpage
 
 </PRE>
 
@@ -94,7 +95,7 @@ a small collection of custom fonts.
 <B><A HREF="#HelveticaItalicSmallCaps">HelveticaItalicSmallCaps</A></B> &nbsp;
 <B><A HREF="#HelveticaBoldSmallCaps">HelveticaBoldSmallCaps</A></B> &nbsp;
 <B><A HREF="#HelveticaBoldItalicSmallCaps">HelveticaBoldItalicSmallCaps</A></B><BR>
-<!--<B><A HREF="#Bitfont5x7">Bitfont5x7</A></B><BR>-->
+<B><A HREF="#Bitfont5x7">Bitfont5x7</A></B><BR>
 <B><A HREF="#FatSimple">FatSimple</A></B> &nbsp;
 <B><A HREF="#FatSimpleItalic">FatSimpleItalic</A></B> &nbsp;
 </CENTER></P>
@@ -151,14 +152,20 @@ This is <I>Helvetica-BoldOblique</I> with lower-case letters replaced by
 smaller-size uppercase letters.
 </P></DD><DT>
 
-<!--<B><A NAME="Bitfont5x7">/Bitfont5x7 30 selectfont</A></B>
+<B><A NAME="Bitfont5x7">/Bitfont5x7 30 selectfont</A></B>
 </DT><DD><P>
-This is a wonderfully nostalgic 5x7 constant-width bitmap font
-<BR>
-See <I>luser- -droog</I> in <I>comp.lang.postscript</I> on 20160529
-</P>-->
+This nostalgic 5x7 font has a strong cultural reference,
+and should become an important fashion-accessory.
+For example in green against a black background.
+It evolves from <I>bitfont.ps</I> by <I>luser-&nbsp;-droog</I>&nbsp;:
+<BR><CODE> &nbsp;
+<A HREF="https://github.com/luser-dr00g/xpost/blob/master/data/bitfont.ps">
+github.com/luser-dr00g/xpost/blob/master/data/bitfont.ps</A></CODE><BR>
+and has been modified mainly to use <I>imagemask</I> rather than <I>image</I>
+(so it respects the prevailing background and foreground colours),
+and has been given a few more characters.
+</P></DD><DT>
 
-</P></P>
 <B><A NAME="FatSimple">/FatSimple 30 selectfont</A></B>
 </DT><DD><P>
 This is a <I>Type 3</I> font, with simple shapes and very broad strokes.
@@ -172,19 +179,6 @@ letters, which can be useful graphically.
 This is the same as <I>FatSimple</I> but sloping strongly to the right.
 </P>
 
-<B><A NAME="Bitfont5x7">/Bitfont5x7 30 selectfont</A></B>
-</DT><DD><P>
-This nostalgic 5x7 font has a strong cultural reference,
-and should become an important fashion-accessory.
-For example in green against a black background.
-It evolves from <I>bitfont.ps</I> by <I>luser-&nbsp;-droog</I>&nbsp;:
-<BR><CODE> &nbsp;
-<A HREF="https://github.com/luser-dr00g/xpost/blob/master/data/bitfont.ps">
-github.com/luser-dr00g/xpost/blob/master/data/bitfont.ps</A></CODE><BR>
-and has been modified mainly to use <I>imagemask</I> rather than <I>image</I>
-(so it respects the prevailing background and foreground colours),
-and has been given a few more characters.
-</P>
 
 </DD></DL>
 

@@ -171,8 +171,8 @@
 % https://github.com/luser-dr00g/xpost/blob/master/data/bitfont.ps
 /Bitfont5x7 <<
   /FontType 3
-  /FontMatrix [.01 0 0 -.01 0 .01]
-  /FontBBox [ 0 0 50 70]
+  /FontMatrix [.012 0 0 -.012 0 .012]
+  /FontBBox [ 0 0 50 70]  % what does this do ? just for stringwidth ?
   /Encoding 128 array
   % /BitsPerComponent 1   % PJB: in aid of imagemask p.220
   % /Decode [0 1]         % PJB: in aid of imagemask p.231
@@ -196,6 +196,8 @@
     55 {<F0 10 10 20 40 40 00>}  % 7
     56 {<60 90 60 90 90 60 00>}  % 8
     57 {<60 90 90 70 10 60 00>}  % 9
+    58 {<00 00 00 20 00 20 00>}  % :
+    59 {<00 00 00 20 00 20 40>}  % ;
     63 {<70 88 10 20 00 20 00>}  % ?
     65 {<70 88 88 F8 88 88 00>}  % A
     66 {<F0 88 F0 88 88 F0 00>}  % B
@@ -233,6 +235,7 @@
       % 5 7 8 [-.1 0 0 -.1 .1 .1] {} image
       5 7 true [.1 0 0 .1 .1 6]  5 -1 roll  imagemask  % PJB p.435, 223
       % 6  achieves horizontal alignment (with Helvetica etc); But Why ?
+      % and how does this matrix interact with the FontMatrix, 62 lines up ?
     end
   }
 >> definefont
