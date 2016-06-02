@@ -71,6 +71,8 @@ fonts.ps - Some useful fonts in PostScript
     50 200 moveto (FatSimple) show
  <A HREF="#FatSimpleItalic">/FatSimpleItalic</A> 30 selectfont
     50 150 moveto (FatSimpleItalic) show
+  <A HREF="#Bitfont5x7">/Bitfont5x7</A> 30 selectfont
+    50  50 moveto (BITFONT5x7) show
 
 </PRE>
 
@@ -170,6 +172,20 @@ letters, which can be useful graphically.
 This is the same as <I>FatSimple</I> but sloping strongly to the right.
 </P>
 
+<B><A NAME="Bitfont5x7">/Bitfont5x7 30 selectfont</A></B>
+</DT><DD><P>
+This nostalgic 5x7 font has a strong cultural reference,
+and should become an important fashion-accessory.
+For example in green against a black background.
+It evolves from <I>bitfont.ps</I> by <I>luser-&nbsp;-droog</I>&nbsp;:
+<BR><CODE> &nbsp;
+<A HREF="https://github.com/luser-dr00g/xpost/blob/master/data/bitfont.ps">
+github.com/luser-dr00g/xpost/blob/master/data/bitfont.ps</A></CODE><BR>
+and has been modified mainly to use <I>imagemask</I> rather than <I>image</I>
+(so it respects the prevailing background and foreground colours),
+and has been given a few more characters.
+</P>
+
 </DD></DL>
 
 <A NAME="install"> <HR> </A>
@@ -200,6 +216,7 @@ Peter J Billam &nbsp;
 </P>
 
 <A NAME="changes"><HR></A><H3>CHANGES</H3><PRE>
+ 20160602 Bitfont5x7 with 0-9 A-Z and some puctuation
  20160601 FatSimple: add colon : and brackets ( and )
  20160531 first released version
 </PRE>
