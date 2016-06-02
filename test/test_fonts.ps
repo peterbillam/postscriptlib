@@ -41,7 +41,7 @@ xmax 0.08 mul  ymax 0.74 mul  moveto
 
 % currentfont /FontMatrix [ 0.001 0 0.0007 0.001 0 0 ] put  invalid access
 % currentfont { exch == == } forall
-% /HelveticaBold findfont
+% /Helvetica-Bold findfont
 /FatSimple findfont
 dup length dict begin
   {1 index /FID ne {def} {pop pop} ifelse} forall
@@ -98,12 +98,12 @@ xmax 0.05 mul  ymax 0.5 mul  moveto
 % kcharbychar needs charpath :-(  use 
 xmax 0.05 mul  ymax 0.4 mul  moveto
 [ red blue green orange ] randomrgb setrgbcolor
-{ [ red blue green orange ] randomrgb setrgbcolor }
+{ pop pop [ red blue green orange ] randomrgb setrgbcolor }
 (trained in obedience) kshow
 
 xmax 0.05 mul  ymax 0.3 mul  moveto
 red setrgbcolor
-{ red  1.0 currentpoint pop xmax div sub
+{ pop pop red  1.0 currentpoint pop xmax div sub
   orange  currentpoint pop xmax div
   rgbmix setrgbcolor
 }
@@ -135,7 +135,7 @@ showpage
 black setrgbcolor 0 0 xmax ymax rectfill   green setrgbcolor
 
 60 700 moveto
-  /HelviticaBold 35 selectfont (CHECK ) show
+  /Helvetica-Bold 35 selectfont (CHECK ) show
   /Bitfont5x7 35 selectfont (01234+56789 ?) show
 
 /Bitfont5x7 40 selectfont
