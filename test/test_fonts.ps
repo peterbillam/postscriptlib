@@ -89,19 +89,19 @@ xmax 0.08 mul  ymax 0.780 mul  moveto
 
 
 /FatSimple 50 selectfont
-xmax 0.05 mul  ymax 0.6 mul  moveto
+xmax 0.05 mul  ymax 0.67 mul  moveto
 (2+3 = 5    3-2 = 1) show
-xmax 0.05 mul  ymax 0.5 mul  moveto
+xmax 0.05 mul  ymax 0.6 mul  moveto
 (0123456789	2.718	3.416) show
 
 /FatSimpleItalic 41 selectfont
 % kcharbychar needs charpath :-(  use 
-xmax 0.05 mul  ymax 0.4 mul  moveto
+xmax 0.05 mul  ymax 0.5 mul  moveto
 [ red blue green orange ] randomrgb setrgbcolor
 { pop pop [ red blue green orange ] randomrgb setrgbcolor }
 (trained in obedience) kshow
 
-xmax 0.05 mul  ymax 0.3 mul  moveto
+xmax 0.05 mul  ymax 0.42 mul  moveto
 red setrgbcolor
 { pop pop red  1.0 currentpoint pop xmax div sub
   orange  currentpoint pop xmax div
@@ -110,15 +110,16 @@ red setrgbcolor
 (trained-in obedience) kshow
 
 /FatSimple 37 selectfont
-xmax 0.05 mul  ymax 0.2 mul  moveto
+xmax 0.05 mul  ymax 0.34 mul  moveto
 (trained: \(in obedience\)) {
   [ red blue green orange ] randomrgb setrgbcolor
   /c exch def  /s ( ) def  s 0 c put  s show
 } forall
 
+darkred setrgbcolor
 /FatSimple 40 selectfont
-xmax 0.05 mul  ymax 0.1 mul  moveto
-(-|=) show
+xmax 0.05 mul  ymax 0.26 mul  moveto
+(-|= \304\344\326\366\334\374 \307\310\311\312\317\357\324\364) show
  
 showpage
 
