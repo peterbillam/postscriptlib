@@ -230,12 +230,15 @@
      99 {<00 78 80 80 80 78 00>}  % c
     100 {<08 68 98 88 98 68 00>}  % d
     101 {<00 70 88 F8 80 78 00>}  % e
-    102 {<30 40 40 E0 40 40 80>}  % f
+    % 102 {<30 40 40 E0 40 40 80>}  % f
+    102 {<18 20 20 70 20 20 40>}  % f
     103 {<00 78 88 88 78 08 F0>}  % g
     104 {<80 80 F0 88 88 88 00>}  % h
     105 {<00 20 00 20 20 20 00>}  % i
     106 {<00 10 00 10 10 10 60>}  % j
-    107 {<80 80 A0 C0 A0 90 00>}  % k
+    % 106 {<00 20 00 20 20 20 C0>}  % j
+    % 107 {<80 80 A0 C0 A0 90 00>}  % k
+    107 {<40 40 50 60 50 48 00>}  % k
     108 {<60 20 20 20 20 20 00>}  % l
     109 {<00 70 A8 A8 88 88 00>}  % m
     110 {<00 F0 88 88 88 88 00>}  % n
@@ -247,10 +250,10 @@
     116 {<00 80 E0 80 80 70 00>}  % t
     117 {<00 00 90 90 90 70 00>}  % u
     118 {<00 00 88 50 50 20 00>}  % v
-    119 {<00 00 88 88 A8 50 00>}  % w
+    119 {<00 88 88 A8 A8 50 00>}  % w
     120 {<00 88 50 20 50 88 00>}  % x
-    121 {<00 00 90 90 70 10 E0>}  % y
-    122 {<00 00 F0 20 40 F0 00>}  % z
+    121 {<00 90 90 70 10 10 E0>}  % y
+    122 {<00 F0 10 20 40 F0 00>}  % z
   >>
   /BuildChar {
     70 0 setcharwidth
@@ -268,46 +271,13 @@
 pop
 pstack  % prints out 76 numbers; 101 99 99 110 110 101 101 105 105 etc...
 
-% see also ~/log/ps at 20160523
-%9 dict begin   % ExampleFont from PLRM p282
-%/FontType 3 def   % PLRM p278
-%/FontMatrix [ 0.001 0 0 0.001 0 0 ] def
-%/FontBBox [ 0 0 1000 1000 ] def
-%/Encoding 256 array def   % trivial encoding vector
-%0 1 255 { Encoding exch /.notdef put } for
-%Encoding 97 /square   put   % ASCII a = 97
-%Encoding 98 /triangle put   % ASCII b = 99
-%/CharProcs 3 dict def   % subsidiary dictionary
-%CharProcs begin   % individual character definitions
-%  /.notdef { } def
-%  /square { 0 0 moveto 750 0 lineto 750 750 lineto 0 750 lineto
-%    closepath fill } bind def
-%  /triangle { 0 0 moveto 750 0 lineto 375 750 lineto closepath fill } bind def
-%end
-%/BuildGlyph {   % the stack contains the font charname
-%  1000 0        % width
-%  0 0 750 750   % bounding box
-%  setcachedevice
-%  exch /CharProcs get exch   % get CharProcs dictionary
-%  2 copy known not { pop /.notdef } if   % see if charname is known
-%  get exec      % execute character procedure
-%} bind def
-%/BuildChar {    % Level 1 compatibility
-%  1 index /Encoding get exch get
-%  1 index /BuildGlyph get exec
-%} bind def
-%currentdict
-%end
-%/ExampleFont exch definefont pop
-
-% see also ~/log/ps at 20160523
+% FatSimple  see also ~/log/ps at 20160523
 9 dict begin
 /FontType 3 def   % PLRM p278
 % /PaintType 0 def  % p278 says this only works for FontType 0 :-(
 /FontMatrix [ 0.001 0 0 0.001 0 0 ] def
-% /FontMatrix [ 0.001 0 0.0007 0.001 0 0 ] def   % Italic, see: PLRM p154
 % how to parameterise Italicity ? wrap this as a font-generator-function ?
-% or just set   currentfont /FontMatrix [ 0.001 0 0.0007 0.001 0 0 ] put
+% but it's easy to roll-your-own, see FatSimpleItalic below...
 /FontBBox [ 0 0 1000 1000 ] def
 /Encoding 256 array def   % trivial encoding vector
 0 1 255 { Encoding exch /.notdef put } for
@@ -400,8 +370,7 @@ Encoding 239 /Iuml   put
 Encoding 244 /Ocirc  put
 Encoding 246 /Ouml   put
 Encoding 252 /Uuml   put
-/Metrics 60 dict def
-Metrics begin
+/Metrics 60 dict def Metrics begin
   /.notdef 600 def
   /TAB     800 def
   /SPACE   400 def
@@ -522,8 +491,7 @@ end
   /Ouml    [ 0 0 750 950 ] def
   /Uuml    [ 0 0 750 950 ] def
 end
-/CharProcs 60 dict def   % subsidiary dictionary
-CharProcs begin   % individual character definitions
+/CharProcs 60 dict def CharProcs begin   % individual character definitions
   /.notdef { 300 300 250 0 360 arc fill } def
   /TAB    { } bind def
   /SPACE  { } bind def
