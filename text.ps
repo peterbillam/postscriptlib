@@ -246,7 +246,11 @@ end
     5 dict begin
       [ /s /fontsize /font /y /x ] { exch def } forall
       gsave font findfont  fontsize scalefont  setfont
-      x s stringwidth pop sub  y moveto s show grestore
+      % x s stringwidth pop sub  y   % bad pop!  (woosh-fonts...)
+      x s stringwidth 3 1 roll  %  ys x xs
+        sub exch   % xfinal ys
+        y exch sub
+        moveto s show grestore
     end
   } bind def
 
@@ -261,19 +265,21 @@ end
   /centreshow { % usage: x y font fontsize (string) centreshow
     3 dict begin
       [ /s /fontsize /font ] { exch def } forall
-      gsave moveto font findfont fontsize scalefont setfont
+      gsave moveto font fontsize selectfont
       gsave s false charpath flattenpath pathbbox grestore
-      exch 4 -1 roll pop pop s stringwidth pop -0.5 mul  % dx/2
+      exch 4 -1 roll pop pop s
+      stringwidth pop -0.5 mul  % dx/2  bad pop yet woosh-fonts seem to work!
       3 1 roll sub 0.5 mul % dy/2
       rmoveto s show grestore
     end
   } bind def
 
   /centrexshow {  % usage: x y font fontsize (string) centrexshow
-    5 dict begin
+    7 dict begin
       [ /s /fontsize /font /y /x ] { exch def } forall
-      gsave font findfont  fontsize scalefont  setfont
-      x s stringwidth pop 0.5 mul sub  y moveto s show grestore
+      gsave font fontsize selectfont
+      s stringwidth /s_height exch def /s_width exch def  % 2D! 20160607
+      x s_width  0.5 mul sub  y s_height 0.5 mul sub  moveto s show grestore
     end
   } bind def
 

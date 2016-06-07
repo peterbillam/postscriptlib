@@ -208,15 +208,14 @@ See: <I><A HREF="../muscript/index.html">muscript -p</A></I>
 <B><A NAME="centrexshow">
 x y font fontsize textstring &nbsp; centrexshow</A></B>
 </DT><DD><P>
-This shows the <I>textstring</I> centered horizontally,
-but not vertically,
-at the given <I>x</I> <I>y</I> position.<BR>
-See: <I><A HREF="../muscript/index.html">muscript -p</A></I>
+This shows the <I>textstring</I> centered horizontally
+around the given <I>x</I> position,
+with the base-line of the text at the <I>y</I> position.
 </P>
 
 </DD><DT>
 <B><A NAME="pathbboxwh">
-&nbsp; pathbboxwh</A></B>
+pathbboxwh</A></B>
 </DT><DD><P>
 This is the same as the standard <I>pathbbox</I> procedure,
 except that it leaves the box on the stack in the form:<BR>
@@ -275,6 +274,7 @@ Peter J Billam &nbsp;
 </P>
 
 <A NAME="changes"><HR></A><H3>CHANGES</H3><PRE>
+ 20160607 <A HREF="#centrexshow">centrexshow</A> handles the Y dimension in sloped fonts
  20160521 add <A HREF="#pathbboxwh">pathbboxwh</A> and <A HREF="#warn">warn</A>
  20160515 add <A HREF="#kcharpath">kcharpath</A>
  20160501 first released version

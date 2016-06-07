@@ -71,6 +71,56 @@ false charpath orange setrgbcolor fill
 % (Fill and Stroke)
 true charpath paleviolet setrgbcolor 4 setlinewidth 1 setlinejoin stroke
 
+showpage
+
+%%Page: 2 2
+%%BeginPageSetup
+<</PageSize [ 842 1190 ] >> setpagedevice  % A3
+%%EndPageSetup
+
+(/home/pjb/ps/lib/colours.ps) run
+(/home/pjb/ps/lib/fonts.ps) run
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+
+/FatSimple findfont
+dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /FontMatrix [ 0.001 0.0008 0 0.001 0 0 ] def
+  currentdict
+end
+/FatSimpleZoom exch definefont pop
+
+red setrgbcolor
+xmax 0.5 mul ymax 0.8 mul  5 0 360 arc fill
+darkgrey setrgbcolor
+xmax 0.5 mul ymax 0.8 mul /Helvetica 40 (centreshow Type 1)  centreshow
+
+red setrgbcolor
+xmax 0.5 mul ymax 0.7 mul  5 0 360 arc fill
+darkgrey setrgbcolor
+xmax 0.5 mul ymax 0.7 mul /Helvetica 40 (centrexshow Type 1)  centrexshow
+
+red setrgbcolor
+xmax 0.5 mul ymax 0.6 mul  5 0 360 arc fill
+darkgrey setrgbcolor
+xmax 0.5 mul ymax 0.6 mul /FatSimple 40 (centreshow Type 3)  centreshow
+
+red setrgbcolor
+xmax 0.5 mul ymax 0.5 mul  5 0 360 arc fill
+darkgrey setrgbcolor
+xmax 0.5 mul ymax 0.5 mul /FatSimple 40 (centrexshow Type 3)  centrexshow
+
+red setrgbcolor
+xmax 0.5 mul ymax 0.4 mul  5 0 360 arc fill
+darkgrey setrgbcolor
+xmax 0.5 mul ymax 0.4 mul /FatSimpleZoom 40 (centreshow Zoom)  centreshow
+
+red setrgbcolor
+xmax 0.5 mul ymax 0.3 mul  5 0 360 arc fill
+darkgrey setrgbcolor
+xmax 0.5 mul ymax 0.3 mul /FatSimpleZoom 40 (centrexshow Zoom)  centrexshow
+
 
 showpage
 %%EOF
