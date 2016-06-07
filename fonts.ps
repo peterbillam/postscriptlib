@@ -9,10 +9,8 @@
         /Times-Roman findfont
         /Times-SC /Times-Roman findfont dup length dict copy
           dup /FontName /Times-SC put
-          dup /Encoding [ 65 1 90 {
-                              1 string dup 0  4 -1 roll put  cvn
-                          } for
-                        ] put
+          dup /Encoding [65 1 90 {1 string dup 0  4 -1 roll put  cvn} for] put
+% dup /Encoding [/A/B/C/D/E/F/G/H/I/J/K/L/M/N/O/P/Q/R/S/T/U/V/W/X/Y/Z] put
           definefont 0.8 scalefont
         /Times-end /Times-Roman findfont dup length dict copy
           dup /FontName /Times-end put
@@ -189,7 +187,8 @@
      37 {<48 08 30 60 80 90 00>}  % %
      38 {<20 50 60 90 B0 48 00>}  % &
      39 {<20 20 00 00 00 00 00>}  % '
-     42 {<00 50 A8 50 00 00 00>}  % *
+     42 {<00 50 A8 50 00 00 00>}  % *  not very convincing ...
+     % 42 {<00 A8 70 F8 70 A8 00>}  % *
      43 {<00 20 20 F8 20 20 00>}  % +
      40 {<10 20 60 60 60 20 10>}  % (
      41 {<40 20 30 30 30 20 40>}  % )
@@ -293,12 +292,13 @@ pop
 pstack  % prints out 76 numbers; 101 99 99 110 110 101 101 105 105 etc...
 
 % FatSimple  see also ~/log/ps at 20160523
+% Could study:   xterm -font 5x7   with a magnifying glass ...
 9 dict begin
 /FontType 3 def   % PLRM p278
 % /PaintType 0 def  % p278 says this only works for FontType 0 :-(
 /FontMatrix [ 0.001 0 0 0.001 0 0 ] def
 % how to parameterise Italicity ? wrap this as a font-generator-function ?
-% but it's easy to roll-your-own, see FatSimpleItalic below...
+% but it's too easy to roll-your-own, see FatSimpleItalic below...
 /FontBBox [ 0 0 1000 1000 ] def
 /Encoding 256 array def   % trivial encoding vector
 0 1 255 { Encoding exch /.notdef put } for
@@ -308,8 +308,10 @@ Encoding  33 /EXCLAM put
 Encoding  40 /BRAK_L put
 Encoding  41 /BRAK_R put
 Encoding  43 /PLUS   put
+Encoding  44 /COMMA  put
 Encoding  45 /MINUS  put
 Encoding  46 /DOT    put
+Encoding  47 /SLASH  put
 Encoding  48 /char_0 put
 Encoding  49 /char_1 put
 Encoding  50 /char_2 put
@@ -321,6 +323,7 @@ Encoding  55 /char_7 put
 Encoding  56 /char_8 put
 Encoding  57 /char_9 put
 Encoding  58 /COLON  put
+Encoding  59 /SEMICOLON put
 Encoding  61 /EQUALS put
 Encoding  63 /QUESTN put
 Encoding  65 /char_A put
@@ -399,8 +402,10 @@ Encoding 252 /Uuml   put
   /BRAK_L  450 def
   /BRAK_R  450 def
   /PLUS    450 def
+  /COMMA   200 def
   /MINUS   450 def
   /DOT     165 def
+  /SLASH   550 def
   /char_0  550 def
   /char_1  360 def
   /char_2  500 def
@@ -411,7 +416,8 @@ Encoding 252 /Uuml   put
   /char_7  490 def
   /char_8  500 def
   /char_9  500 def
-  /COLON   200 def
+  /COLON   230 def
+  /SEMICOLON 230 def
   /EQUALS  450 def
   /QUESTN  450 def
   /char_A  800 def
@@ -460,8 +466,10 @@ end
   /BRAK_L  [ 0 0 400 750 ] def
   /BRAK_R  [ 0 0 400 750 ] def
   /PLUS    [ 0 0 400 750 ] def
+  /COMMA   [ 0 -100 140 325 ] def
   /MINUS   [ 0 0 400 750 ] def
   /DOT     [ 0 0 130 125 ] def
+  /SLASH   [ 0 0 500 750 ] def
   /char_0  [ 0 0 450 750 ] def
   /char_1  [ 0 0 275 750 ] def
   /char_2  [ 0 0 450 750 ] def
@@ -473,6 +481,7 @@ end
   /char_8  [ 0 0 450 750 ] def
   /char_9  [ 0 0 460 750 ] def
   /COLON   [ 0 0 180 450 ] def
+  /SEMICOLON [ 0 -100 140 420 ] def
   /EQUALS  [ 0 0 400 750 ] def
   /QUESTN  [ 0 0 400 750 ] def
   /char_A  [ 0 0 750 750 ] def
@@ -528,9 +537,13 @@ end
     250 475 200 675 0 750 curveto 100 750 lineto
     300 675 400 475 400 375 curveto 400 250 300 75 100 0 curveto
     closepath fill } bind def
-  /PLUS  { 0 330 400 90 rectfill 155 175 90 400 rectfill } bind def
-  /MINUS { 0 330 400 90 rectfill } bind def
+  /PLUS   { 0 330 400 90 rectfill 155 175 90 400 rectfill } bind def
+  /COMMA  { 65 60 60 0 260 arc 55 -40 55 -50 0 -100 curveto
+     120 -70 120 -40 125 60 curveto closepath fill } bind def
+  /MINUS  { 0 330 400 90 rectfill } bind def
   /DOT    { 65 60 60 0 360 arc fill } def
+  /SLASH  { 0 0 moveto 150 0 lineto 500 600 lineto 500 750 lineto
+    350 750 lineto 0 150 lineto closepath fill } bind def
   /char_0 { 0 375 moveto 0 0 0 0 225 0 curveto 450 0 450 0 450 375 curveto
     450 750 450 750 225 750 curveto  0 750 0 750 0 375 curveto closepath
     150 375 moveto 150 600 150 600 225 600 curveto
@@ -571,6 +584,9 @@ end
     450 525 moveto 310 525 lineto 310 350 310 300 0 0 curveto
     200 0 lineto 450 290 450 340 450 525 curveto closepath fill } bind def
   /COLON  { 100 110 65 0 360 arc 160 350 moveto 100 350 65 0 360 arc fill } def
+  /SEMICOLON { 65 60 60 0 260 arc 55 -40 55 -50 0 -100 curveto
+     120 -70 120 -40 125 60 curveto closepath
+     135 280 moveto 65 280 60 0 360 arc  fill } bind def
   /EQUALS { 0 240 400 90 rectfill 0 420 400 90 rectfill } bind def
   /QUESTN { 160 75 75 0 360 arc fill  150 setlinewidth
     160 180 moveto 160 382 lineto 300 382 325 485 325 530 curveto

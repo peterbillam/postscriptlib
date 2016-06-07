@@ -165,17 +165,19 @@ and has been modified mainly to use <I>imagemask</I> rather than <I>image</I>
 (so it respects the prevailing background and foreground colours),
 and has been given some more characters.<BR>
 It so far has <B>0</B>-<B>9</B>, <B>A</B>-<B>Z</B>, <B>a</B>-<B>z</B>
-and <B>+ - = . , : ; ! ?  / \ ( ) [ ] { } &amp; % @ ^ ~ $ _ * # &gt; &lt;</B>
+and <B>+ - = . , : ; ! ?  / \ | ( ) [ ] { } &amp; % @ ^ ~ $ _ * # &gt; &lt;</B>
 </P></DD><DT>
 
 <B><A NAME="FatSimple">/FatSimple 30 selectfont</A></B>
 </DT><DD><P>
 This is a <I>Type 3</I> font, with simple shapes and very broad strokes.
-It creates very clear tangent-lines along the top and the bottom of the
+It's mostly intended for use in posters;
+it creates very clear tangent-lines along the top and the bottom of the
 letters, which can be useful graphically.
-Its only letters are uppercase, including the ISO accents for german and french,
-plus the digits <B>0</B>-<B>9</B> and
-also <B>+</B> <B>-</B> <B>=</B> <B>.</B> <B>:</B> <B>|</B> <B>!</B> <B>?</B>
+<BR>
+Its only letters are uppercase, including ISO accents for german and french,
+plus digits <B>0</B>-<B>9</B>
+and <B>+ - = . , : ; ! ? / | ( )</B>
 <BR>Remember <I> charpath</I> will not work with any <I>Type 3</I> font.
 </P></DD><DT>
 
@@ -220,6 +222,8 @@ Peter J Billam &nbsp;
 </P>
 
 <A NAME="changes"><HR></A><H3>CHANGES</H3><PRE>
+ 
+ 20160604 FatSimple gets , ; /
  20160604 Bitfont5x7: add /\()[]{}&amp;%@^~$=_*#&gt;&lt;"'
  20160603 Bitfont5x7: minor spacing adjusts of f j k
  20160603 FatSimple: add german and french accents
@@ -245,7 +249,11 @@ Peter J Billam &nbsp;
 <A HREF="https://github.com/peterbillam/postscriptlib">
 github.com/peterbillam/postscriptlib</A>
 <BR> &nbsp; &nbsp;
+<CODE>git clone http://repo.or.cz/Font7x5.git</CODE>
+<BR> &nbsp; &nbsp;
 <A HREF="http://www.pjb.com.au/">http://www.pjb.com.au/</A>
+<BR> &nbsp; &nbsp;
+<I>The Art Deco Poster</I> by William W. Crowse, Thames &amp; Hudson
 <BR> &nbsp; &nbsp;
 the <I>PostScript Language Reference Manual</I> (Adobe).
 </P>
