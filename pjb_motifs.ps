@@ -179,3 +179,18 @@
   vedra_x1 -1 mul vedra_y1 -1 mul translate
 } bind def
 
+/slouchmanprofile {  % x y height direction slouchmanprofile   (sets path)
+  10 dict begin
+    [ /directn /height /y /x ] { exch def } forall
+    x       y       translate height 106 div dup scale directn {-1 1 scale} if
+    0 0 moveto 8 0 12 2 12 4 curveto 13 44 lineto 17 46 lineto 18 68 lineto
+    18 80 12 88 7 93 curveto 3 97 1 106 -4 106 curveto % now at top of head
+    -10 106 -14 103 -14 97 curveto -14 96 -14 90 -6 86 curveto
+    -8 81 lineto  % now at shoulder
+    -8 65 -4 60 -4 55 curveto -3 7 lineto -12 5 lineto
+    -12 3 -10 2 -8 2 curveto  -8 0 -6 0 0 0 curveto
+    closepath
+    directn {-1 1 scale} if 106 height div dup scale 0 x sub 0 y sub translate
+  end
+} bind def
+
