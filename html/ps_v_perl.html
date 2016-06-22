@@ -33,6 +33,10 @@ while () {
    if ($i &gt; $n) { last; }
 }
 # or
+for $i (0..9) {
+    &amp;do_something($i);
+}
+# or
 foreach (@an_array) {
    # the array element is in $_
    &amp;do_something($_);
@@ -45,8 +49,13 @@ foreach (@an_array) {
    i n gt { exit } if
 } loop
 % or
+0 1 9 {   % that's initial, increment, limit
+   % the loop variable is now on the stack
+   do_something
+} for
+% or
 an_array {
-   % the array element is on the stack
+   % the array element is now on the stack
    do_something
 } forall
 
