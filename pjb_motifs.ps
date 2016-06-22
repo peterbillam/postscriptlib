@@ -7,8 +7,50 @@
 %  rand exch round cvi mod   % arg must be much smaller than 2^32
 %} bind def
 
-/tree_path {  % deciduous in winter, eg for silhouette against the sky
+/pjb::tree:depth 0 def
+/bare_tree {   % x y height trunkfraction bare_tree
+  % deciduous in winter, eg for silhouette against the sky
+  newpath  % stroke because of changing linewidth; I could build rectangles,
+  % but now we're stroking, I can use gsave grestore to get into the branches..
+  % else I have to build up fractal arrays of arrays of the branch-points.
+  % trunkfraction is the fraction of sap-flow that goes into the two branches.
+  /pjb::tree:depth pjb::tree:depth 1 add def
+  10 dict begin
+  [/trunkfraction /height /y /x] {exch def} forall
+  trunkfraction 0.01 lt { /trunkfraction 0.01 def } if
+  trunkfraction 0.99 gt { /trunkfraction 0.99 def } if
+  /branchwidth trunkfraction sqrt def
+  gsave
+  x y translate  height dup scale
+  /trunkwidth 0.07 def   % width at ground level;  parameter ?
+  % S(n) = 1 = a * (1-r^n) / (1-r)  ==>  a = (1-r) / (1-r^n)  =~ 1-r
+  % r should be nearly 1 if branchwidth is small, so try r=1-branchwidth
+  /a 1 branchwidth sub def  % a and r are constant, whereas
+  /r branchwidth def        % trunkwidth and branchwidth shrink.
+  trunkwidth setlinewidth
+  0 0 moveto
+  0 1 10 { /i exch def
+    1.0 trunkwidth sub  i exp  0.010 lt { exit } if  % finished ?
+    a r i exp mul  dup 0 0.15 grand mul  exch  rlineto
+    currentpoint stroke moveto % separate strokes for separate linewidths!
+    pjb::tree:depth 3 lt {
+      gsave
+      currentpoint translate  60 10 grand rotate 
+      0 0 r i 0.5 mul 2 add exp trunkfraction bare_tree
+      grestore
+      gsave
+      currentpoint translate -60 10 grand rotate 
+      0 0 r i 0.5 mul 2 add exp trunkfraction bare_tree
+      grestore
+    } if
+    /trunkwidth trunkwidth r mul def
+    trunkwidth setlinewidth
+  } for
+  grestore
+  end
+  /pjb::tree:depth pjb::tree:depth 1 sub def
 } bind def
+% 297 100 442 0.5 bare_tree
 
 /leopardskin_path {   % x y xwidth yheight spacing leopardskin_path
   % on an approximately triangular grid, with position and size
@@ -114,20 +156,21 @@
 /moon_path {  % usage:  x y radius solar_angle phase moon_path
   % solar_angle night means <0, =-90 or =90 means tropics
   % phase 0.0=new 0.5=full 1.0=old
-  /moon_phase exch def /moon_sun_angle exch def
-  /moon_r exch def /moon_y exch def /moon_x exch def
+  /moon::phase exch def /moon::sun_angle exch 180 add def
+  /moon::r exch def /moon::y exch def /moon::x exch def
+  % [ moon::x moon::y moon::r ] ==
+  moon::x moon::y translate  moon::sun_angle rotate
+  % better than 180 rotate, should change the angles for the arcs...
+  moon::phase 0.5 ge { /moon::phase 1.0 moon::phase sub def } if
+  /moon::scale 1.0 moon::phase 3.99 mul sub def  % could use sin ?
   newpath
-    moon_x moon_y translate moon_sun_angle 180 add rotate
-    % better than 180 rotate, should change the angles for the arcs...
-    moon_phase 0.5 ge { /moon_phase 1.0 moon_phase sub def } if
-    /moon_scale 1.0 moon_phase 3.99 mul sub def  % could use sin ?
-    0 0 moon_r 90 270 arc
-    moon_scale 1.0 scale
-    0 0 moon_r -90 90 arcn
-    1.0 moon_scale div 1.0 scale
+    0 0 moon::r  90 270 arc
+    moon::scale         1.0 scale
+    0 0 moon::r -90 90 arcn
+    1.0 moon::scale div 1.0 scale
   closepath
-  moon_sun_angle -1.0 mul rotate
-  moon_x -1.0 mul moon_y -1.0 mul translate
+  moon::sun_angle -1.0 mul rotate
+  moon::x -1.0 mul moon::y -1.0 mul translate
 } bind def
 
 /vedra_path {   % usage:  x_left y_left  width  vedra_path
