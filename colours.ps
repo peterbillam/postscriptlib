@@ -18,6 +18,8 @@
 %
 % See also line_drawing.ps, see www.pjb.com.au/comp/line_drawing.html
 %
+% 20160623: apart from rectgradientfill should do a radialgradientfill
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %        This Postscript is Copyright (c) 2000, Peter J Billam          %
 % Permission is granted  to any individual or institution to use, copy, %
@@ -255,7 +257,7 @@
       tmp big gt { /big tmp def } if
       /n big 0.005 div ceiling def % num of steps
       /i 0 def {   % 20160425   0 not 1
-        /z i n div def  % 0<x<1
+        /z i n div def  % 0<=z<1
         /r start_r  end_r start_r sub z mul  add def
         /g start_g  end_g start_g sub z mul  add def
         /b start_b  end_b start_b sub z mul  add def
@@ -270,6 +272,42 @@
         i n gt { exit } if
       } loop
 	grestore
+  end
+} bind def
+% 20160623: apart from rectgradientfill also do a radialgradientfill
+/radialgradientfill { % x y r1 r2 startrgb endrgb convexity radialgradientfill
+  20 dict begin
+    [ /convexity /end_b /end_g /end_r
+      /start_b /start_g /start_r  /r2 /r1 ] { exch def } forall
+    convexity  1.0 gt { /convexity  1.0 def } if
+    convexity -1.0 lt { /convexity -1.0 def } if
+    /dr r2 r1 sub def
+    gsave translate
+      end_r end_g end_b setrgbcolor
+      /big end_b start_b sub abs def
+      /tmp end_g start_g sub abs def
+      tmp big gt { /big tmp def } if   % find biggest change
+      /tmp end_r start_r sub abs def
+      tmp big gt { /big tmp def } if
+      /n big 0.005 div ceiling def % num of steps
+      /i 0 def {
+        /z i n div def  % 0<=z<1
+        /r start_r  end_r start_r sub z mul  add def
+        /g start_g  end_g start_g sub z mul  add def
+        /b start_b  end_b start_b sub z mul  add def
+        r g b setrgbcolor
+        /thisf  convexity z  rectgradientinterp def
+        /nextf  convexity i 1 add n div  rectgradientinterp 0.005 add def
+        nextf 1 gt { /nextf 1.0 def } if
+        newpath
+        0 0  r1 dr thisf mul add  0 360 arc
+        r1 dr nextf mul add  0  moveto
+        0 0  r1 dr nextf mul add  360 0 arcn
+        closepath fill
+        /i i 1 add def
+        i n gt { exit } if
+      } loop
+    grestore
   end
 } bind def
 

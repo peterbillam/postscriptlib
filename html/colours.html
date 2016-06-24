@@ -70,6 +70,7 @@ colours.ps - Some useful colour-handling stuff in PostScript
 
  50 100 500 170 darkblue white    true -0.8 <A HREF="#rectgradientfill">rectgradientfill</A>
  50 270 500 500 white    paleblue true  0.3 <A HREF="#rectgradientfill">rectgradientfill</A>
+ 250 270 50 100 yellow  red 0.3 <A HREF="#radialgradientfill">radialgradientfill</A>
 
 [ red black darkgrey ] <A HREF="#randomrgb">randomrgb</A> setrgbcolor
 
@@ -82,8 +83,6 @@ some RGB
 <A HREF="#colours">colours</A> and colour-handling
 <A HREF="#subroutines">subroutines</A>
 to help an artist using PostScript.
-It is designed to work with the line-drawing routines in
-<A HREF="line_drawing.html">line_drawing.ps</A>
 </P><P>
 <B>To install:</B> go to
 <A HREF="http://www.pjb.com.au/comp/free/colours.ps.txt">
@@ -160,6 +159,7 @@ any other colours that you may need, just like a painter would.
 <B><A HREF="#rgbmix">rgbmix</A>,
 <A HREF="#rgbinterpolate">rgbinterpolate</A>,
 <A HREF="#rectgradientfill">rectgradientfill</A>,
+<A HREF="#radialgradientfill">radialgradientfill</A>,
 <A HREF="#rgbdef">rgbdef</A>,
 <A HREF="#randomrgb">randomrgb</A>,
 <A HREF="#rgb2gray">rgb2gray</A></B>,
@@ -228,9 +228,26 @@ If <B>vertical</B> is <I>false</I>, the starting colour is on the left
 The <B>convexity</B> parameter should lie betwen -1.0 and 1.0.
 If it is zero, the colour is interpolated linearly;
 otherwise it is interpolated quadratically, such that if <B>convexity</B>
-is negative the colour changes fastest towards the end (the top or right),
-and if <B>convexity</B> is positive the colour changes fastest at the start
-(the bottom or left).
+is positive the colour changes fastest at the start (the bottom or left),
+and if <B>convexity</B>
+is negative the colour changes fastest towards the end (the top or right).
+</P>
+
+</DD><DT>
+<B><A NAME="radialgradientfill">
+x y r1 r2 startrgb endrgb convexity &nbsp; radialgradientfill</A></B>
+</DT><DD><P>
+The above invocation, conceived in the spirit of
+<I><A HREF="#rectgradientfill">rectgradientfill</A></I>,
+fills a circular ring with a colour-gradient,
+starting at colour <B>startrgb</B> at radius <B>r1</B>
+and ending with <B>endrgb</B> at radius <B>r2</B>.<BR>
+The <B>convexity</B> parameter should lie betwen -1.0 and 1.0.
+If it is zero, the colour is interpolated linearly;
+otherwise it is interpolated quadratically, such that if <B>convexity</B>
+is positive the colour changes fastest at the start (<B>r1</B>),
+and if <B>convexity</B>
+is negative the colour changes fastest towards the end (<B>r2</B>).
 </P>
 
 </DD><DT>
@@ -364,6 +381,7 @@ www.pjb.com.au/comp/contact.html</A>
 </P>
 
 <A NAME="changes"><HR></A><H3>CHANGES</H3><PRE>
+ 20160623 add radialgradientfill
  20160519 add pathbboxwh
  20160515 add darkorange
  20160425 fix the small gap rectgradientfill left at the beginning
@@ -387,8 +405,11 @@ www.pjb.com.au/comp/contact.html</A>
 <A NAME="see_also"> <HR> </A>
 <H3> SEE ALSO </H3>
 <P>As examples, see
+<A HREF="../art/posters/index.html">www.pjb.com.au/art/posters/</A>&nbsp;.&nbsp;.&nbsp;.
+</P><P>
+See also
 <A HREF="free/sample1.ps.txt">sample1.ps.txt</A> and
-<A HREF="free/sample4.ps.txt">sample4.ps.txt</A>&nbsp;.&nbsp;.&nbsp;.
+<A HREF="free/sample1.ps.txt">sample4.ps.txt</A>&nbsp;.&nbsp;.&nbsp;. &nbsp;
 Save the file to your local disc, rename it to <I>sample1.ps</I> or
 <I>sample4.ps</I> and edit it so that the
 <B>run</B> statement(s) near the beginning point to the directory where
@@ -400,7 +421,7 @@ Then use GhostView or equivalent to view it.
 If you wish to print it out, feel free to use something like
 <A HREF="http://www.pjb.com.au/comp/include_run.html">include_run</A>
 to roll the run-files in.
-</P><P>
+<BR>
 For easy viewing, PDF versions of the results are in
 <A HREF="free/sample1.pdf">sample1.pdf</A> and
 <A HREF="free/sample4.pdf">sample4.pdf</A>&nbsp;.&nbsp;.&nbsp;.
@@ -413,13 +434,17 @@ See also
 </LI><LI>
 <A HREF="text.html">text.ps</A>
 </LI><LI>
+<A HREF="fonts.html">fonts.ps</A>
+</LI><LI>
 <A HREF="include_run.html">include_run</A>
 </LI><LI>
 <A HREF="http://search.cpan.org/src/PJB/Math-Evol-1.06/bin/ps_evol">ps_evol</A>,
 <A HREF="http://search.cpan.org/perldoc?Math::Evol">Math::Evol.pm</A>, and
 <A HREF="http://search.cpan.org/perldoc?Term::Clui">Term::Clui.pm</A>
 </LI><LI>
-<A HREF="http://www.pjb.com.au/">http://www.pjb.com.au/</A>
+<A HREF="http://www.pjb.com.au/art/posters/index.html">www.pjb.com.au/art/posters/</A>
+</LI><LI>
+<A HREF="http://www.pjb.com.au/">www.pjb.com.au</A>
 </LI><LI>
 the <I>PostScript Language Reference Manual</I> (Adobe).
 </LI><LI>
