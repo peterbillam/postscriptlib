@@ -100,8 +100,13 @@ cd /home/wherever/ps/lib/
 &nbsp; &nbsp; wget -O colours.ps http://www.pjb.com.au/comp/free/colours.ps.txt
 </CODE><BR> or: <BR> <CODE>
 &nbsp; &nbsp; curl http://www.pjb.com.au/comp/free/colours.ps.txt -o colours.ps
+</CODE></P><P>
+Or, get it from <I>github</I>:
+<BR><CODE> &nbsp; &nbsp;
+git clone
+<A HREF="https://github.com/peterbillam/postscriptlib">
+https://github.com/peterbillam/postscriptlib</A>
 </CODE></P>
-</P>
 
 <A NAME="colours"> <HR> </A>
 <H3> COLOURS </H3>
@@ -156,14 +161,15 @@ any other colours that you may need, just like a painter would.
 <A NAME="subroutines"> <HR> </A>
 <H3> SUBROUTINES </H3>
 <P>
-<B><A HREF="#rgbmix">rgbmix</A>,
-<A HREF="#rgbinterpolate">rgbinterpolate</A>,
-<A HREF="#rectgradientfill">rectgradientfill</A>,
-<A HREF="#radialgradientfill">radialgradientfill</A>,
-<A HREF="#rgbdef">rgbdef</A>,
-<A HREF="#randomrgb">randomrgb</A>,
-<A HREF="#rgb2gray">rgb2gray</A></B>,
-<B><A HREF="#adjustbrightness">adjustbrightness</A></B> and
+<B><A HREF="#rgbmix">rgbmix</A>
+<A HREF="#rgbinterpolate">rgbinterpolate</A>
+<A HREF="#rectgradientfill">rectgradientfill</A>
+<A HREF="#radialgradientfill">radialgradientfill</A>
+<A HREF="#rgbdef">rgbdef</A>
+<A HREF="#rgbget">rgbget</A>
+<A HREF="#randomrgb">randomrgb</A>
+<A HREF="#rgb2gray">rgb2gray</A></B>
+<B><A HREF="#adjustbrightness">adjustbrightness</A></B>
 <B><A HREF="#pathbboxwh">pathbboxwh</A></B>
 </P>
 <DL>
@@ -183,15 +189,16 @@ is the second colour, in <CODE>r g b</CODE> three-number form<BR>
 <B>weight2</B>
 is the weight that will be given to the second colour in the mixing<BR>
 </P><P>
-The weights don't have to add up to one, 
-they get normalised to total 1.0 automatically.
+The weights should add up to one, 
+but don't have to;
+they get normalised to total 1.0 automatically.<BR>
 <B>rgbmix</B> uses non-linear mixing,
 to conform to the way the eye sees these things.
 </P>
 
 </DD><DT>
 <B><A NAME="rgbinterpolate">
-[ a1 colour1 .. aN colourN ] a &nbsp; rgbinterpolate</A></B>
+[ a1 colour1 .. aN colourN ] &nbsp; a &nbsp; rgbinterpolate</A></B>
 </DT><DD><P>
 The above invocation leaves on the stack,
 in <CODE>r g b</CODE> three-number form,
@@ -259,6 +266,14 @@ so it's like a three-dimensional version of <CODE>def</CODE>.
 </P>
 
 </DD><DT>
+<B><A NAME="rgbget"> [ red black grey ] &nbsp; 1 &nbsp; rgbget</A></B>
+</DT><DD><P>
+This extracts the colour <I>black</I>
+and puts it on the stack (in <CODE>r g b</CODE> form),
+so it's like a three-dimensional version of <CODE>get</CODE>.
+</P>
+
+</DD><DT>
 <B><A NAME="randomrgb">[ red black darkgrey ] &nbsp; randomrgb</A></B>
 </DT><DD><P>
 The above invocation chooses at random one of the
@@ -288,7 +303,7 @@ allow you to callibrate the conversion.
 </P>
 
 </DD><DT>
-<B><A NAME="adjustbrightness">r g b gray &nbsp; adjustbrightness</A></B>
+<B><A NAME="adjustbrightness">r g b &nbsp; gray &nbsp; adjustbrightness</A></B>
 </DT><DD><P>
 The above invocation causes the
 <CODE>r g b</CODE> colour to be adjusted in brightness until it
@@ -313,7 +328,7 @@ of different hues can be found in Margret Livingstone's book
 This is the same as the standard <I>pathbbox</I> procedure,
 except that it leaves the box on the stack in the form:<BR>
 <CODE>&nbsp; llx lly width height</CODE><BR>
-ready for use by<I>rectclip</I>, <I>rectfill</I> or
+ready for use by <I>rectclip</I>, <I>rectfill</I> or
 <A HREF="#rectgradientfill">rectgradientfill</A>. &nbsp;
 The standard <I>pathbbox</I> leaves it
 in the form: <CODE>llx&nbsp;lly&nbsp;urx&nbsp;ury</CODE>
