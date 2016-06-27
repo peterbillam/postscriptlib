@@ -1,0 +1,221 @@
+<HTML><HEAD><TITLE>muscript.ps Manual</TITLE>
+<LINK rel=stylesheet type="text/css" href="styles.css" title="PJB Comp Styles">
+<META HTTP-EQUIV="Keywords"
+CONTENT="PostScript, line drawing, shading">
+</HEAD>
+<BODY LINK="#000066" VLINK="#000066" ALINK="#000066">
+<DIV>
+<H1><IMG SRC="logo.jpg" ALT=" " WIDTH=126 HEIGHT=52>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <I>muscript.ps</I>
+</H1>
+<CENTER>
+<TABLE ALIGN="center" WIDTH="85%" BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left">
+	<UL><LI>
+	<B><A HREF="#name">NAME</A></B>
+	</LI><LI>
+	<B><A HREF="#synopsis">SYNOPSIS</A></B>
+	</LI></UL>
+</TD><TD ALIGN="left">
+	<UL><LI>
+	<B><A HREF="#description">DESCRIPTION</A></B>
+	</LI><LI>
+	<B><A HREF="#procedures">PROCEDURES</A></B>
+	</LI></UL>
+</TD><TD ALIGN="left">
+	<UL><LI>
+	<B><A HREF="#install">INSTALL</A></B>
+	</LI><LI>
+	<B><A HREF="#author">AUTHOR</A></B>
+	</LI></UL>
+</TD><TD ALIGN="left">
+	<UL><LI>
+	<B><A HREF="#changes">CHANGES</A></B>
+	</LI><LI>
+	<B><A HREF="#see_also">SEE&nbsp;ALSO</A></B>
+	</LI></UL>
+</TD></TR></TABLE>
+</CENTER>
+
+
+<A NAME="name"> <HR> </A>
+<H3> NAME </H3>
+<P>
+&nbsp; &nbsp; &nbsp;
+muscript.ps - Some procedures for drawing musical symbols in PostScript
+</P>
+
+<A NAME="synopsis"> <HR> </A>
+<H3> SYNOPSIS </H3>
+<PRE>
+ (/home/wherever/ps/lib/muscript.ps) run
+ % to send it to a printer see <A HREF="include_run.html">include_run</A> . . .
+
+ 140 400 600 20 stave    % xleft xright ytop staveheight
+ 140 600 580 20 bracket  % x ytop ybottom staveheight
+ 150 600 20 bassclef     % x ytop staveheight
+ 170 585 20 whiteblob    % x y staveheight
+ 220 595 20 blackblob    % x y staveheight
+ 216 595 575 20 quaverstemdown % x ytop ybottom staveheight
+ 235 600 20 blackblob
+ 231 600 580 20 quaverstemdown
+ 216 605 236 610 +1 20 slur % xl yl xr yr upordown staveheight
+ 245 590 20 crochetrest  % x y staveheight
+ 250 589 20 dot          % x y staveheight
+
+ 270 600 580 20 barline  % x ytop ybottom staveheight
+ 280 600 20 trebleclef   % x ytop staveheight
+ 300 595 20 whiteblob
+ 296 595 575 20 notestem % x ytop ybottom staveheight
+ 300 610 20 fermata      % x y staveheight
+ 350 590 20 crochetrest
+ 375 590 20 quaverrest
+ 387 590 20 semiquaverrest
+ 400 600 580 20 barline
+
+ showpage
+</PRE>
+
+<A NAME="description"><HR></A><H3>DESCRIPTION</H3>
+<P>
+This module offers, as a PostScript library,
+the procedures for drawing musical symbols as used by
+<B><A HREF="../muscript/index.html">muscript</A></B>
+<BR>
+They are here made more robust for general use,
+by protecting each local variable with a local dictionary.
+</P>
+
+<A NAME="procedures"> <HR> </A>
+<H3> PROCEDURES </H3>
+<P>
+None of these procedures leave anything on the stack;
+they only paint.
+</P><PRE>
+ blackblob      usage: x y staveheight blackblob
+ whiteblob      usage: x y staveheight whiteblob
+ breve          usage: x y staveheight breve
+ dot            usage: x y staveheight dot
+ doubledot      usage: x y staveheight doubledot
+ stave          usage: x_left x_right y_topline staveheight stave
+ ledger         usage: x y staveheight ledger
+ barline        usage: x y_top y_bot staveheight barline
+ notestem       usage: x y_top y_bot staveheight notestem
+ quaverstemup   usage: x y_top y_bot staveheight quaverstemup
+ quaverstemdown usage: x y_top y_bot staveheight quaverstemdown
+ beam           usage: x_mid_l y_mid_l x_mid_r y_mid_r staveheight beam
+ tremolando     usage: n x_mid y_mid staveheight tremolando
+ bracket        usage: x y_top y_bot staveheight bracket
+ repeatmark     usage: x y_top staveheight repeatmark
+ bassclef       usage: x y_top staveheight bassclef
+ bass8vaclef    usage: x y_top staveheight bass8vaclef
+ bass8vabclef   usage: x y_top staveheight bass8vabclef
+ f_clef         usage: x y_f staveheight f_clef
+ tenorclef      usage: x y_top staveheight tenorclef
+ altoclef       usage: x y_top staveheight altoclef
+ c_clef         usage: x y_middle_c staveheight c_clef
+ trebleclef     usage: x y_top staveheight trebleclef
+ treble8vaclef  usage: x y_top staveheight treble8vaclef
+ treble8vabclef usage: x y_top staveheight treble8vabclef
+ g_clef         usage: x y_g staveheight g_clef
+ timesig        usage (eg. for 6/8): x y_top staveheight (6) (8) timesig
+ sharp          usage: x y staveheight sharp
+ natural        usage: x y staveheight natural
+ flat           usage: x y staveheight flat
+ doublesharp    usage: x y staveheight doublesharp
+ hemidemisemiquaverrest usage: x y staveheight hemidemisemiquaverrest
+ demisemiquaverrest     usage: x y staveheight demisemiquaverrest
+ semiquaverrest usage: x y staveheight semiquaverrest
+ quaverrest     usage: x y staveheight quaverrest
+ crochetrest    usage: x y staveheight crochetrest
+ minimrest      usage: x y staveheight minimrest
+ smbrest        usage: x y staveheight smbrest
+ breverest      usage: x y staveheight breverest
+ barnumber      usage: x y staveheight (string) barnumber
+ crescendo      usage: x_left y_left x_right y_right staveheight crescendo
+ diminuendo     usage: x_left y_left x_right y_right staveheight diminuendo
+ slur           usage (updown= 1 or -1): x_l y_l x_r y_r updown staveheight slur
+ fermata        usage: x y staveheight fermata
+ mordent        usage: x y staveheight mordent
+ trill          usage: x y staveheight trill
+ trsharp        usage: x y staveheight trsharp
+ trflat         usage: x y staveheight trflat
+ trnat          usage: x y staveheight trnat
+ turn           usage: x y staveheight turn
+ tenuto         usage: x y staveheight tenuto
+ emphasis       usage: x y staveheight emphasis
+ segno          usage: x y staveheight segno
+ upbow          usage: x y staveheight upbow
+ downbow        usage: x y staveheight downbow
+ guitar_string  usage: n x y staveheight guitar_string
+</PRE>
+<P>
+Also defined are the following fonts with <I>ISOLatin1Encoding</I>.
+They are also available in <A HREF="fonts.html">fonts.ps</A>.
+</P>
+<PRE>
+/Times-Roman-ISO
+/Times-Bold-ISO
+/Times-Italic-ISO
+/Times-BoldItalic-ISO
+</PRE>
+
+<A NAME="install"><HR></A><H3>INSTALL</H3>
+<P>
+<B>To install:</B> go to
+<A HREF="http://www.pjb.com.au/comp/free/muscript.ps.txt">
+www.pjb.com.au/comp/free/muscript.ps.txt</A>
+and save the file to your local disc.<BR>
+Rename it to <I>muscript.ps</I> and move it into some appropriate
+directory such as <CODE>~/ps/lib</CODE>&nbsp;.&nbsp;.&nbsp;.
+<BR>
+Or, first change directory to where you keep your PostScript libraries:
+<BR><CODE> &nbsp; &nbsp;
+cd /home/wherever/ps/lib/
+</CODE><BR>
+(or wherever) &nbsp; and then either: <BR>
+<CODE>
+&nbsp; &nbsp; wget -O muscript.ps http://www.pjb.com.au/comp/free/muscript.ps.txt
+</CODE><BR> or: <BR> <CODE>
+&nbsp; &nbsp; curl http://www.pjb.com.au/comp/free/muscript.ps.txt -o muscript.ps
+</CODE></P><P>
+Or, get it from <I>github</I>:
+<BR><CODE> &nbsp; &nbsp;
+git clone
+<A HREF="https://github.com/peterbillam/postscriptlib">
+https://github.com/peterbillam/postscriptlib</A>
+</CODE></P>
+<A NAME="author"> <HR> </A>
+<H3> AUTHOR </H3>
+<P>
+Peter J Billam
+<A HREF="http://www.pjb.com.au/comp/contact.html">
+www.pjb.com.au/comp/contact.html</A>
+</P>
+
+<A NAME="changes"><HR></A><H3>CHANGES</H3><PRE>
+ 20160627 130830 musical signs, developed from muscript
+</PRE>
+
+<A NAME="see_also"> <HR> </A>
+<H3> SEE ALSO </H3>
+<P>
+See also :
+<UL><LI>
+<A HREF="../muscript/index.html">muscript</A>
+</LI><LI>
+<CODE>muscript -p</CODE>
+</LI><LI>
+<A HREF="text.html">text.ps</A>
+</LI><LI>
+<A HREF="include_run.html">include_run</A>
+</LI><LI>
+<A HREF="http://www.pjb.com.au/">www.pjb.com.au</A>
+</LI><LI>
+the <I>PostScript Language Reference Manual</I> (Adobe).
+</LI></UL>
+</P>
+
+<HR><CENTER><P>Back to <A HREF="index.html">P J B Computing</A> or to
+<A HREF="../index.html">www.pjb.com.au</A>&nbsp;.&nbsp;.&nbsp;.</CENTER></P>
+</DIV></BODY></HTML>
