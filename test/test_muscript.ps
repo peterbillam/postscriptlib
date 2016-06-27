@@ -1,0 +1,89 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+(/home/pjb/ps/lib/muscript.ps) run
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+
+/y ymax 0.90 mul def
+xmax .10 mul xmax 0.90 mul y 20 stave
+xmax .20 mul y 5 add  20 ledger   xmax 0.20 mul y 10 add  20 ledger
+xmax .30 mul y dup 20 sub  20 barline
+xmax .15 mul y 5 add dup 20 sub  20 notestem
+xmax .25 mul y 15 add dup 20 sub  20 quaverstemup
+xmax .35 mul y 10 sub dup 20 sub  20 quaverstemdown
+xmax .40 mul y 15 sub xmax 0.45 mul y 5 sub 20 beam
+1 xmax 0.45 mul y 10 add 20 tremolando
+2 xmax 0.50 mul y 10 add 20 tremolando
+3 xmax 0.55 mul y 10 add 20 tremolando
+xmax .10 mul y y 20 sub 20 bracket
+xmax .12 mul y 20 repeatmark
+xmax .60 mul y 20 trebleclef
+xmax .65 mul y 20 treble8vaclef
+xmax .70 mul y 20 bassclef
+xmax .75 mul y 20 bass8vabclef
+xmax .80 mul y 20 tenorclef
+xmax 0.85 mul y 20 altoclef
+
+/y ymax .80 mul def
+xmax .10 mul xmax 0.90 mul y 20 stave
+xmax .12 mul y 20 (6) (8) timesig
+xmax .15 mul y 20 flat
+xmax .18 mul y 20 natural
+xmax .21 mul y 20 sharp
+xmax .24 mul y 20 doublesharp
+xmax .27 mul y 10 sub 20 hemidemisemiquaverrest
+xmax .30 mul y 10 sub 20 demisemiquaverrest
+xmax .33 mul y 10 sub 20 semiquaverrest
+xmax .36 mul y 10 sub 20 quaverrest
+xmax .39 mul y 10 sub 20 crochetrest
+xmax .42 mul y 10 sub 20 minimrest
+xmax .45 mul y 10 sub 20 smbrest
+xmax .48 mul y 10 sub 20 breverest
+xmax .50 mul y dup 20 sub  20 barline
+xmax .53 mul y 5 add 20 (25) barnumber
+xmax .27 mul y  3 sub xmax .48 mul y  5 add +1 20 slur
+xmax .27 mul y 23 sub xmax .48 mul y 15 sub -1 20 slur
+xmax .60 mul y 10 sub 20 blackblob
+xmax .60 mul y  7 add 20 fermata
+xmax .64 mul y 10 sub 20 whiteblob
+xmax .64 mul y  7 add 20 trill
+xmax .68 mul y 10 sub 20 blackblob
+xmax .68 mul y  7 add 20 mordent
+xmax .72 mul y 10 sub 20 whiteblob
+xmax .72 mul y  7 add 20 trflat
+xmax .76 mul y 10 sub 20 blackblob
+xmax .76 mul y  7 add 20 trnat
+xmax .80 mul y 10 sub 20 whiteblob
+xmax .80 mul y  7 add 20 trsharp
+xmax .84 mul y 10 sub 20 blackblob
+xmax .84 mul y  7 add 20 turn
+xmax .88 mul y 10 sub 20 whiteblob
+xmax .88 mul y  7 add 20 emphasis
+
+/y ymax .70 mul def
+xmax .10 mul xmax 0.90 mul y 20 stave
+xmax .12 mul y 10 sub 20 blackblob
+xmax .12 mul y  7 add 20 upbow
+xmax .16 mul y 10 sub 20 whiteblob
+xmax .16 mul y  7 add 20 downbow
+xmax .20 mul y 10 sub 20 blackblob
+xmax .20 mul y  7 add 20 tenuto
+xmax .24 mul y  7 add 20 segno
+xmax .28 mul y 10 sub 20 whiteblob
+5 xmax .28 mul y  7 add 20 guitar_string
+
+
+showpage
+%%EOF
