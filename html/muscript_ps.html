@@ -134,7 +134,7 @@ they only paint.
  barnumber      usage: x y staveheight (string) barnumber
  crescendo      usage: x_left y_left x_right y_right staveheight crescendo
  diminuendo     usage: x_left y_left x_right y_right staveheight diminuendo
- slur           usage (updown= 1 or -1): x_l y_l x_r y_r updown staveheight slur
+ slur           usage (updown=+1 or -1): x_l y_l x_r y_r updown staveheight slur
  fermata        usage: x y staveheight fermata
  mordent        usage: x y staveheight mordent
  trill          usage: x y staveheight trill
@@ -150,14 +150,22 @@ they only paint.
  guitar_string  usage: n x y staveheight guitar_string
 </PRE>
 <P>
+Also defined are the following procedures
+also available in <A HREF="text.html">text.ps</A> :
+</P><PRE>
+ rightshow      usage: x y font fontsize (string) rightshow
+ leftshow       usage: x y font fontsize (string) leftshow
+ centreshow     usage: x y font fontsize (string) centreshow
+ centrexshow    usage: x y font fontsize (string) centrexshow
+</PRE><P>
 Also defined are the following fonts with <I>ISOLatin1Encoding</I>.
-They are also available in <A HREF="fonts.html">fonts.ps</A>.
+They are also available in <A HREF="fonts.html">fonts.ps</A> :
 </P>
 <PRE>
-/Times-Roman-ISO
-/Times-Bold-ISO
-/Times-Italic-ISO
-/Times-BoldItalic-ISO
+ /Times-Roman-ISO
+ /Times-Bold-ISO
+ /Times-Italic-ISO
+ /Times-BoldItalic-ISO
 </PRE>
 
 <A NAME="install"><HR></A><H3>INSTALL</H3>
@@ -199,8 +207,6 @@ www.pjb.com.au/comp/contact.html</A>
 
 <A NAME="see_also"> <HR> </A>
 <H3> SEE ALSO </H3>
-<P>
-See also :
 <UL><LI>
 <A HREF="../muscript/index.html">muscript</A>
 </LI><LI>
@@ -212,9 +218,10 @@ See also :
 </LI><LI>
 <A HREF="http://www.pjb.com.au/">www.pjb.com.au</A>
 </LI><LI>
+<A HREF="https://github.com/peterbillam">https://github.com/peterbillam</A>
+</LI><LI>
 the <I>PostScript Language Reference Manual</I> (Adobe).
 </LI></UL>
-</P>
 
 <HR><CENTER><P>Back to <A HREF="index.html">P J B Computing</A> or to
 <A HREF="../index.html">www.pjb.com.au</A>&nbsp;.&nbsp;.&nbsp;.</CENTER></P>
