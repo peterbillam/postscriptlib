@@ -3,7 +3,7 @@
 % TODO: lavalamp_path  see Electrical Banana p.73
 %       zigzag         ditto
 %       x y height firtree    % trunkcolour and leafcolour are slightly random
-% in colours.ps, apart from rectgradientfill should do a radialgradientfill
+%       peacock feather see Electrical Banana p.91
 
 /irand     where { pop } { (/home/pjb/ps/lib/random.ps)  run } ifelse
 /randomrgb where { pop } { (/home/pjb/ps/lib/colours.ps) run } ifelse
@@ -11,6 +11,62 @@
 %/irand {   % usage: 6 irand     -> returns a random integer 0..5
 %  rand exch round cvi mod   % arg must be much smaller than 2^32
 %} bind def
+
+/star_path {  % x y radius star_path
+  10 dict begin
+  [ /radius /y /x ] { exch def } forall
+  x y translate  radius dup  scale  % x == y ==
+  /r_out 1.40 def  /r_in 1.0 r_out div def
+  /n 3000 irand def
+  n 2000 ge {      % 5 points
+    /rot 72 irand def rot rotate
+   	r_in 0 moveto  r_out 36 cos mul r_out 36 sin mul lineto
+   	r_in   72 cos mul r_in   72 sin mul lineto
+    r_out 108 cos mul r_out 108 sin mul lineto
+   	r_in  144 cos mul r_in  144 sin mul lineto
+    r_out 180 cos mul r_out 180 sin mul lineto
+   	r_in  216 cos mul r_in  216 sin mul lineto
+    r_out 252 cos mul r_out 252 sin mul lineto
+   	r_in  288 cos mul r_in  288 sin mul lineto
+    r_out 324 cos mul r_out 324 sin mul lineto
+    0 rot sub rotate
+  } {
+    n 1000 ge {  % 6 points
+      /rot 60 irand def rot rotate
+      r_in 0 moveto  r_out 30 cos mul r_out 30 sin mul lineto
+      r_in   60 cos mul r_in   60 sin mul lineto
+      r_out  90 cos mul r_out  90 sin mul lineto
+      r_in  120 cos mul r_in  120 sin mul lineto
+      r_out 150 cos mul r_out 150 sin mul lineto
+      r_in  180 cos mul r_in  180 sin mul lineto
+      r_out 210 cos mul r_out 210 sin mul lineto
+      r_in  240 cos mul r_in  240 sin mul lineto
+      r_out 270 cos mul r_out 270 sin mul lineto
+      r_in  300 cos mul r_in  300 sin mul lineto
+      r_out 330 cos mul r_out 330 sin mul lineto
+      0 rot sub rotate
+    } {            % 7 points
+      /rot 51 irand def rot rotate
+      r_in 0 moveto  r_out 26 cos mul r_out 26 sin mul lineto
+      r_in   51 cos mul r_in   51 sin mul lineto
+      r_out  77 cos mul r_out  77 sin mul lineto
+      r_in  103 cos mul r_in  103 sin mul lineto
+      r_out 129 cos mul r_out 129 sin mul lineto
+      r_in  154 cos mul r_in  154 sin mul lineto
+      r_out 180 cos mul r_out 180 sin mul lineto
+      r_in  206 cos mul r_in  206 sin mul lineto
+      r_out 231 cos mul r_out 231 sin mul lineto
+      r_in  257 cos mul r_in  257 sin mul lineto
+      r_out 283 cos mul r_out 283 sin mul lineto
+      r_in  309 cos mul r_in  309 sin mul lineto
+      r_out 334 cos mul r_out 334 sin mul lineto
+      0 rot sub rotate
+    } ifelse
+  } ifelse
+  closepath
+  1.0 radius div dup scale  0 x sub  0 y sub  translate
+  end
+} bind def
 
 /pjb::tree:depth 0 def
 /bare_tree {   % x y height trunkfraction bare_tree
