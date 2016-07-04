@@ -12,19 +12,19 @@ CONTENT="PostScript, line drawing, shading">
 <TABLE ALIGN="center" WIDTH="85%" BORDER=0 CELLSPACING=0>
 <TR><TD ALIGN="left">
 	<UL><LI>
-	<B><A HREF="#name">NAME</A></B>
-	</LI><LI>
 	<B><A HREF="#synopsis">SYNOPSIS</A></B>
 	</LI><LI>
 	<B><A HREF="#description">DESCRIPTION</A></B>
+	</LI><LI>
+	<B><A HREF="#colours">COLOURS</A></B>
 	</LI></UL>
 </TD><TD ALIGN="left">
 	<UL><LI>
-	<B><A HREF="#colours">COLOURS</A></B>
-	</LI><LI>
 	<B><A HREF="#subroutines">SUBROUTINES</A></B>
 	</LI><LI>
 	<B><A HREF="#callibrate_rgb2gray">Callibrating rgb2gray</A></B>
+	</LI><LI>
+	<B><A HREF="#install">INSTALL</A></B>
 	</LI></UL>
 </TD><TD ALIGN="left">
 	<UL><LI>
@@ -83,30 +83,8 @@ some RGB
 <A HREF="#colours">colours</A> and colour-handling
 <A HREF="#subroutines">subroutines</A>
 to help an artist using PostScript.
-</P><P>
-<B>To install:</B> go to
-<A HREF="http://www.pjb.com.au/comp/free/colours.ps.txt">
-www.pjb.com.au/comp/free/colours.ps.txt</A>
-and save the file to your local disc.<BR>
-Rename it to <I>colours.ps</I> and move it into some appropriate
-directory such as <CODE>~/ps/lib</CODE>&nbsp;.&nbsp;.&nbsp;.
-<BR>
-Or, first change directory to where you keep your PostScript libraries:
-<BR><CODE> &nbsp; &nbsp;
-cd /home/wherever/ps/lib/
-</CODE><BR>
-(or wherever) &nbsp; and then either: <BR>
-<CODE>
-&nbsp; &nbsp; wget -O colours.ps http://www.pjb.com.au/comp/free/colours.ps.txt
-</CODE><BR> or: <BR> <CODE>
-&nbsp; &nbsp; curl http://www.pjb.com.au/comp/free/colours.ps.txt -o colours.ps
-</CODE></P><P>
-Or, get it from <I>github</I>:
-<BR><CODE> &nbsp; &nbsp;
-git clone
-<A HREF="https://github.com/peterbillam/postscriptlib">
-https://github.com/peterbillam/postscriptlib</A>
-</CODE></P>
+</P>
+
 
 <A NAME="colours"> <HR> </A>
 <H3> COLOURS </H3>
@@ -388,15 +366,43 @@ I'd enjoy hearing what the optimum is for other devices;
 if they cluster around a particular value I'll make that the default.
 </P>
 
+<A NAME="install"> <HR> </A>
+<H3> INSTALL </H3>
+<P>
+To install: go to
+<A HREF="http://www.pjb.com.au/comp/free/colours.ps.txt">
+www.pjb.com.au/comp/free/colours.ps.txt</A>
+and save the file to your local disc.<BR>
+Rename it to <I>colours.ps</I> and move it into some appropriate
+directory such as <CODE>~/ps/lib</CODE>&nbsp;.&nbsp;.&nbsp;.
+<BR>
+Or, first change directory to where you keep your PostScript libraries:
+<BR><CODE> &nbsp; &nbsp;
+cd /home/wherever/ps/lib/
+</CODE><BR>
+(or wherever) &nbsp; and then either: <BR>
+<CODE>
+&nbsp; &nbsp; wget -O colours.ps http://www.pjb.com.au/comp/free/colours.ps.txt
+</CODE><BR> or: <BR> <CODE>
+&nbsp; &nbsp; curl http://www.pjb.com.au/comp/free/colours.ps.txt -o colours.ps
+</CODE></P><P>
+Or, get it from <I>github</I>:
+<BR><CODE> &nbsp; &nbsp;
+git clone
+<A HREF="https://github.com/peterbillam/postscriptlib">
+https://github.com/peterbillam/postscriptlib</A>
+</CODE></P>
+
 <A NAME="author"> <HR> </A>
 <H3> AUTHOR </H3>
 <P>
-Peter J Billam
+Peter J Billam &nbsp;
 <A HREF="http://www.pjb.com.au/comp/contact.html">
 www.pjb.com.au/comp/contact.html</A>
 </P>
 
 <A NAME="changes"><HR></A><H3>CHANGES</H3><PRE>
+ 20160629 add paleyellow
  20160623 add radialgradientfill
  20160519 add pathbboxwh
  20160515 add darkorange
