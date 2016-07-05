@@ -167,6 +167,7 @@
 
 % From: a bitmap font:
 % https://github.com/luser-dr00g/xpost/blob/master/data/bitfont.ps
+% Could study:   xterm -font 5x7   with a magnifying glass ...
 /Bitfont5x7 <<
   /FontType 3
   /FontMatrix [.012 0 0 -.012 0 .012]
@@ -292,8 +293,9 @@ pop
 pstack  % prints out 76 numbers; 101 99 99 110 110 101 101 105 105 etc...
 
 % FatSimple  see also ~/log/ps at 20160523
-% Could study:   xterm -font 5x7   with a magnifying glass ...
-9 dict begin
+10 dict begin   % PLRM2 p.290: "A composite font dictionary should be
+% large enough to have three additional entries - FID, MIDVector and
+% CurMID - added to it by definefont"  but composite fonts are FontType 0
 /FontType 3 def   % PLRM p278
 % /PaintType 0 def  % p278 says this only works for FontType 0 :-(
 /FontMatrix [ 0.001 0 0 0.001 0 0 ] def
@@ -379,6 +381,8 @@ Encoding 120 /char_X put
 Encoding 121 /char_Y put
 Encoding 122 /char_Z put
 Encoding 124 /BAR    put
+Encoding 192 /Agrave put
+Encoding 194 /Acirc  put
 Encoding 196 /Auml   put
 Encoding 199 /Ccedil put
 Encoding 200 /Egrave put
@@ -388,6 +392,8 @@ Encoding 207 /Iuml   put
 Encoding 212 /Ocirc  put
 Encoding 214 /Ouml   put
 Encoding 220 /Uuml   put
+Encoding 224 /Agrave put
+Encoding 226 /Acirc  put
 Encoding 228 /Auml   put
 Encoding 231 /Ccedil put
 Encoding 239 /Iuml   put
@@ -448,6 +454,8 @@ Encoding 252 /Uuml   put
   /char_Z  700 def
   /BAR     350 def
   /BAR     350 def
+  /Agrave  800 def
+  /Acirc   800 def
   /Auml    800 def
   /Ccedil  600 def
   /Egrave  725 def
@@ -511,6 +519,8 @@ end
   /char_Y  [ 0 0 750 750 ] def
   /char_Z  [ 0 0 650 750 ] def
   /BAR     [ 0 0 300 750 ] def
+  /Agrave  [ 0 0 750 950 ] def
+  /Acirc   [ 0 0 750 950 ] def
   /Auml    [ 0 0 750 950 ] def
   /Ccedil  [ 0 -150 500 1100 ] def
   /Egrave  [ 0 0 650 950 ] def
@@ -673,6 +683,15 @@ end
     650 750 lineto 0 750 lineto 0 500 lineto 230 500 lineto
     closepath fill } bind def 
   /BAR { 105 0 90 750 rectfill } bind def
+  /Agrave { 0 0 moveto 250 0 lineto 300  90 lineto 450  90 lineto 500 0 lineto
+    750 0 lineto 375 750 lineto
+    120 950 moveto 320 800 lineto 450 800 lineto 250 950 lineto  % grave
+    closepath fill } bind def
+  /Acirc { 0 0 moveto 250 0 lineto 300  90 lineto 450  90 lineto 500 0 lineto
+    750 0 lineto 375 750 lineto
+    150 800 moveto 250 800 lineto 350 890 lineto 450 800 lineto  % circ
+    550 800 lineto 400 950 lineto 300 950 lineto
+    closepath fill } bind def
   /Auml { 0 0 moveto 250 0 lineto 300  90 lineto 450  90 lineto 500 0 lineto
     750 0 lineto 375 750 lineto
     310 850 moveto 250 850 60 0 360 arc 560 850 moveto 500 850 60 0 360 arc
