@@ -38,6 +38,28 @@
   end
 } bind def   % 20160704
 
+/peacock_feather {   % x1 y1 x2 y2 angle colour1 colour2 colour3 
+  10 dict begin
+  [ /colour3 /colour2 /colour1 ] { 4 1 roll rgbdef } forall
+  [ /angle /y2 /x2 /y1 /x1 ] { exch def } forall
+  colour1 setrgbcolor
+  newpath x1 y1 x2 y2 angle droplet_path fill
+  colour2 setrgbcolor newpath
+    x1 y2 y1 sub .02 mul angle sin mul sub           y1 .95 mul y2 .05 mul add
+    x2 y2 y1 sub 0.2 mul angle sin mul 1.6 mul add   y1 .35 mul y2 .65 mul add
+  angle 0.5 mul  droplet_path fill
+  colour3 setrgbcolor newpath
+    x1 y2 y1 sub .01 mul angle sin mul sub           y1 .90 mul y2 .10 mul add
+    x2 y2 y1 sub 0.21 mul angle sin mul 2.0 mul add  y1 .60 mul y2 .40 mul add
+  angle 0.3 mul  droplet_path gsave clip fill
+  newpath colour1 setrgbcolor
+    x1 y2 y1 sub .05 mul angle sin mul add           y1 .80 mul y2 .20 mul add
+    x2 y2 y1 sub .35 mul angle sin mul add           y1 .40 mul y2 .60 mul add
+    angle 0.3 mul  droplet_path fill
+  grestore
+  end
+} def   % 20160706
+
 /star_path {  % x y radius star_path
   10 dict begin
   [ /radius /y /x ] { exch def } forall
