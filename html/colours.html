@@ -20,7 +20,7 @@ CONTENT="PostScript, line drawing, shading">
 	</LI></UL>
 </TD><TD ALIGN="left">
 	<UL><LI>
-	<B><A HREF="#subroutines">SUBROUTINES</A></B>
+	<B><A HREF="#procedures">PROCEDURES</A></B>
 	</LI><LI>
 	<B><A HREF="#callibrate_rgb2gray">Callibrating rgb2gray</A></B>
 	</LI><LI>
@@ -81,7 +81,7 @@ colours.ps - Some useful colour-handling stuff in PostScript
 This module implements in PostScript
 some RGB
 <A HREF="#colours">colours</A> and colour-handling
-<A HREF="#subroutines">subroutines</A>
+<A HREF="#procedures">procedures</A>
 to help an artist using PostScript.
 </P>
 
@@ -137,8 +137,8 @@ paleviolet
 any other colours that you may need, just like a painter would.
 </P>
 
-<A NAME="subroutines"> <HR> </A>
-<H3> SUBROUTINES </H3>
+<A NAME="procedures"> <HR> </A>
+<H3> PROCEDURES </H3>
 <P>
 <B><A HREF="#rgbmix">rgbmix</A>
 <A HREF="#rgbinterpolate">rgbinterpolate</A>
@@ -242,6 +242,11 @@ is negative the colour changes fastest towards the end (<B>r2</B>).
 The above invocation causes
 <CODE>name_of_colour</CODE> to be defined as <CODE>{ r g b }</CODE>
 so it's like a three-dimensional version of <CODE>def</CODE>.
+<BR>
+Note that because a colour has three components, the common
+<CODE>/x&nbsp;exch&nbsp;def</CODE> idiom doesn't work with <I>rgbdef</I>;
+you'll need something like this instead:<BR>
+<CODE>&nbsp; &nbsp; /mynewcolour 4 1 roll rgbdef</CODE>
 </P>
 
 </DD><DT>

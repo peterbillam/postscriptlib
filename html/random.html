@@ -20,7 +20,7 @@ CONTENT="PostScript, random">
 	<UL><LI>
 	<B><A HREF="#description">DESCRIPTION</A></B>
 	</LI><LI>
-	<B><A HREF="#subroutines">SUBROUTINES</A></B>
+	<B><A HREF="#procedures">PROCEDURES</A></B>
 	</LI></UL>
 </TD><TD ALIGN="left">
 	<UL><LI>
@@ -67,13 +67,13 @@ random.ps - Some useful random-number stuff in PostScript
 <P>
 This module implements in PostScript
 a few simple
-<A HREF="#subroutines">subroutines</A>
+<A HREF="#procedures">procedures</A>
 for using random numbers.
 
 </P>
 
-<A NAME="subroutines"> <HR> </A>
-<H3> SUBROUTINES </H3>
+<A NAME="procedures"> <HR> </A>
+<H3> PROCEDURES </H3>
 <DL>
 <DT><B><A NAME="grand">
 mean standarddeviation grand</A></B>
@@ -117,6 +117,25 @@ To install: go to
 and save the file to your local disc.<BR>
 Rename it to <I>random.ps</I> and move it into some appropriate
 directory such as <CODE>~/ps/lib</CODE>&nbsp;.&nbsp;.&nbsp;.
+</P><P>
+Or, first change directory to where you keep your PostScript libraries:
+<BR><CODE> &nbsp; &nbsp;
+cd /home/wherever/ps/lib/
+</CODE><BR>
+(or wherever) &nbsp; and then either: <BR>
+<CODE>
+&nbsp; &nbsp; wget -O random.ps http://www.pjb.com.au/comp/free/random.ps.txt
+</CODE><BR> or: <BR> <CODE>
+&nbsp; &nbsp; curl http://www.pjb.com.au/comp/free/random.ps.txt -o random.ps
+</CODE></P>
+</P><P>
+Or, get it from <I>github</I>:
+<BR><CODE> &nbsp; &nbsp;
+git clone
+<A HREF="https://github.com/peterbillam/postscriptlib">
+https://github.com/peterbillam/postscriptlib</A>
+</CODE></P>
+
 
 <A NAME="author"> <HR> </A>
 <H3> AUTHOR </H3>
