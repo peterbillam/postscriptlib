@@ -1,0 +1,66 @@
+%%BeginResource: procset cass
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% http://www.math.ubc.ca/~cass/graphics/manual/  chapter 8
+% ~/ps/cass/08_nonlinear_transformations.pdf
+
+/ctransform {   % the argument is the named function f(x,y) -> u,v
+  load   % first load the procedure onto the stack
+  1 dict begin
+  /f exch def
+  [   % build an array from the current path
+    { [ 3 1 roll f {moveto} ] }  % x y
+    { [ 3 1 roll f {lineto} ] }  % x y
+    {   % x1 y1 x2 y2 x3 y3
+      [ 7 1 roll    % [ P1 P2 P3
+        f 6 2 roll  % [ U3 P1 P2
+        f 6 2 roll  % [ U2 U3 P1
+        f 6 2 roll  % [ U1 U2 U3
+        { curveto }
+      ]
+    }
+    { [ {closepath} ] }
+    pathforall
+  ]
+  newpath  % and then replace the current path
+  { aload pop exec } forall
+  end
+} def
+
+/perspective1_xy2uv { 5 dict begin [ /y /x ] { exch def } forall
+  % Must inherit the variable ::x0
+  %  which is the x at which the heights are left at 1:1 scale
+  %  and at which x->u will be left unchanged.
+  % Ie:  if _x=x0 then u=x0 and v=y ; r == u/x0 ; v = r.y  (easy!)
+  % du/dx = r = u/x0  integrating:  log(u) = x/x0 + c  or:  u = a.exp(x/x0)
+  % but:  if x=x0 then u=x=x0  therefore:  x0=a.e  or:  u = x0.exp(x/x0 - 1)
+  /r  2.718281828  x ::x0 div  1 sub  exp def
+  /u ::x0  r mul def
+  /v y r mul def
+  u v
+end } def
+
+/perspective2_xy2uv { 6 dict begin [ /y /x ] { exch def } forall
+  % Must inherit the variable ::x0
+  %  which is the x at which the heights are left at 1:1 scale
+  %  and at which x->u will be left unchanged.
+  % Must also inherit the variable ::theta
+  %  which is the angle at which the viewer sees the x0 point in the surface
+  %  so if theta=90 the viewer is face-on to the x=u=x0 point
+  % this means solving du/dx = sin(u/x0) . u/x0     :-(
+  % https://en.wikipedia.org/wiki/Lists_of_integrals#Lists_of_integrals
+  % https://en.wikipedia.org/wiki/List_of_integrals_of_trigonometric_functions
+  /sintheta ::theta sin def   % amateurish kludge : use a constant angle :-(
+  /r  2.718281828  x ::x0 div  1 sub sintheta mul  exp  def
+  /u ::x0  r mul def
+  /v y r mul def
+  u v
+end } def
+
+%%EndResource

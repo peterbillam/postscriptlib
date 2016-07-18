@@ -1,0 +1,124 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+(/home/pjb/ps/lib/transforms.ps) run
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+/xh xmax .55  mul def
+/yh ymax 0.27 mul def
+0.8 setgray 0 0 xmax yh rectfill 0.5 setgray  % the ground
+xh yh translate   % the vanishing-point must be 0,0
+
+newpath /::x0  xmax .05 mul xh sub def   % = .05-.55 = -.50
+/HelveticaBold  ymax .22 mul selectfont
+% left of the vanishing-point, we start printing text at ::x0
+::x0 ymax  .55 mul moveto (HEMNHXWENZEYKHEMM) true charpath
+::x0 ymax  .35 mul moveto (EMNHXWENZEYKHEMMA) true charpath
+::x0 ymax  .15 mul moveto (MNHXWENZEYKHEMMAD) true charpath
+::x0 ymax -.05 mul moveto (MHXWENZEYKHEMMADX) true charpath
+::x0 ymax -.25 mul moveto (HXWENZEYKHEMMADXM) true charpath
+/perspective1_xy2uv ctransform fill
+
+% but right of the VP, we start the text at ::x0-stringwidth
+newpath /::x0 xmax .95 mul xh sub def
+/HelveticaBold  ymax .22 mul selectfont
+0 setgray
+/x_start_of_string  ::x0 (OQCSU) stringwidth pop sub def
+x_start_of_string  ymax  .55 mul moveto (QCSUO) true charpath
+x_start_of_string  ymax  .35 mul moveto (OQCSU) true charpath
+x_start_of_string  ymax  .15 mul moveto (UOQCS) true charpath
+x_start_of_string  ymax -.05 mul moveto (SUOQC) true charpath
+x_start_of_string  ymax -.25 mul moveto (CSUOQ) true charpath
+/perspective1_xy2uv ctransform fill
+
+showpage
+
+%%Page: 2 2
+%%BeginPageSetup
+%%EndPageSetup
+/xh xmax .55  mul def
+/yh ymax 0.27 mul def
+0.8 setgray 0 0 xmax yh rectfill 0.5 setgray  % the ground
+xh yh translate   % the vanishing-point must be 0,0
+
+newpath /::x0  xmax .05 mul xh sub def   % = .05-.55 = -.50
+/::theta 30 def
+/HelveticaBold  ymax .22 mul selectfont
+% left of the vanishing-point, we start printing text at ::x0
+::x0 ymax  .55 mul moveto (HEMNHXWENZEYKHEMM) true charpath
+::x0 ymax  .35 mul moveto (EMNHXWENZEYKHEMMA) true charpath
+::x0 ymax  .15 mul moveto (MNHXWENZEYKHEMMAD) true charpath
+::x0 ymax -.05 mul moveto (MHXWENZEYKHEMMADX) true charpath
+::x0 ymax -.25 mul moveto (HXWENZEYKHEMMADXM) true charpath
+/perspective2_xy2uv ctransform fill
+
+% but right of the VP, we start the text at ::x0-stringwidth
+newpath /::x0 xmax .95 mul xh sub def
+/HelveticaBold  ymax .22 mul selectfont
+0 setgray
+/x_start_of_string  ::x0 (OQCSU) stringwidth pop sub def
+x_start_of_string  ymax  .55 mul moveto (QCSUO) true charpath
+x_start_of_string  ymax  .35 mul moveto (OQCSU) true charpath
+x_start_of_string  ymax  .15 mul moveto (UOQCS) true charpath
+x_start_of_string  ymax -.05 mul moveto (SUOQC) true charpath
+x_start_of_string  ymax -.25 mul moveto (CSUOQ) true charpath
+/perspective2_xy2uv ctransform fill
+
+showpage
+
+%%Page: 3 3
+%%BeginPageSetup
+%%EndPageSetup
+
+/::x_amplitude  9 def  /::y_wavelength 300 def  /::y_phase  0 def
+/::y_amplitude  6 def  /::x_wavelength 200 def  /::x_phase 90 def
+/sine_xy2uv {
+  % ::x_amplitude ::y_wavelength ::y_phase
+  % ::y_amplitude ::x_wavelength ::x_phase
+  %  the wavelength is in the x dimension if the amplitude is in the y dimension
+  % so many params that perhaps they should be set by a call setting a dict ?
+  % v = y + y_amplitude.sin(360x/x_wavelength + x_phase)
+  2 dict begin  [ /:y /:x ] { exch def } forall
+  360 :y mul ::y_wavelength div  ::y_phase add  sin  ::x_amplitude mul  :x add
+  360 :x mul ::x_wavelength div  ::x_phase add  sin  ::y_amplitude mul  :y add
+  end
+} def
+
+/rect {
+  4 dict begin   [ /h /w /y /x ] { exch def } forall
+  x y moveto  w 0 rlineto  0 h rlineto  0 w sub 0 rlineto  x y lineto closepath
+  end
+} def
+
+newpath
+0 setgray
+/w xmax .04 mul def
+xmax .005 mul setlinewidth
+.03 .06 .93 {     /x exch xmax mul def
+  .03 .04 .96 {  /y exch ymax mul def
+    x y w w rect
+  } for
+} for
+/sine_xy2uv ctransform fill
+
+newpath
+ % 10 145 moveto 100 145 lineto 300 145 lineto 5 80 145 lineto % closepath
+10 205 moveto   15 5 580 { 205 lineto } for
+0.7 setgray
+/sine_xy2uv ctransform stroke
+% a simple long lineto does not become wavy ; only the joinpoints get moved!
+
+showpage
+
+%%EOF
