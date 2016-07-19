@@ -10,10 +10,40 @@
 % http://www.math.ubc.ca/~cass/graphics/manual/  chapter 8
 % ~/ps/cass/08_nonlinear_transformations.pdf
 
+% 20160719 all these parameters ... it's ugly.
+% My _xy2uv routines could take 3 arguments, the first of which
+% is a dict containing the parameters, eg:
+%  <<(ax 9  (wy) 300  (py) 0  (ay) 6  (wx) 200  (px) 90>>
+%    /sine_xy2uv ctransform fill  pop
+% This makes sine_xy2uv get each param every invocation, and needs a pop;
+% so it might be faster to modify ctransform into c_transform
+% which copies the params into a module-local dict and then pops.
+% Could also react cleverly if there's no dict,
+%   by re-using previous (or default) param-values, and not popping.
+% Or, it could test which _xy2uv name it has been given,
+%   and thence extract the relevant params in the right order
+%   and pass them to the _xy2uv routine on the stack ?
+%   But _xy2uv routine will still put them into its local dict...
+% All these options are only implementation-details,
+%   compared with a c_transform which just invokes {ctransform pop}
+%   so could start there, though it still means rewriting all the _xy2uv's
+%
+% And/Or could handle an array,  containing ordered, unnamed params,
+%   by leaving it on the stack for the _xy2uv to interpret? (then popping)
+%
+% OK :-) first, use the array; then many of the _xy2uv's could get directly,
+%   which would be fast.  c_transform would check types, invoke, then pop.
+% Then later, accept also named-params in a dict, as an alternative:
+%   c_transform would check types, and construct the correct array
+%   according to the name of the _xy2uv (or print helpful error messages)
+%   The _xy2uv routines would not notice the change.
+% Then in the API the params could be either named, or ordered.
+
 /ctransform {   % the argument is the named function f(x,y) -> u,v
   load   % first load the procedure onto the stack
   1 dict begin
   /f exch def
+  % (ctransform) = dup type ==
   [   % build an array from the current path
     { [ 3 1 roll f {moveto} ] }  % x y
     { [ 3 1 roll f {lineto} ] }  % x y
@@ -33,20 +63,27 @@
   end
 } def
 
-/perspective1_xy2uv { 5 dict begin [ /y /x ] { exch def } forall
-  % Must inherit the variable ::x0
+/c_transform {
+(c_transform) = 1 index == 0 index ==
+  exch /::p exch def
+::p type ==
+  ctransform    % first stub-prototype
+} def
+
+%/perspective1_xy2uv { 5 dict begin [ /y /x ] { exch def } forall
+  % Must inherit the variable x0
   %  which is the x at which the heights are left at 1:1 scale
   %  and at which x->u will be left unchanged.
   % Ie:  if _x=x0 then u=x0 and v=y ; r == u/x0 ; v = r.y  (easy!)
   % du/dx = r = u/x0  integrating:  log(u) = x/x0 + c  or:  u = a.exp(x/x0)
   % but:  if x=x0 then u=x=x0  therefore:  x0=a.e  or:  u = x0.exp(x/x0 - 1)
-  /r  2.718281828  x ::x0 div  1 sub  exp def
-  /u ::x0  r mul def
-  /v y r mul def
-  u v
-end } def
+%  /r  2.718281828  x ::x0 div  1 sub  exp def
+%  /u ::x0  r mul def
+%  /v y r mul def
+%  u v
+%end } def
 
-/perspective2_xy2uv { 6 dict begin [ /y /x ] { exch def } forall
+/perspective_xy2uv { 6 dict begin [ /y /x ] { exch def } forall
   % Must inherit the variable ::x0
   %  which is the x at which the heights are left at 1:1 scale
   %  and at which x->u will be left unchanged.
@@ -56,11 +93,32 @@ end } def
   % this means solving du/dx = sin(u/x0) . u/x0     :-(
   % https://en.wikipedia.org/wiki/Lists_of_integrals#Lists_of_integrals
   % https://en.wikipedia.org/wiki/List_of_integrals_of_trigonometric_functions
-  /sintheta ::theta sin def   % amateurish kludge : use a constant angle :-(
-  /r  2.718281828  x ::x0 div  1 sub sintheta mul  exp  def
-  /u ::x0  r mul def
+  ::p length 1 eq {  % no theta is present
+    /r  2.718281828  x ::p 0 get div  1 sub  exp def
+  } {
+    /sintheta ::p 1 get sin def % amateurish kludge: use a constant angle :-(
+    /r  2.718281828  x ::p 0 get div   1 sub sintheta mul  exp  def
+  } ifelse
+  /u ::p 0 get  r mul def
   /v y r mul def
   u v
 end } def
+
+/sine_xy2uv {   % needs the parameters:
+  % [x_amplitude y_wavelength y_phase  y_amplitude x_wavelength x_phase]
+  % The wavelength is in the x dimension if the amplitude is in the y dimension
+  % u = x + x_amplitude.sin(360y/y_wavelength + y_phase)
+  % v = y + y_amplitude.sin(360x/x_wavelength + x_phase)
+  % 2 index type =  2 index ==  1 index ==  0 index ==
+  % 3 2 roll
+  % (rolled...) =
+  % 0 index == 1 index == 2 index ==
+  % (about to exch def forall...) =
+  3 dict begin  [ /y /x ] { exch def } forall
+  % (sine_xy2uv) =  0 index type ==
+  360 y mul ::p 1 get div  ::p 2 get add  sin  ::p 0 get mul  x add
+  360 x mul ::p 4 get div  ::p 5 get add  sin  ::p 3 get mul  y add
+  end
+} def
 
 %%EndResource
