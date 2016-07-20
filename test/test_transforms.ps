@@ -11,6 +11,10 @@
 (/home/pjb/ps/lib/transforms.ps) run
 /xmax currentpagedevice (PageSize) get 0 get def
 /ymax currentpagedevice (PageSize) get 1 get def
+/rect { 4 dict begin   [ /h /w /y /x ] { exch def } forall
+  x y moveto w 0 rlineto 0 h rlineto 0 w sub 0 rlineto x y lineto closepath
+end } def
+
 %%EndProlog
 %%Page: 1 1
 %%BeginPageSetup
@@ -90,11 +94,6 @@ showpage
 %%BeginPageSetup
 %%EndPageSetup
 
-/rect {
-  4 dict begin   [ /h /w /y /x ] { exch def } forall
-  x y moveto  w 0 rlineto  0 h rlineto  0 w sub 0 rlineto  x y lineto closepath
-  end
-} def
 
 newpath
 0.8 setgray
@@ -105,21 +104,105 @@ xmax .005 mul setlinewidth
     x y w w rect
   } for
 } for
+
 % [x_amplitude y_wavelength y_phase  y_amplitude x_wavelength x_phase]
 /params [9 300 0  6 200 90] def
-% params ==
 params /sine_xy2uv c_transform fill
 
-newpath
- % 10 145 moveto 100 145 lineto 300 145 lineto 5 80 145 lineto % closepath
+newpath 0.5 setgray
 10 205 moveto   15 5 580 { 205 lineto } for
-0.5 setgray
-% params ==
 params /sine_xy2uv c_transform stroke
 % a simple long lineto does not become wavy ; only the joinpoints get moved!
-
 /Times-Bold  ymax .03 mul selectfont 0 setgray
   xmax .15 mul ymax .95 mul moveto (sine_xy2uv) show
+
+showpage
+
+%%Page: 4 4
+%%BeginPageSetup
+%%EndPageSetup
+
+%/hardlens_xy2uv {   % params: [ xcentre ycentre r magnification ]
+%  10 dict begin  [ /y /x ] { exch def } forall
+%  /x0 ::p 0 get def  /y0  ::p 1 get def
+%  /r0 ::p 2 get def  /mag ::p 3 get def
+%  /r  x x0 sub dup mul  y y0 sub dup mul  add  sqrt  def
+%  r r0 ge {
+%    /u x def  /v y def
+%  } {
+%    /stretch  r r0 div 90 mul cos  mag 1 sub  mul  1 add  def
+%    % problem: if mag>2 then some points inside get moved to outside :-(
+%    r r0 div stretch mul 1.0 gt { /stretch r0 r div def } if   % kludge
+%    /u  x x0 sub stretch mul  x0 add  def
+%    /v  y y0 sub stretch mul  y0 add  def
+%  } ifelse
+%  u v
+%  end
+%} def
+
+%/softlens_xy2uv {   % params: [ xcentre ycentre r magnification ]
+%  10 dict begin  [ /y /x ] { exch def } forall
+%  /x0 ::p 0 get def  /y0  ::p 1 get def
+%  /r0 ::p 2 get def  /mag ::p 3 get def
+%  /r  x x0 sub dup mul  y y0 sub dup mul  add  sqrt  def
+%  r r0 ge {
+%    /u x def  /v y def
+%  } {
+%    /stretch  r r0 div 180 mul cos  1 add  0.5 mul mag 1 sub mul  1 add  def
+%    % problem: if mag>2 then some points inside get moved to outside :-(
+%    r r0 div stretch mul 1.0 gt { /stretch r0 r div def } if   % kludge
+%    /u  x x0 sub stretch mul  x0 add  def
+%    /v  y y0 sub stretch mul  y0 add  def
+%  } ifelse
+%  u v
+%  end
+%} def
+
+%/twist_xy2uv {   % params: [ xcentre ycentre r angle ]
+%  10 dict begin  [ /y /x ] { exch def } forall
+%  /x0 ::p 0 get def  /y0  ::p 1 get def
+%  /r0 ::p 2 get def  /ang ::p 3 get def
+%  /r  x x0 sub dup mul  y y0 sub dup mul  add  sqrt  def
+%  r 0 eq {
+%    x y
+%  } {
+%    /theta  y y0 sub  x x0 sub  atan def
+%    /newtheta 2.718281828  0 r r0 div sub  exp  ang  mul theta add  def
+%    /u  r newtheta cos mul  x0 add  def
+%    /v  r newtheta sin mul  y0 add  def
+%    u v
+%  } ifelse
+%  end
+%} def
+
+newpath
+0.8 setgray
+/w xmax .04 mul def
+xmax .005 mul setlinewidth
+.03 .06 .93 {     /x exch xmax mul def
+  .03 .04 .96 {  /y exch ymax mul def
+    x y w w rect
+  } for
+} for
+
+[ 120 700 80 1.8 ]  /softlens_xy2uv c_transform
+[ 120 450 80 1.8 ]  /hardlens_xy2uv c_transform
+[ 350 200 70 60 ]  /twist_xy2uv    c_transform
+stroke
+
+/Times-Bold  ymax .03 mul selectfont 0 setgray
+  xmax .05 mul ymax .95 mul moveto (softlens_xy2uv) show
+  xmax .05 mul ymax .65 mul moveto (hardlens_xy2uv) show
+  xmax .05 mul 200 moveto (twist_xy2uv) show
+
+
+showpage
+
+%%Page: 5 5
+%%BeginPageSetup
+%%EndPageSetup
+/Times-Bold  ymax .03 mul selectfont 0 setgray
+  xmax .15 mul ymax .95 mul moveto (collapse_xy2uv) show
 
 showpage
 

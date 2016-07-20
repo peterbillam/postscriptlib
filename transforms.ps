@@ -64,24 +64,12 @@
 } def
 
 /c_transform {
-(c_transform) = 1 index == 0 index ==
+  % (c_transform) = 1 index == 0 index ==
   exch /::p exch def
-::p type ==
+  % ::p type ==
   ctransform    % first stub-prototype
 } def
 
-%/perspective1_xy2uv { 5 dict begin [ /y /x ] { exch def } forall
-  % Must inherit the variable x0
-  %  which is the x at which the heights are left at 1:1 scale
-  %  and at which x->u will be left unchanged.
-  % Ie:  if _x=x0 then u=x0 and v=y ; r == u/x0 ; v = r.y  (easy!)
-  % du/dx = r = u/x0  integrating:  log(u) = x/x0 + c  or:  u = a.exp(x/x0)
-  % but:  if x=x0 then u=x=x0  therefore:  x0=a.e  or:  u = x0.exp(x/x0 - 1)
-%  /r  2.718281828  x ::x0 div  1 sub  exp def
-%  /u ::x0  r mul def
-%  /v y r mul def
-%  u v
-%end } def
 
 /perspective_xy2uv { 6 dict begin [ /y /x ] { exch def } forall
   % Must inherit the variable ::x0
@@ -120,5 +108,60 @@ end } def
   360 x mul ::p 4 get div  ::p 5 get add  sin  ::p 3 get mul  y add
   end
 } def
+
+/hardlens_xy2uv {   % params: [ xcentre ycentre r magnification ]
+  10 dict begin  [ /y /x ] { exch def } forall
+  /x0 ::p 0 get def  /y0  ::p 1 get def
+  /r0 ::p 2 get def  /mag ::p 3 get def
+  /r  x x0 sub dup mul  y y0 sub dup mul  add  sqrt  def
+  r r0 ge {
+    /u x def  /v y def
+  } {
+    /stretch  r r0 div 90 mul cos  mag 1 sub  mul  1 add  def
+    % problem: if mag>2 then some points inside get moved to outside :-(
+    r r0 div stretch mul 1.0 gt { /stretch r0 r div def } if   % kludge
+    /u  x x0 sub stretch mul  x0 add  def
+    /v  y y0 sub stretch mul  y0 add  def
+  } ifelse
+  u v
+  end
+} def
+
+/softlens_xy2uv {   % params: [ xcentre ycentre r magnification ]
+  10 dict begin  [ /y /x ] { exch def } forall
+  /x0 ::p 0 get def  /y0  ::p 1 get def
+  /r0 ::p 2 get def  /mag ::p 3 get def
+  /r  x x0 sub dup mul  y y0 sub dup mul  add  sqrt  def
+  r r0 ge {
+    /u x def  /v y def
+  } {
+    /stretch  r r0 div 180 mul cos  1 add  0.5 mul mag 1 sub mul  1 add  def
+    % problem: if mag>2 then some points inside get moved to outside :-(
+    r r0 div stretch mul 1.0 gt { /stretch r0 r div def } if   % kludge
+    /u  x x0 sub stretch mul  x0 add  def
+    /v  y y0 sub stretch mul  y0 add  def
+  } ifelse
+  u v
+  end
+} def
+
+/twist_xy2uv {   % params: [ xcentre ycentre r angle ]
+  10 dict begin  [ /y /x ] { exch def } forall
+  /x0 ::p 0 get def  /y0  ::p 1 get def
+  /r0 ::p 2 get def  /ang ::p 3 get def
+  /r  x x0 sub dup mul  y y0 sub dup mul  add  sqrt  def
+  r 0 eq {
+    x y
+  } {
+    /theta  y y0 sub  x x0 sub  atan def
+    /newtheta 2.718281828  0 r r0 div sub  exp  ang  mul theta add  def
+    /u  r newtheta cos mul  x0 add  def
+    /v  r newtheta sin mul  y0 add  def
+    u v
+  } ifelse
+  end
+} def
+
+
 
 %%EndResource

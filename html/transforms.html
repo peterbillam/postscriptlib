@@ -73,6 +73,17 @@ transforms.ps - Some useful transforms in PostScript
  % [x_amplitud  y_wavelen y_phase  y_amplitud x_wavelen x_phase]
  [9 300 0  6 200 90] <A HREF="#sine_xy2uv">/sine_xy2uv</A> c_transform   fill
 
+ showpage
+ 18 36 575 {   /x exch def
+   18 36 808 { /y exch def  x y 20 20 rect } for
+ } for   % construct a path
+ % [ x y r magnification ]
+ [ 120 700 80 1.8 ]  <A HREF="#softlens_xy2uv">/softlens_xy2uv</A> c_transform
+ [ 120 450 80 1.8 ]  <A HREF="#hardlens_xy2uv">/hardlens_xy2uv</A> c_transform
+ % [ x y r angle ]
+ [ 350 200 70 60 ]   <A HREF="#twist_xy2uv">/twist_xy2uv</A>    c_transform  stroke
+
+
 </PRE>
 
 <A NAME="description"><HR></A><H3>DESCRIPTION</H3>
@@ -117,6 +128,9 @@ where the transformation <CODE>x,y</CODE> to <CODE>x',y'</CODE> is:<BR>
 <A HREF="#c_transform">c_transform</A> &nbsp;
 <A HREF="#perspective_xy2uv">perspective_xy2uv</A> &nbsp;
 <A HREF="#sine_xy2uv">sine_xy2uv</A> &nbsp;
+<A HREF="#softlens_xy2uv">softlens_xy2uv</A> &nbsp;
+<A HREF="#hardlens_xy2uv">hardlens_xy2uv</A> &nbsp;
+<A HREF="#twist_xy2uv">twist_xy2uv</A> &nbsp;
 </B></P>
 
 <DL><DT>
@@ -229,6 +243,43 @@ An array of six parameters is needed. In order:
 <CODE>x_wavelength</CODE> and
 <CODE>x_phase</CODE> for the waviness in the horizontal lines.
 
+</P></DD><DT>
+<B><A NAME="softlens_xy2uv">
+[x y radius magnification] &nbsp; /softlens_xy2uv &nbsp; c_transform</A></B>
+</DT><DD><P>
+<B>softlens_xy2uv</B> implements a soft-edged magnifying-glass
+over the coordinate grid.
+An array of four parameters is needed. In order:
+<CODE>x</CODE>,
+<CODE>y</CODE>,
+<CODE>radius</CODE> and
+<CODE>magnification</CODE>.
+
+</P></DD><DT>
+<B><A NAME="hardlens_xy2uv">
+[x y radius magnification] &nbsp; /hardlens_xy2uv &nbsp; c_transform</A></B>
+</DT><DD><P>
+<B>softlens_xy2uv</B> implements a hard-edged magnifying-glass
+over the coordinate grid.
+An array of four parameters is needed. In order:
+<CODE>x</CODE>,
+<CODE>y</CODE>,
+<CODE>radius</CODE> and
+<CODE>magnification</CODE>.
+
+</P></DD><DT>
+<B><A NAME="twist_xy2uv">
+[x y radius angle] &nbsp; /twist_xy2uv &nbsp; c_transform</A></B>
+</DT><DD><P>
+<B>twist_xy2uv</B> implements a twist in the coordinate grid.
+An array of four parameters is needed. In order:
+<CODE>x</CODE>,
+<CODE>y</CODE>,
+<CODE>radius</CODE> and
+<CODE>angle</CODE>.<BR>
+The degrees-of-twist decay exponentially with the radial distance
+from the centre.
+
 </P></DD>
 </DL>
 
@@ -276,6 +327,9 @@ www.pjb.com.au/comp/contact.html</A>
 <UL><LI>
 <A HREF="http://www.math.ubc.ca/~cass/graphics/manual/">
 www.math.ubc.ca/~cass/graphics/manual/</A>
+</LI><LI>
+<A HREF="https://github.com/peterbillam/postscriptlib/blob/master/test/test_transforms.ps">
+test_transforms.ps</A>
 </LI><LI>
 <A HREF="colours.html">colours.ps</A>
 </LI><LI>
