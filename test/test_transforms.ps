@@ -93,7 +93,28 @@ showpage
 %%Page: 3 3
 %%BeginPageSetup
 %%EndPageSetup
+/Times-Bold  ymax .03 mul selectfont
+  xmax .15 mul ymax .95 mul moveto (perspective_flat_xy2uv) show
+/xh xmax .55  mul def   /yh ymax 0.27 mul def
+0.8 setgray 0 0 xmax yh rectfill 0.5 setgray  % the ground
+xh yh translate   % the vanishing-point is now 0,0
 
+-.90 .35 11.0 { /y exch yh mul def
+  xh -.7 mul  y xh 1.2 mul  yh .11 mul rect
+} for
+0 setgray
+[ yh -.90 mul  20 ] /perspective_flat_xy2uv c_transform fill
+
+xh -.60 mul yh -.95 mul xh .08 mul xh 12 mul rect
+xh .35 mul yh -.95 mul xh .08 mul xh 12 mul rect
+0.5 setgray
+[ yh -.90 mul  20 ] /perspective_flat_xy2uv c_transform fill
+
+showpage
+
+%%Page: 4 4
+%%BeginPageSetup
+%%EndPageSetup
 
 newpath
 0.8 setgray
@@ -118,7 +139,7 @@ params /sine_xy2uv c_transform stroke
 
 showpage
 
-%%Page: 4 4
+%%Page: 5 5
 %%BeginPageSetup
 %%EndPageSetup
 
@@ -188,7 +209,7 @@ xmax .005 mul setlinewidth
 [ 120 700 80 1.8 ]  /softlens_xy2uv c_transform
 [ 120 450 80 1.8 ]  /hardlens_xy2uv c_transform
 [ 350 200 70 60 ]  /twist_xy2uv    c_transform
-stroke
+fill
 
 /Times-Bold  ymax .03 mul selectfont 0 setgray
   xmax .05 mul ymax .95 mul moveto (softlens_xy2uv) show
@@ -198,7 +219,7 @@ stroke
 
 showpage
 
-%%Page: 5 5
+%%Page: 6 6
 %%BeginPageSetup
 %%EndPageSetup
 /Times-Bold  ymax .03 mul selectfont 0 setgray

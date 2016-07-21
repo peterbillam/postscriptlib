@@ -10,8 +10,12 @@ A collection of utilities for writers of PostScript, including:
 * The muscript.ps collection of procedures to display musical symbols,
   derived from [muscript](https://github.com/peterbillam/muscript/)
 * The random.ps collection of some useful random-number stuff
-* The text.ps collection of text-handling subroutines
+* The text.ps collection of text-handling procedures
+* The transform.ps collection of enjoyable non-linear path-transforms
 * The Perl script include\_run to include all run-files into a
   PostScript file
 * A comparison of Perl and PostScript as programming languages, which
   would serve Perl people as an introduction to PostScript
+
+See also
+[the online documentation](http://www.pjb.com.au/comp/index.html#postscript)

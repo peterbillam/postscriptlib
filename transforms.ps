@@ -64,31 +64,40 @@
 } def
 
 /c_transform {
-  % (c_transform) = 1 index == 0 index ==
-  exch /::p exch def
-  % ::p type ==
+  exch /::p exch def   % should protect this in a local dictionary...
   ctransform    % first stub-prototype
 } def
 
 
-/perspective_xy2uv { 6 dict begin [ /y /x ] { exch def } forall
-  % Must inherit the variable ::x0
-  %  which is the x at which the heights are left at 1:1 scale
-  %  and at which x->u will be left unchanged.
-  % Must also inherit the variable ::theta
-  %  which is the angle at which the viewer sees the x0 point in the surface
-  %  so if theta=90 the viewer is face-on to the x=u=x0 point
-  % this means solving du/dx = sin(u/x0) . u/x0     :-(
+/perspective_xy2uv { 6 dict begin [ /y /x ] { exch def } forall  % [x0 theta]
+  % x0 is the x at which the heights are left at 1:1 scale
+  %   and at which x->u will be left unchanged.
+  % theta is the angle at which the viewer sees the x0 point in the surface
+  %   so if theta=90 the viewer is face-on to the x=u=x0 point
+  %   this means solving du/dx = sin(u/x0) . u/x0     :-(
   % https://en.wikipedia.org/wiki/Lists_of_integrals#Lists_of_integrals
   % https://en.wikipedia.org/wiki/List_of_integrals_of_trigonometric_functions
   ::p length 1 eq {  % no theta is present
     /r  2.718281828  x ::p 0 get div  1 sub  exp def
   } {
     /sintheta ::p 1 get sin def % amateurish kludge: use a constant angle :-(
-    /r  2.718281828  x ::p 0 get div   1 sub sintheta mul  exp  def
+    /r  2.718281828  x ::p 0 get div  1 sub sintheta mul  exp  def
   } ifelse
   /u ::p 0 get  r mul def
   /v y r mul def
+  u v
+end } def
+
+/perspective_flat_xy2uv { 6 dict begin [/y /x] {exch def} forall % [y0 theta]
+  % as perspective_xy2uv except that the surface is flat rather than vertical
+  ::p length 1 eq {  % no theta is present
+    /r  2.718281828  y ::p 0 get div  1 sub  exp def
+  } {
+    /sintheta ::p 1 get sin def % amateurish kludge: use a constant angle :-(
+    /r  2.718281828  y ::p 0 get div  1 sub sintheta mul  exp  def
+  } ifelse
+  /u x r mul def
+  /v ::p 0 get  r mul def
   u v
 end } def
 
@@ -97,13 +106,7 @@ end } def
   % The wavelength is in the x dimension if the amplitude is in the y dimension
   % u = x + x_amplitude.sin(360y/y_wavelength + y_phase)
   % v = y + y_amplitude.sin(360x/x_wavelength + x_phase)
-  % 2 index type =  2 index ==  1 index ==  0 index ==
-  % 3 2 roll
-  % (rolled...) =
-  % 0 index == 1 index == 2 index ==
-  % (about to exch def forall...) =
   3 dict begin  [ /y /x ] { exch def } forall
-  % (sine_xy2uv) =  0 index type ==
   360 y mul ::p 1 get div  ::p 2 get add  sin  ::p 0 get mul  x add
   360 x mul ::p 4 get div  ::p 5 get add  sin  ::p 3 get mul  y add
   end
