@@ -82,14 +82,16 @@ transforms.ps - Some useful transforms in PostScript
  [9 300 0  6 200 90] <A HREF="#sine_xy2uv">/sine_xy2uv</A> c_transform   fill
  showpage
 
- 18 36 575 {   /x exch def
-   18 36 808 { /y exch def  x y 20 20 rect } for
+ 18 30 575 {   /x exch def
+   18 30 808 { /y exch def  x y 16 16 rect } for
  } for   % construct a path
  % [ x y r magnification ]
  [ 120 700 80 1.8 ]  <A HREF="#softlens_xy2uv">/softlens_xy2uv</A> c_transform
  [ 120 450 80 1.8 ]  <A HREF="#hardlens_xy2uv">/hardlens_xy2uv</A> c_transform
  % [ x y r angle ]
- [ 350 200 70 60 ]   <A HREF="#twist_xy2uv">/twist_xy2uv</A>    c_transform  fill
+ [ 350 200 70 60 ]   <A HREF="#twist_xy2uv">/twist_xy2uv</A>    c_transform
+ % [ x y r range ]
+ [ 400 600 70 90 ]   <A HREF="#collapse_xy2uv">/collapse_xy2uv</A> c_transform  fill
 
 
 </PRE>
@@ -134,6 +136,7 @@ where the transformation <CODE>x,y</CODE> to <CODE>x',y'</CODE> is:<BR>
 <P><B> &nbsp; &nbsp;
 <A HREF="#ctransform">ctransform</A> &nbsp;
 <A HREF="#c_transform">c_transform</A> &nbsp;
+<A HREF="#collapse_xy2uv">collapse_xy2uv</A> &nbsp;
 <A HREF="#perspective_xy2uv">perspective_xy2uv</A> &nbsp;
 <A HREF="#perspective_flat_xy2uv">perspective_flat_xy2uv</A> &nbsp;
 <A HREF="#sine_xy2uv">sine_xy2uv</A> &nbsp;
@@ -180,6 +183,17 @@ implementing some useful transformations&nbsp;.&nbsp;.&nbsp;.
 </P>
 
 </P></DD><DT>
+<B><A NAME="collapse_xy2uv">
+[x0 y0 radius range] &nbsp; /collapse_xy2uv &nbsp; c_transform</A></B>
+</DT><DD><P>
+<B>collapse_xy2uv</B> implements a "collapse" transform
+(think Black Hole, or Macular Degeneration) in which
+everything within a given circle collapses down to the center,
+and things outside that circle
+(within a given <B>range</B> of it)
+stretch inward to fill the gap.
+
+</P></DD><DT>
 <B><A NAME="perspective_xy2uv">
 [x0 theta] &nbsp; /perspective_xy2uv &nbsp; c_transform</A></B>
 </DT><DD><P>
@@ -188,7 +202,7 @@ perspective-transformation
 in which parallel lines converge toward a vanishing-point.
 The lines are assumed to lie in a vertical surface,
 such as a building-facade, or a wall, or a billboard.
-&nbsp;
+<BR>
 The vanishing-point must be at <CODE>0,0</CODE> so you will need to
 <CODE>translate</CODE> there first .&nbsp;.&nbsp;.
 <BR>
@@ -259,7 +273,7 @@ An array of four parameters is needed. In order:
 <B><A NAME="hardlens_xy2uv">
 [x y radius magnification] &nbsp; /hardlens_xy2uv &nbsp; c_transform</A></B>
 </DT><DD><P>
-<B>softlens_xy2uv</B> implements a hard-edged magnifying-glass
+<B>hardlens_xy2uv</B> implements a hard-edged magnifying-glass
 over the coordinate grid.
 An array of four parameters is needed. In order:
 <CODE>x</CODE>,

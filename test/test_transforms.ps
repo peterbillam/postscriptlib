@@ -11,9 +11,17 @@
 (/home/pjb/ps/lib/transforms.ps) run
 /xmax currentpagedevice (PageSize) get 0 get def
 /ymax currentpagedevice (PageSize) get 1 get def
+
 /rect { 4 dict begin   [ /h /w /y /x ] { exch def } forall
   x y moveto w 0 rlineto 0 h rlineto 0 w sub 0 rlineto x y lineto closepath
 end } def
+
+/circle { 3 dict begin  [ /r /y /x ] { exch def } forall
+  % 2 index 0 index add  1 index  moveto
+  % 0 360 arc
+  x r add y moveto  x y r 0 360 arc  x r add y moveto closepath
+  end
+} def
 
 %%EndProlog
 %%Page: 1 1
@@ -58,10 +66,6 @@ showpage
 /xh xmax .55  mul def
 /yh ymax 0.27 mul def
 0.8 setgray 0 0 xmax yh rectfill 0.5 setgray  % the ground
-
-/circle {
-  2 index 0 index add 1 index moveto 0 360 arc
-} def
 
 xh yh translate   % the vanishing-point is now 0,0
 % 0 0 10 circle fill
@@ -143,61 +147,8 @@ showpage
 %%BeginPageSetup
 %%EndPageSetup
 
-%/hardlens_xy2uv {   % params: [ xcentre ycentre r magnification ]
-%  10 dict begin  [ /y /x ] { exch def } forall
-%  /x0 ::p 0 get def  /y0  ::p 1 get def
-%  /r0 ::p 2 get def  /mag ::p 3 get def
-%  /r  x x0 sub dup mul  y y0 sub dup mul  add  sqrt  def
-%  r r0 ge {
-%    /u x def  /v y def
-%  } {
-%    /stretch  r r0 div 90 mul cos  mag 1 sub  mul  1 add  def
-%    % problem: if mag>2 then some points inside get moved to outside :-(
-%    r r0 div stretch mul 1.0 gt { /stretch r0 r div def } if   % kludge
-%    /u  x x0 sub stretch mul  x0 add  def
-%    /v  y y0 sub stretch mul  y0 add  def
-%  } ifelse
-%  u v
-%  end
-%} def
-
-%/softlens_xy2uv {   % params: [ xcentre ycentre r magnification ]
-%  10 dict begin  [ /y /x ] { exch def } forall
-%  /x0 ::p 0 get def  /y0  ::p 1 get def
-%  /r0 ::p 2 get def  /mag ::p 3 get def
-%  /r  x x0 sub dup mul  y y0 sub dup mul  add  sqrt  def
-%  r r0 ge {
-%    /u x def  /v y def
-%  } {
-%    /stretch  r r0 div 180 mul cos  1 add  0.5 mul mag 1 sub mul  1 add  def
-%    % problem: if mag>2 then some points inside get moved to outside :-(
-%    r r0 div stretch mul 1.0 gt { /stretch r0 r div def } if   % kludge
-%    /u  x x0 sub stretch mul  x0 add  def
-%    /v  y y0 sub stretch mul  y0 add  def
-%  } ifelse
-%  u v
-%  end
-%} def
-
-%/twist_xy2uv {   % params: [ xcentre ycentre r angle ]
-%  10 dict begin  [ /y /x ] { exch def } forall
-%  /x0 ::p 0 get def  /y0  ::p 1 get def
-%  /r0 ::p 2 get def  /ang ::p 3 get def
-%  /r  x x0 sub dup mul  y y0 sub dup mul  add  sqrt  def
-%  r 0 eq {
-%    x y
-%  } {
-%    /theta  y y0 sub  x x0 sub  atan def
-%    /newtheta 2.718281828  0 r r0 div sub  exp  ang  mul theta add  def
-%    /u  r newtheta cos mul  x0 add  def
-%    /v  r newtheta sin mul  y0 add  def
-%    u v
-%  } ifelse
-%  end
-%} def
-
 newpath
-0.8 setgray
+0.7 setgray
 /w xmax .04 mul def
 xmax .005 mul setlinewidth
 .03 .06 .93 {     /x exch xmax mul def
@@ -216,12 +167,23 @@ fill
   xmax .05 mul ymax .65 mul moveto (hardlens_xy2uv) show
   xmax .05 mul 200 moveto (twist_xy2uv) show
 
-
 showpage
 
 %%Page: 6 6
 %%BeginPageSetup
 %%EndPageSetup
+
+newpath 0.7 setgray
+/w xmax .02 mul def
+.03 .06 .93 {    /x exch xmax mul def
+  .03 .04 .96 {  /y exch ymax mul def
+    x y w circle  % w rect  % circle
+  } for
+} for
+
+[ 295 345  70 140 ]  /collapse_xy2uv    c_transform
+fill
+
 /Times-Bold  ymax .03 mul selectfont 0 setgray
   xmax .15 mul ymax .95 mul moveto (collapse_xy2uv) show
 

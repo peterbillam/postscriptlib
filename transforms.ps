@@ -68,6 +68,28 @@
   ctransform    % first stub-prototype
 } def
 
+% ------------------   The *_xy2uv procedures ....  ----------------
+
+/collapse_xy2uv {   % [ x0 y0 r0 range ]
+  10 dict begin [ /y /x ] {exch def } forall
+  /x0 ::p 0 get def  /y0    ::p 1 get def
+  /r0 ::p 2 get def  /range ::p 3 get def
+  /r  x x0 sub dup mul  y y0 sub dup mul  add  sqrt  def
+  r r0 le {
+    /u x0 def  /v y0 def
+  } {
+    r r0 range add ge {
+      /u x def /v y def
+    } {
+      /theta  y y0 sub  x x0 sub  atan def
+      /new_r  r r0 sub range div sqrt  r mul  def
+      /u  theta cos  new_r mul  x0 add  def
+      /v  theta sin  new_r mul  y0 add  def
+    } ifelse
+  } ifelse
+  u v
+  end
+} def
 
 /perspective_xy2uv { 6 dict begin [ /y /x ] { exch def } forall  % [x0 theta]
   % x0 is the x at which the heights are left at 1:1 scale
