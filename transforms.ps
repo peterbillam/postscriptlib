@@ -40,13 +40,17 @@
 % Then in the API the params could be either named, or ordered.
 
 /ctransform {   % the argument is the named function f(x,y) -> u,v
-  load   % first load the procedure onto the stack
-  1 dict begin
-  /f exch def
-  % (ctransform) = dup type ==
-  [   % build an array from the current path
-    { [ 3 1 roll f {moveto} ] }  % x y
-    { [ 3 1 roll f {lineto} ] }  % x y
+  load        % first load the procedure onto the stack
+  1 dict begin  /f exch def  % and give it a local name
+  % could keep track of x,y and weed out zero-length stuff ?
+  % or break "long" line-segments into subsections, or into curves ?
+  [  % build an array from the current path
+    {   % x y
+      [ 3 1 roll f {moveto} ]
+    }
+    {   % x y
+      [ 3 1 roll f {lineto} ]
+    }
     {   % x1 y1 x2 y2 x3 y3
       [ 7 1 roll    % [ P1 P2 P3
         f 6 2 roll  % [ U3 P1 P2
@@ -82,7 +86,7 @@
       /u x def /v y def
     } {
       /theta  y y0 sub  x x0 sub  atan def
-      /new_r  r r0 sub range div sqrt  r mul  def
+      /new_r  r r0 sub range div 0.35 exp  r mul  def
       /u  theta cos  new_r mul  x0 add  def
       /v  theta sin  new_r mul  y0 add  def
     } ifelse
@@ -91,7 +95,9 @@
   end
 } def
 
-/perspective_xy2uv { 6 dict begin [ /y /x ] { exch def } forall  % [x0 theta]
+/perspective_xy2uv { 6 dict begin [ /y /x ] { exch def } forall
+  % parameters:  [xvp yvp x0 theta]
+  % xvp and yvp are the location of the vanishing-point.
   % x0 is the x at which the heights are left at 1:1 scale
   %   and at which x->u will be left unchanged.
   % theta is the angle at which the viewer sees the x0 point in the surface
@@ -99,27 +105,30 @@
   %   this means solving du/dx = sin(u/x0) . u/x0     :-(
   % https://en.wikipedia.org/wiki/Lists_of_integrals#Lists_of_integrals
   % https://en.wikipedia.org/wiki/List_of_integrals_of_trigonometric_functions
-  ::p length 1 eq {  % no theta is present
-    /r  2.718281828  x ::p 0 get div  1 sub  exp def
+  ::p length 3 eq {  % no theta is present
+    /r 2.718281828  x ::p 0 get sub ::p 2 get ::p 0 get sub div 1 sub  exp def
   } {
-    /sintheta ::p 1 get sin def % amateurish kludge: use a constant angle :-(
-    /r  2.718281828  x ::p 0 get div  1 sub sintheta mul  exp  def
+    /sintheta ::p 3 get sin def % amateurish kludge: use a constant angle :-(
+    /r 2.718281828  x ::p 0 get sub ::p 2 get ::p 0 get sub div
+      1 sub sintheta mul  exp def
   } ifelse
-  /u ::p 0 get  r mul def
-  /v y r mul def
+  /u ::p 2 get ::p 0 get sub r mul  ::p 0 get add  def
+  /v  y ::p 1 get sub  r mul  ::p 1 get add  def
   u v
 end } def
 
-/perspective_flat_xy2uv { 6 dict begin [/y /x] {exch def} forall % [y0 theta]
-  % as perspective_xy2uv except that the surface is flat rather than vertical
-  ::p length 1 eq {  % no theta is present
-    /r  2.718281828  y ::p 0 get div  1 sub  exp def
+/perspective_flat_xy2uv { 6 dict begin [/y /x] {exch def} forall
+  % parameters:  [xvp yvp y0 theta]
+  % as perspective_xy2uv, except that the surface is flat rather than vertical
+  ::p length 3 eq {  % no theta is present
+    /r 2.718281828  y ::p 1 get sub ::p 2 get ::p 1 get sub div 1 sub  exp def
   } {
-    /sintheta ::p 1 get sin def % amateurish kludge: use a constant angle :-(
-    /r  2.718281828  y ::p 0 get div  1 sub sintheta mul  exp  def
+    /sintheta ::p 3 get sin def % kludge: use a constant angle :-(
+    /r 2.718281828  y ::p 1 get sub ::p 2 get ::p 1 get sub div
+      1 sub sintheta mul  exp  def
   } ifelse
-  /u x r mul def
-  /v ::p 0 get  r mul def
+  /u  x ::p 0 get sub  r mul  ::p 0 get add  def
+  /v ::p 2 get ::p 1 get sub r mul  ::p 1 get add def
   u v
 end } def
 

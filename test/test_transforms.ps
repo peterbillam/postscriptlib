@@ -29,32 +29,30 @@ end } def
 %%EndPageSetup
 /Times-Bold  ymax .03 mul selectfont
   xmax .15 mul ymax .95 mul moveto (perspective_xy2uv  with no theta) show
-/xh xmax .55  mul def
-/yh ymax 0.27 mul def
-0.8 setgray 0 0 xmax yh rectfill 0.5 setgray  % the ground
-xh yh translate   % the vanishing-point must be 0,0
+/xvp xmax .55  mul def
+/yvp ymax .27 mul def
+0.8 setgray 0 0 xmax yvp rectfill % the ground
+% xvp yvp translate   % the vanishing-point must be 0,0
 
-newpath /x0  xmax -.50 mul def   % = .05-.55 = -.50
 /HelveticaBold  ymax .22 mul selectfont
+newpath 0.5 setgray  /x0  xmax .05 mul def
 % left of the vanishing-point, we start printing text at ::x0
-x0 ymax  .55 mul moveto (HEMNHXWENZEYKHEMM) true charpath
-x0 ymax  .35 mul moveto (EMNHXWENZEYKHEMMA) true charpath
-x0 ymax  .15 mul moveto (MNHXWENZEYKHEMMAD) true charpath
-x0 ymax -.05 mul moveto (MHXWENZEYKHEMMADX) true charpath
-x0 ymax -.25 mul moveto (HXWENZEYKHEMMADXM) true charpath
-[ x0 ] /perspective_xy2uv c_transform fill
+x0 ymax .82 mul moveto (HEMNHXWENZEYKHEMM) true charpath
+x0 ymax .63 mul moveto (EMNHXWENZEYKHEMMA) true charpath
+x0 ymax .42 mul moveto (MNHXWENZEYKHEMMAD) true charpath
+x0 ymax .22 mul moveto (MHXWENZEYKHEMMADX) true charpath
+x0 ymax .02 mul moveto (HXWENZEYKHEMMADXM) true charpath
+[ xvp yvp x0 ] /perspective_xy2uv c_transform fill
 
 % but right of the VP, we start the text at x0-stringwidth
-newpath /x0 xmax .40 mul def
-/HelveticaBold  ymax .22 mul selectfont
-0 setgray
+newpath  0  setgray  /x0 xmax .95 mul def
 /x_start_of_string  x0 (OQCSU) stringwidth pop sub def
-x_start_of_string  ymax  .55 mul moveto (QCSUO) true charpath
-x_start_of_string  ymax  .35 mul moveto (OQCSU) true charpath
-x_start_of_string  ymax  .15 mul moveto (UOQCS) true charpath
-x_start_of_string  ymax -.05 mul moveto (SUOQC) true charpath
-x_start_of_string  ymax -.25 mul moveto (CSUOQ) true charpath
-[ x0 ] /perspective_xy2uv c_transform fill
+x_start_of_string  ymax .82 mul moveto (QCSUO) true charpath
+x_start_of_string  ymax .62 mul moveto (OQCSU) true charpath
+x_start_of_string  ymax .42 mul moveto (UOQCS) true charpath
+x_start_of_string  ymax .22 mul moveto (SUOQC) true charpath
+x_start_of_string  ymax .02 mul moveto (CSUOQ) true charpath
+[ xvp yvp x0 ] /perspective_xy2uv c_transform fill
 
 showpage
 
@@ -63,34 +61,30 @@ showpage
 %%EndPageSetup
 /Times-Bold  ymax .03 mul selectfont
   xmax .15 mul ymax .95 mul moveto (perspective_xy2uv  with theta) show
-/xh xmax .55  mul def
-/yh ymax 0.27 mul def
-0.8 setgray 0 0 xmax yh rectfill 0.5 setgray  % the ground
-
-xh yh translate   % the vanishing-point is now 0,0
-% 0 0 10 circle fill
-
-newpath /x0  xmax -.50 mul def   % = .05-.55 = -.50
+/xvp xmax .55  mul def
+/yvp ymax 0.27 mul def
+0.8 setgray 0 0 xmax yvp rectfill % the ground
 /HelveticaBold  ymax .22 mul selectfont
+
+newpath 0.5 setgray  /x0  xmax .05 mul def
 % left of the vanishing-point, we start printing text at x0
-x0 ymax  .55 mul moveto (HEMNHXWENZEYKHEMM) true charpath
-x0 ymax  .35 mul moveto (EMNHXWENZEYKHEMMA) true charpath
-x0 ymax  .15 mul moveto (MNHXWENZEYKHEMMAD) true charpath
-x0 ymax -.05 mul moveto (MHXWENZEYKHEMMADX) true charpath
-x0 ymax -.25 mul moveto (HXWENZEYKHEMMADXM) true charpath
-[x0 30] /perspective_xy2uv c_transform fill
+x0 ymax .82 mul moveto (HEMNHXWENZEYKHEMM) true charpath
+x0 ymax .62 mul moveto (EMNHXWENZEYKHEMMA) true charpath
+x0 ymax .42 mul moveto (MNHXWENZEYKHEMMAD) true charpath
+x0 ymax .22 mul moveto (MHXWENZEYKHEMMADX) true charpath
+x0 ymax .02 mul moveto (HXWENZEYKHEMMADXM) true charpath
+[xvp yvp x0 30] /perspective_xy2uv c_transform fill
 
 % but right of the VP, we start the text at x0-stringwidth
-newpath /x0 xmax .40 mul def
-/HelveticaBold  ymax .22 mul selectfont
+newpath /x0 xmax .95 mul def
 0 setgray
 /x_start_of_string  x0 (OQCSU) stringwidth pop sub def
-x_start_of_string  ymax  .55 mul moveto (QCSUO) true charpath
-x_start_of_string  ymax  .35 mul moveto (OQCSU) true charpath
-x_start_of_string  ymax  .15 mul moveto (UOQCS) true charpath
-x_start_of_string  ymax -.05 mul moveto (SUOQC) true charpath
-x_start_of_string  ymax -.25 mul moveto (CSUOQ) true charpath
-[x0 30] /perspective_xy2uv c_transform fill
+x_start_of_string  ymax .82 mul moveto (QCSUO) true charpath
+x_start_of_string  ymax .62 mul moveto (OQCSU) true charpath
+x_start_of_string  ymax .42 mul moveto (UOQCS) true charpath
+x_start_of_string  ymax .22 mul moveto (SUOQC) true charpath
+x_start_of_string  ymax .02 mul moveto (CSUOQ) true charpath
+[xvp yvp x0 30] /perspective_xy2uv c_transform fill
 
 showpage
 
@@ -99,20 +93,19 @@ showpage
 %%EndPageSetup
 /Times-Bold  ymax .03 mul selectfont
   xmax .15 mul ymax .95 mul moveto (perspective_flat_xy2uv) show
-/xh xmax .55  mul def   /yh ymax 0.27 mul def
-0.8 setgray 0 0 xmax yh rectfill 0.5 setgray  % the ground
-xh yh translate   % the vanishing-point is now 0,0
+/xvp xmax .55  mul def   /yvp ymax 0.27 mul def
+0.8 setgray 0 0 xmax yvp rectfill 0.5 setgray  % the ground
 
--.90 .35 11.0 { /y exch yh mul def
-  xh -.7 mul  y xh 1.2 mul  yh .11 mul rect
+.10 .35 12.0 { /y exch yvp mul def
+  xvp .3 mul  y  xvp 1.2 mul  yvp .11 mul rect
 } for
 0 setgray
-[ yh -.90 mul  20 ] /perspective_flat_xy2uv c_transform fill
+[ xvp yvp  yvp .10 mul  20 ] /perspective_flat_xy2uv c_transform fill
 
-xh -.60 mul yh -.95 mul xh .08 mul xh 12 mul rect
-xh .35 mul yh -.95 mul xh .08 mul xh 12 mul rect
+xvp  .40 mul  yvp .05 mul xvp .08 mul xvp 12 mul rect
+xvp 1.35 mul  yvp .05 mul xvp .08 mul xvp 12 mul rect
 0.5 setgray
-[ yh -.90 mul  20 ] /perspective_flat_xy2uv c_transform fill
+[ xvp yvp  yvp .10 mul  20 ] /perspective_flat_xy2uv c_transform fill
 
 showpage
 
@@ -125,19 +118,16 @@ newpath
 /w xmax .04 mul def
 xmax .005 mul setlinewidth
 .03 .06 .93 {     /x exch xmax mul def
-  .03 .04 .96 {  /y exch ymax mul def
-    x y w w rect
-  } for
+  .03 .04 .96 {  /y exch ymax mul def x y w w rect } for
 } for
-
 % [x_amplitude y_wavelength y_phase  y_amplitude x_wavelength x_phase]
 /params [9 300 0  6 200 90] def
 params /sine_xy2uv c_transform fill
 
 newpath 0.5 setgray
+% a simple long lineto does not become wavy ; only the joinpoints get moved!
 10 205 moveto   15 5 580 { 205 lineto } for
 params /sine_xy2uv c_transform stroke
-% a simple long lineto does not become wavy ; only the joinpoints get moved!
 /Times-Bold  ymax .03 mul selectfont 0 setgray
   xmax .15 mul ymax .95 mul moveto (sine_xy2uv) show
 
@@ -152,16 +142,11 @@ newpath
 /w xmax .04 mul def
 xmax .005 mul setlinewidth
 .03 .06 .93 {     /x exch xmax mul def
-  .03 .04 .96 {  /y exch ymax mul def
-    x y w w rect
-  } for
+  .03 .04 .96 {  /y exch ymax mul def x y w w rect } for
 } for
-
 [ 120 700 80 1.8 ]  /softlens_xy2uv c_transform
 [ 120 450 80 1.8 ]  /hardlens_xy2uv c_transform
-[ 350 200 70 60 ]  /twist_xy2uv    c_transform
-fill
-
+[ 350 200 70 60 ]   /twist_xy2uv    c_transform fill
 /Times-Bold  ymax .03 mul selectfont 0 setgray
   xmax .05 mul ymax .95 mul moveto (softlens_xy2uv) show
   xmax .05 mul ymax .65 mul moveto (hardlens_xy2uv) show
@@ -175,18 +160,30 @@ showpage
 
 newpath 0.7 setgray
 /w xmax .02 mul def
-.03 .06 .93 {    /x exch xmax mul def
-  .03 .04 .96 {  /y exch ymax mul def
-    x y w circle  % w rect  % circle
-  } for
+.05 .06 .97 {    /x exch xmax mul def
+  .04 .04 .98 {  /y exch ymax mul def x y w circle } for
 } for
-
-[ 295 345  70 140 ]  /collapse_xy2uv    c_transform
-fill
-
+[ 295 345  70 140 ]  /collapse_xy2uv    c_transform fill
 /Times-Bold  ymax .03 mul selectfont 0 setgray
   xmax .15 mul ymax .95 mul moveto (collapse_xy2uv) show
 
 showpage
+
+%%%Page: 7 7
+%%%BeginPageSetup
+%%%EndPageSetup
+%(/home/pjb/ps/lib/random.ps) run
+%/random_xy2uv {   [ /x /y ] { exch def } forall  % Not useful.
+%  x  ::p 0 get  grand
+%  y  ::p 1 get  grand
+%} def
+%newpath  0 setgray  xmax .01 mul setlinewidth
+%xmax .08 mul  ymax .4 mul  xmax .35 mul dup rect
+%[ 5 5 ]  /random_xy2uv c_transform
+%stroke
+%/Times-Bold  ymax .03 mul selectfont 0 setgray
+%  xmax .15 mul ymax .95 mul moveto (random_xy2uv) show
+%
+%showpage
 
 %%EOF
