@@ -169,21 +169,31 @@ newpath 0.7 setgray
 
 showpage
 
-%%%Page: 7 7
-%%%BeginPageSetup
-%%%EndPageSetup
-%(/home/pjb/ps/lib/random.ps) run
-%/random_xy2uv {   [ /x /y ] { exch def } forall  % Not useful.
-%  x  ::p 0 get  grand
-%  y  ::p 1 get  grand
-%} def
-%newpath  0 setgray  xmax .01 mul setlinewidth
-%xmax .08 mul  ymax .4 mul  xmax .35 mul dup rect
-%[ 5 5 ]  /random_xy2uv c_transform
-%stroke
-%/Times-Bold  ymax .03 mul selectfont 0 setgray
-%  xmax .15 mul ymax .95 mul moveto (random_xy2uv) show
-%
-%showpage
+%%Page: 7 7
+%%BeginPageSetup
+%%EndPageSetup
+/hollywood_xy2uv {   % params: [ xl yl  width  heightup heightdown ]
+  % Probably text at start and end should be approx .10 of height in middle,
+  % but this means 1) doing the transform 2) measuring the new pathbbox
+  % 3) rescaling.  This does not fit into the *_xy2uv architecture...
+  % Perhaps there is an explicit formula for how much the width shrinks ?
+  2 dict begin  [ /y /x ] { exch def } forall
+  x y
+  end
+} def
+/HelveticaBold  ymax .22 mul selectfont
+/w (HOLLYWOOD) stringwidth pop def
+/xl xmax w sub .50 mul def
+/yl ymax .40 mul def
+xl yl moveto (HOLLYWOOD) true charpath
+[ xl yl  w  w .40 mul  w .10 mul ]   /hollywood_xy2uv    c_transform fill
+
+/Times-Bold  ymax .03 mul selectfont 0 setgray
+  xmax .15 mul ymax .95 mul moveto (hollywood_xy2uv) show
+
+showpage
+
+% could also do something [ pathbbox x_power y_power ] /something_xy2uv
+% or [ llx lly yrx ury x_power y_power ] to gravitate the points r/l / u/d
 
 %%EOF
