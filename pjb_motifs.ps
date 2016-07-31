@@ -4,9 +4,101 @@
 %       zigzag         ditto
 %       x y height firtree    % trunkcolour and leafcolour are slightly random
 %       peacock feather see Electrical Banana p.91  should use droplet_path
+%       fronds  Electrical Banana p.111
+%       colours Electrical Banana p.134
+%       waves   Electrical Banana p.136
+%       brain   for Road to Reality p.18   circular and seen from above
+
 
 /irand     where { pop } { (/home/pjb/ps/lib/random.ps)  run } ifelse
 /randomrgb where { pop } { (/home/pjb/ps/lib/colours.ps) run } ifelse
+
+/rect { 4 dict begin   [ /h /w /y /x ] { exch def } forall
+  x y moveto w 0 rlineto 0 h rlineto 0 w sub 0 rlineto x y lineto closepath
+end } def
+
+/circle { 3 dict begin  [ /r /y /x ] { exch def } forall
+  x r add y moveto  x y r 0 360 arc  x r add y moveto closepath
+  end
+} def
+
+/brain_outline_path {   % usage: x y height brain_outline_path
+  % Gray's Anatomy p.644
+  10 dict begin [ /height /y /x ] { exch def } forall
+  x y translate  height 52 div dup scale
+   0   49 moveto  % front
+   0   51   1  52   3  52 curveto  % down the right hand side
+   10  52  17  49  17  46 curveto
+   24  48  39  20  33  18 curveto
+   35  19  39  16  38  13 curveto  % now at the fissure of Rolando
+   43  10  41 -7   39 -10 curveto
+   42 -13  36 -34  29 -36 curveto
+   30 -42  15 -52  6  -52 curveto
+   1  -52   0 -49  0  -45 curveto  % now at rear
+   0  -49  -1 -52 -6  -52 curveto  % back up the left hand side
+  -15 -52 -30 -42 -29 -36 curveto
+  -36 -34 -42 -13 -39 -10 curveto
+  -41  -7 -43  10 -38  13 curveto
+  -39  16 -35  19 -33  18 curveto
+  -39  20 -24  48 -17  46 curveto
+  -17  49 -10  52 -5   52 curveto
+  -1   52   0  51  0   49 curveto  % front again
+  closepath
+  52 height div  dup  scale  0 x sub  0 y sub  translate
+  end
+} def
+
+/brain_folds_path {   % usage: x y height brain_folds_path
+  10 dict begin [ /height /y /x ] { exch def } forall
+  x y translate  height 52 div dup scale
+   0  49 moveto  % front
+   0  43 lineto 0  41 -1  39 -2 39 curveto -1 39 0 38 0 36 curveto
+   0  34 lineto 0  30 -1  28 -1.5 28 curveto -1 28 1 27 1.5 27 curveto
+   1 27 0 26 0  24 curveto
+   0  18 lineto 0  16 -1  14 -2 14 curveto -1 14 0 13 0 11 curveto
+   0   8 lineto 0   6 -1   4 -2  4 curveto -1  4 0  3 0  1 curveto
+   0  -8 lineto 0 -12 -1 -14 -1.5 -14 curveto -1 -14 1 -15 1.5 -15 curveto
+   % from here will go the calloso-marginal fissure ...
+   1 -15 0 -16 0  -18 curveto
+   0 -20 lineto 0 -22  1 -24  2 -24 curveto  1 -24 0 -25 0 -27 curveto
+                0 -27 -1 -29 -2 -29 curveto -1 -29 0 -30 0 -32 curveto
+                0 -34  1 -36  1.5 -36 curveto  1 -36 -1 -37 -1.5 -37 curveto
+     -1 -37 0 -38 0  -40 curveto
+                0 -40  1 -42  2 -42 curveto  1 -42 0 -43 0 -45 curveto
+   % rear
+   38 13 moveto  36 10 32 8 29 8 curveto 26 5 24 4 21 4 curveto
+    18 4 16 0 13 0 curveto 10 0 7 -4 4 -4 curveto % R fissure of Rolando
+   -38 13 moveto  -36 10 -32 8 -29 8 curveto -26 5 -24 4 -21 4 curveto
+    -18 4 -16 0 -13 0 curveto -10 0 -7 -4 -4 -4 curveto % L fissure of Rolando
+  -1.5 -14 moveto -3.5 -14 -4 -13 -6 -13 curveto
+   1.5 -15 moveto 6 -14 9 -10 13 -10 curveto % the calloso-marginal fissure
+   2 -24 moveto 6 -23 10 -22 13 -20 curveto
+  -2 -29 moveto -4 -29 -5 -28 -7 -28 curveto
+   1.5 -36 moveto  5 -36 8 -36 9 -33 curveto
+  -1.5 -37 moveto  -5 -37 -7 -37 -10 -39 curveto
+   2  -42 moveto  5 -42 lineto
+   29 -36 moveto  26 -36  24 -37  21 -40 curveto  % R parieto-occipital fissure
+  -29 -36 moveto -26 -36 -24 -37 -21 -40 curveto  % L parieto-occipital fissure
+   17  46 moveto 19  16 lineto 12 6 lineto
+     19 16 moveto 23 16 25 14 28 16 curveto % R sup frontal sulcus
+  52 height div  dup  scale  0 x sub  0 y sub  translate
+  end
+} def
+
+/brain_show {   % usage: x y height  fillcolor strokecolor  brain_show
+  % A convenient wrapper for the above brain_ procedures.
+  % It might be nice to allow transparency ,
+  %  which could be done by detecting a magic 'transparent' colour ...
+  10 dict begin
+    /strokecolor 4 1 roll rgbdef  /fillcolor 4 1 roll rgbdef
+    [ /height /y /x ] { exch def } forall
+  fillcolor setrgbcolor
+    x y height brain_outline_path fill
+  strokecolor setrgbcolor
+    height .01 mul setlinewidth  x y height brain_outline_path stroke
+    x y height brain_folds_path stroke
+  end
+} def
 
 /droplet_path {  % usage: x0 y0  x1 y1  angle1  droplet_path
   15 dict begin
