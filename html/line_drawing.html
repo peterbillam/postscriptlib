@@ -59,9 +59,9 @@ CONTENT="PostScript, line drawing, shading">
  /darkskin paleorange .4 brown .6 rgbmix rgbdef  % mix some Colours
  newpath nosetip moveto  % run the Curves ...
  [ nose2brow ] brow longcurveto [ brow2ear ] ear longcurveto
- % make closedpaths round areas; clip, fill, fuzzystroke &amp; fuzzyfill
+ % make closedpaths round areas; clip, fill, fuzzyrgbstroke &amp; fuzzyfill
  closepath darkskin setrgbcolor fill
- % run the Curves again, and this time stroke or fuzzystroke them
+ % run the Curves again, and this time stroke or fuzzyrgbstroke them
  black setrgbcolor
  newpath nose moveto [ nose2brow ] brow longcurveto stroke
  showpage
@@ -116,9 +116,9 @@ define any Colours ("/darkskin paleorange .4 brown .6 rgbmix rgbdef")
 run all the Curves and interpolations to calculate all Point positions
 (eg "nosetip moveto [ nosetip2brow ] brow longcurveto")
 </LI><LI>
-make closedpaths round areas; clip, fill, fuzzystroke & fuzzyfill in them
+make closedpaths round areas; clip, fill, fuzzyrgbstroke &mp; fuzzyfill in them
 </LI><LI>
-run the Curves again, and this time stroke or fuzzystroke them
+run the Curves again, and this time stroke or fuzzyrgbstroke them
 </LI></OL>
 As examples, see
 <A HREF="free/sample1.ps.txt">sample1.ps.txt</A> and
@@ -310,7 +310,7 @@ Because each vertical-scaling-factor describes the scaling
 <B>must be one shorter</B> than <I>x_array</I> and <I>y_array</I>.<BR>
 <B>{ lineto }</B> &nbsp; is the interpolation-function,
 which will be invoked with the next point <B>x y</B> on the stack.
-Therefore the function must eat its top two stack-items.<BR>
+Therefore this function must eat its top two stack-items.<BR>
 <B>n_iters</B> &nbsp; is the number of iterations.
 CPU usage grows exponentially with <I>n_iters</I>, so be careful.
 </P><P>
@@ -322,9 +322,9 @@ so the interpolation-function calculates <I>y*cos(theta)</I> and
 /xmid currentpagedevice (PageSize) get 0 get .5 mul def<BR> &nbsp;
 /ymid currentpagedevice (PageSize) get 1 get .5 mul def<BR> &nbsp;
 xmid ymid translate  xmid .2 mul ymid .2 mul scale<BR> &nbsp;
-/x_array [ 0 90   180 270  360 ] def<BR> &nbsp;
+/x_array [ 0 90   180 270  360 ] def &nbsp; % five points<BR> &nbsp;
 /y_array [ 1  2   3    2    1 ] def<BR> &nbsp;
-/d_array [ -0.2 0.35 0.35 -0.2 ] def<BR> &nbsp;
+/d_array [ -0.2 0.35 0.35 -0.2 ] def &nbsp;% four gaps<BR> &nbsp;
 newpath 0 -1 moveto  .10 setlinewidth<BR> &nbsp;
 x_array y_array d_array {  % x y; we need -y.cos(x) -y.sin(x)<BR> &nbsp; &nbsp;
   1 index sin 1 index mul -1.0 mul<BR> &nbsp; &nbsp;
@@ -359,8 +359,8 @@ This subroutine is also useful for shading.
 </DD><DT>
 <B><A NAME="fuzzystroke">fuzzystroke</A></B>
 </DT><DD><P>
-This is just a synonym for
-<A HREAF="#fuzzyrgbstroke">fuzzyrgbstroke</A>.
+This is a deprecated synonym for
+<A HREF="#fuzzyrgbstroke">fuzzyrgbstroke</A>.
 </P>
 
 </DD><DT><B><A NAME="fuzzyrgbstroke">
@@ -399,7 +399,7 @@ Peter J Billam &nbsp;
 
 <A NAME="changes"><HR></A><H3>CHANGES</H3>
 <PRE>
- 20160813 add /fractal_interpolate
+ 20160813 add <A HREF="#fractal_interpolate">/fractal_interpolate</A>
  20031122 in longcurve, prevent div by 0 if curvature=0
  20030313 roll some stuff out to colours.ps
  20010116 add subroutine pointdup
@@ -419,6 +419,8 @@ Peter J Billam &nbsp;
 
 <A NAME="see_also"><HR></A><H3>SEE ALSO</H3>
 <UL><LI>
+<I>Fractals Everywhere</I>, Michael Barnsley, Academic Press 1988; chapter 6.
+</LI><LI>
 <A HREF="colours.html">colours.ps</A>
 </LI><LI>
 <A HREF="brownian.html">brownian.ps</A>

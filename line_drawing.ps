@@ -286,9 +286,7 @@
 		y nm1 get y 0 get sub xa i get mul add put
 		/i i 1 add def i n ge { exit } if
 	} loop
-	% invoke the recursion
-	/i_iter 0 def
-	% x 0 get y 0 get proc
+	/i_iter 0 def   % invoke the recursion
 	x 0 get y 0 get x nm1 get y nm1 get 1.0 recurse
 	end
 } bind def
