@@ -26,19 +26,6 @@ CONTENT="PostScript, line drawing, shading">
 </TD><TD ALIGN="left">
     <UL><LI>
     <B><A HREF="#procedures">PROCEDURES</A></B>
-<!--    <A HREF="#item_longcurveto">longcurveto</A>,
-    <A HREF="#item_longcurve">longcurve</A>,
-    <A HREF="#item_reversecurve">reversecurve</A>,
-    <A HREF="#item_pointdef">pointdef</A>,
-    <A HREF="#item_pointadd">pointadd</A>,
-    <A HREF="#item_pointdup">pointdup</A>,
-    <A HREF="#item_interpolate2">interpolate2</A>,
-    <A HREF="#item_interpolate3">interpolate3</A>,
-    <A HREF="#item_fuzzygraystroke">fuzzygraystroke</A>,
-    <A HREF="#item_fuzzygrayfill">fuzzygrayfill</A>,
-    <A HREF="#item_fuzzyrgbstroke">fuzzyrgbstroke</A> and
-    <A HREF="#item_fuzzyrgbfill">fuzzyrgbfill</A>
--->
     </LI><LI>
     <B><A HREF="#author">AUTHOR</A></B>
     </LI></UL>
@@ -93,7 +80,7 @@ then a much longer listance of this fairly gentle curve to the right,
 etc, etc,
 ending up finally at that point."
 The main subroutine
-<A HREF="#item_longcurveto">longcurveto</A>
+<A HREF="#longcurveto">longcurveto</A>
 implements that process in PostScript.
 </P><P>
 Using <I>line_drawing.ps</I>
@@ -160,21 +147,22 @@ For easy viewing, PDF versions of the results are in
 
 <A NAME="procedures"><HR></A><H3>PROCEDURES</H3>
 <P><B> &nbsp; &nbsp;
-<A HREF="#item_longcurveto">longcurveto</A>, &nbsp;
-<A HREF="#item_longcurve">longcurve</A>, &nbsp;
-<A HREF="#item_reversecurve">reversecurve</A>,<BR> &nbsp; &nbsp;
-<A HREF="#item_pointdef">pointdef</A>, &nbsp;
-<A HREF="#item_pointadd">pointadd</A>, &nbsp;
-<A HREF="#item_pointdup">pointdup</A>, &nbsp;
-<A HREF="#item_interpolate2">interpolate2</A>, &nbsp;
-<A HREF="#item_interpolate3">interpolate3</A>,<BR> &nbsp; &nbsp;
-<A HREF="#item_fuzzygraystroke">fuzzygraystroke</A>, &nbsp;
-<A HREF="#item_fuzzygrayfill">fuzzygrayfill</A>, &nbsp;
-<A HREF="#item_fuzzyrgbstroke">fuzzyrgbstroke</A>, &nbsp;
-<A HREF="#item_fuzzyrgbfill">fuzzyrgbfill</A>.
+<A HREF="#longcurveto">longcurveto</A>, &nbsp;
+<A HREF="#longcurve">longcurve</A>, &nbsp;
+<A HREF="#reversecurve">reversecurve</A>,<BR> &nbsp; &nbsp;
+<A HREF="#pointdef">pointdef</A>, &nbsp;
+<A HREF="#pointadd">pointadd</A>, &nbsp;
+<A HREF="#pointdup">pointdup</A>, &nbsp;
+<A HREF="#interpolate2">interpolate2</A>, &nbsp;
+<A HREF="#interpolate3">interpolate3</A>, &nbsp;
+<A HREF="#fractal_interpolate">fractal_interpolate</A>,<BR> &nbsp; &nbsp;
+<A HREF="#fuzzygraystroke">fuzzygraystroke</A>, &nbsp;
+<A HREF="#fuzzygrayfill">fuzzygrayfill</A>, &nbsp;
+<A HREF="#fuzzyrgbstroke">fuzzyrgbstroke</A>, &nbsp;
+<A HREF="#fuzzyrgbfill">fuzzyrgbfill</A>.
 </B></P>
 <DL>
-<DT><B><A NAME="item_longcurveto">
+<DT><B><A NAME="longcurveto">
 [ l c l c (pushxy) l c /apoint l c ] xto yto longcurveto</A></B>
 </DT><DD><P>
 Where the arguments are:<BR>
@@ -187,7 +175,7 @@ causes the x,y at that point to be left on the stack; afterwards
 it can be used for example by <CODE>moveto</CODE><BR>
 <B>/apoint</B>
 any nametype (e.g. <I>/thispoint</I>) causes that name to be defined, as in a
-<A HREF="#item_pointdef">pointdef</A><BR>
+<A HREF="#pointdef">pointdef</A><BR>
 <B>xto, yto</B>
 cause the curve to be scaled and rotated to end at position xto, yto<BR>
 </P><P>
@@ -212,7 +200,7 @@ See the PostScript Language Reference Manual for more about
 </P>
 
 </DD><DT>
-<B><A NAME="item_longcurve">
+<B><A NAME="longcurve">
 angle [ l c l c l c (pushxy) l c l c ] longcurve</A></B>
 </DT><DD><P>
 Where the arguments are:<BR>
@@ -223,16 +211,16 @@ the curve starts at angle <B>angle</B> from the current point<BR>
 causes the x,y at that point to be left on the stack afterwards<BR>
 any nametype (e.g. <I>/thispoint</I>)
 causes it to be defined as in a
-<A HREF="#item_pointdef">pointdef</A>
+<A HREF="#pointdef">pointdef</A>
 </P>
 
 </DD><DT>
-<B><A NAME="item_reversecurve">[ l1 c1 l2 c2 /name l3 c3 ] reversecurve</A></B>
+<B><A NAME="reversecurve">[ l1 c1 l2 c2 /name l3 c3 ] reversecurve</A></B>
 </DT><DD><P>
 The above invocation leaves
 <CODE>[ l3 -c3 /name l2 -c2 l1 -l1 ]</CODE> on the stack.
 When a path (as used by
-<A HREF="#item_longcurveto">longcurveto</A>
+<A HREF="#longcurveto">longcurveto</A>
 has been defined, it is often useful to be able to use
 it in either direction; e.g. once in outlining the area to one side of
 it, and once in outlining the area to the other side.
@@ -240,7 +228,7 @@ it, and once in outlining the area to the other side.
 </P>
 
 </DD><DT>
-<B><A NAME="item_pointdef">/name_of_point x y pointdef</A></B>
+<B><A NAME="pointdef">/name_of_point x y pointdef</A></B>
 </DT><DD><P>
 The above invocation leaves
 <CODE>name_of_point</CODE> defined as <CODE>{ x y }</CODE>
@@ -249,7 +237,7 @@ so it's like a two-dimensional version of <CODE>def</CODE>. For example,<BR>
 </P>
 
 </DD><DT>
-<B><A NAME="item_pointadd">x1 y1 x2 y2 pointadd</A></B>
+<B><A NAME="pointadd">x1 y1 x2 y2 pointadd</A></B>
 </DT><DD><P>
 The above invocation leaves
 <CODE>x1_plus_x2 y1_plus_y2</CODE> on the stack,
@@ -259,7 +247,7 @@ It's like a two-dimensional version of <CODE>add</CODE>
 </P>
 
 </DD><DT>
-<B><A NAME="item_pointdup">x y pointdup</A></B>
+<B><A NAME="pointdup">x y pointdup</A></B>
 </DT><DD><P>
 The above invocation leaves <CODE>x y x y</CODE> on the stack,
 and is handy if a point needs to be used now
@@ -268,7 +256,7 @@ It's like a two-dimensional version of <CODE>dup</CODE>
 </P>
 
 </DD><DT>
-<B><A NAME="item_interpolate2">x1 y1 weight1 x2 y2 weight2 interpolate2</A></B>
+<B><A NAME="interpolate2">x1 y1 weight1 x2 y2 weight2 interpolate2</A></B>
 </DT><DD><P>
 The above invocation leaves on the stack,
 ready for <I>moveto</I> or <I>pointdef</I>,
@@ -284,7 +272,7 @@ they get normalised to total 1.0 automatically.
 </P>
 
 </DD><DT>
-<B><A NAME="item_interpolate3">
+<B><A NAME="interpolate3">
 x1 y1 weight1 x2 y2 weight2 x3 y3 weight3 interpolate3</A></B>
 </DT><DD><P>
 The above invocation leaves on the stack,
@@ -302,7 +290,33 @@ The weights don't have to add up to one,
 they get normalised to total 1.0 automatically.
 </P>
 
-</DD><DT><B><A NAME="item_fuzzygraystroke">
+</DD><DT><B><A NAME="fractal_interpolate">
+x y d { lineto } n_iters fractal_interpolate</A></B>
+</DT><DD><P>
+See: Chapter 6, Michael Barnsley "Fractals Everywhere", Academic Press 1988<BR>
+&nbsp; <B>x</B> and <B>y</B> &nbsp; are arrays containing the series of points<BR>
+&nbsp; <B>d</B> &nbsp; is an array of the vertical-scaling-factors, see p214-215<BR>
+&nbsp; <B>{ lineto }</B> &nbsp; is the interpolation-function<BR>
+&nbsp; <B>n_iters</B> &nbsp; is the number of iterations<BR>
+In this example, the <B>x</B> value actually represents the angle <I>theta</I>
+and the <B>y</B> value represents the radius,
+so the interpolation-function calculates <I>y*cos(theta)</I> and
+<I>y*sin(theta)</I> to actually draw the line:<BR><CODE> &nbsp;
+/xmax currentpagedevice (PageSize) get 0 get def<BR> &nbsp;
+/ymax currentpagedevice (PageSize) get 1 get def<BR> &nbsp;
+xmax .5 mul ymax .5 mul translate xmax .1 mul ymax .1 mul scale<BR> &nbsp;
+/x [ 0 90   180 270  360 ] def<BR> &nbsp;
+/y [ 1  2   3    2    1 ] def<BR> &nbsp;
+/d [ 0 -0.2 0.35 0.4 -0.3 ] def<BR> &nbsp;
+newpath 0 -1 moveto  .10 setlinewidth<BR> &nbsp;
+x y d {  % stack is now x y ; but we want -y.cos(x) -y.sin(x)<BR> &nbsp;
+  1 index sin 1 index mul -1.0 mul 3 1 roll exch cos mul -1.0 mul lineto<BR> &nbsp;
+} 6 fractal_interpolate<BR> &nbsp;
+stroke
+</CODE>
+</P>
+
+</DD><DT><B><A NAME="fuzzygraystroke">
 innergray outgray inwidth outwidth fuzzygraystroke</A></B>
 </DT><DD><P>
 The above invocation strokes a fuzzy grey line along the currentpath.
@@ -314,7 +328,7 @@ so that will usually be chosen to be the same shade as the background.
 This subroutine is useful for shading.
 </P>
 
-</DD><DT><B><A NAME="item_fuzzygrayfill">
+</DD><DT><B><A NAME="fuzzygrayfill">
 innergray outergray fuzzwidth fuzzygrayfill</A></B>
 </DT><DD><P>
 The above invocation fills the <I>currentpath</I> with <CODE>innergray</CODE>.
@@ -325,13 +339,13 @@ This subroutine is also useful for shading.
 </P>
 
 </DD><DT>
-<B><A NAME="item_fuzzystroke">fuzzystroke</A></B>
+<B><A NAME="fuzzystroke">fuzzystroke</A></B>
 </DT><DD><P>
 This is just a synonym for
-<A HREAF="#item_fuzzyrgbstroke">fuzzyrgbstroke</A>.
+<A HREAF="#fuzzyrgbstroke">fuzzyrgbstroke</A>.
 </P>
 
-</DD><DT><B><A NAME="item_fuzzyrgbstroke">
+</DD><DT><B><A NAME="fuzzyrgbstroke">
 incolour outcolour inwidth outwidth fuzzyrgbstroke</A></B>
 </DT><DD><P>
 The above invocation strokes a fuzzy coloured line along the currentpath.
@@ -344,7 +358,7 @@ This subroutine is useful for shading in colour.
 See also <A HREF="colours.html">colours.ps</A>.
 </P>
 
-</DD><DT><B><A NAME="item_fuzzyrgbfill">
+</DD><DT><B><A NAME="fuzzyrgbfill">
 innercolour outercolour fuzzwidth fuzzyrgbfill</A></B>
 </DT><DD><P>
 The above invocation fills the <I>currentpath</I> with

@@ -42,14 +42,9 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %        This Postscript is Copyright (c) 2000, Peter J Billam          %
-%     c/o P J B Computing, GPO Box 669, Hobart TAS 7001, Australia      %
-%                                                                       %
 % Permission is granted  to any individual or institution to use, copy, %
 % modify or redistribute this software, so long as it is not resold for %
-% profit,  and provided this notice is retained.   Neither Peter Billam %
-% nor  P J B Computing  make any representations  about the suitability %
-% of this software for any purpose. It is provided "as is", without any %
-% express or implied warranty.                http://www.pjb.com.au     %
+% profit,  and provided this notice is retained. http://www.pjb.com.au  %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 /mm { 72 mul 25.4 div } def
@@ -218,12 +213,89 @@
 	intpl_y1 intpl_w1 mul intpl_y2 intpl_w2 mul add intpl_y3 intpl_w3 mul add
 } def
 
-% ------------------ gray stuff ...
 
+% --------- adopted here 20160813 from fractal_interpolate.ps ---------
+%
+% Fractal Interpolation, see Michael Barnsley "Fractals Everywhere"
+% chapter 6, Academic Press 1988, but rigged to create the points in
+% sequential order so they can be used to form a PostScript path,
+% ready to stroke or fill etc.    Sample usage:
+% /xmax currentpagedevice (PageSize) get 0 get def
+% /ymax currentpagedevice (PageSize) get 1 get def
+% xmax .5 mul ymax .5 mul translate  xmax .1 mul ymax .1 mul scale
+% sample usage:
+% /theta [ 0  90  180 270  360 ] def
+% /y     [ 1  2   3   3    1   ] def
+% /d     [ 0 -.2  .35 .4  -.3  ] def
+% newpath 0 -1 moveto  .10 setlinewidth
+% theta y d {  % stack is theta y ; we want -y.cos(theta) -y.sin(theta)
+%    1 index sin 1 index mul -1.0 mul 3 1 roll exch cos mul -1.0 mul lineto
+% } 4 fractal_interpolate
+%
+/fractal_interpolate {  % usage: x y d { lineto } n_iters fractal_interpolate
+	% see: chap6, Michael Barnsley "Fractals Everywhere", Academic Press 1988
+	% x y d { lineto } n_iters fractal_interpolate
+	%   x and y are the series of points
+	%   d is the vertical-scaling-factor introduced in p214-215
+	%   { lineto } is the interpolation-function
+	%   n_iters is the number of iterations
+	20 dict begin
+	[ /n_iters /proc /d /y /x ] { exch def } forall
+
+	/recurse {  % usage: x0 y0 x1 y1 D recurse
+		5 dict begin
+		/i_iter i_iter 1 add def
+		i_iter n_iters gt {
+			2 index 2 index proc  % proc must eat x,y from the stack
+		} {  % else 
+			1 { % stack is x0 y0 x1 y1 D i
+				dup 1 sub  % im1
+				4 index 7 index sub  % x1mx0
+				4 index 7 index sub  % y1my0
+				% stack is now x0 y0 x1 y1 D i im1 x1mx0 y1my0
+				% newx0 will be x0 + (x1-x0)*xa[i-1]
+				8  index 2 index xa 5 index get mul add  % newx0
+				% newy0 will be y0 + (y1-y0)*xa[i-1] + D*ya[i-1]
+				8 index 2 index xa 6 index get mul add 6 index
+				ya 6 index get mul add
+				% newx1 will be x0 + (x1-x0)*xa[i]
+				10 index 4 index xa 8 index get mul add  % newx1
+				% newy1 will be y0 + (y1-y0)*xa[i]   + D*ya[i]
+				10 index 4 index xa 9 index get mul add 8 index
+				ya 9 index get mul add
+				% newD  will be d[i]  % er... BUG? shouldn't it be D*d[i] ?
+				8 index d 9 index get mul  % newD
+				8 5 roll pop pop pop  % forget im1 x1mx0 y1my0
+				% stack is now x0 y0 x1 y1 D i newx0 newy0 newx1 newy1 newD
+				recurse pop pop pop pop pop
+				1 add dup n ge { exit } if
+			} loop pop
+		} ifelse
+		/i_iter i_iter 1 sub def
+		end
+	} bind def
+
+	% derived stuff
+	/n   x length def  % could check that arrays are all same size ?
+	/nm1 n 1 sub def
+	/xa n array def xa 0 0.0 put
+	/ya n array def ya 0 0.0 put % y flattened to begin & end on 0.0
+	/i 1 def {
+		xa i  x i get x nm1 get x 0 get sub div put
+		ya i  y i get y 0 get sub
+		y nm1 get y 0 get sub xa i get mul add put
+		/i i 1 add def i n ge { exit } if
+	} loop
+	% invoke the recursion
+	/i_iter 0 def
+	% x 0 get y 0 get proc
+	x 0 get y 0 get x nm1 get y nm1 get 1.0 recurse
+	end
+} bind def
+
+% ------------------ gray stuff ...
 /gray0 1.0 def /gray1 0.95 def /gray2 0.9  def /gray3 0.85 def /gray4 0.8 def
 /gray5 0.7 def /gray6 0.6  def /gray7 0.45 def /gray8 0.25 def /gray9 0.0 def
-
-
 /fuzzygraystroke { % usage: innergray outgray inwidth outwidth fuzzygraystroke
 	/fuzzys_ow exch def /fuzzys_iw exch def
 	/fuzzys_og exch def /fuzzys_ig exch def
@@ -240,7 +312,6 @@
 		fuzzys_ig 0.8 mul fuzzys_og 0.2 mul add setgray stroke grestore
 	fuzzys_iw setlinewidth fuzzys_ig setgray stroke grestore
 } def
-
 /fuzzygrayfill { % usage: innergray outergray fuzzwidth fuzzygrayfill
 	/fuzzyf_w exch def /fuzzyf_og exch def /fuzzyf_ig exch def
 	currentlinewidth currentlinecap currentgray gsave
