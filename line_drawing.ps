@@ -234,9 +234,9 @@
 %
 /fractal_interpolate {  % usage: x y d { lineto } n_iters fractal_interpolate
 	% see: chap6, Michael Barnsley "Fractals Everywhere", Academic Press 1988
-	% x y d { lineto } n_iters fractal_interpolate
-	%   x and y are the series of points
-	%   d is the vertical-scaling-factor introduced in p214-215
+	% x_array y_array d_array { lineto } n_iters fractal_interpolate
+	%   x_array and y_array are the series of points
+	%   d_array are the vertical-scaling-factors introduced in p214-215
 	%   { lineto } is the interpolation-function
 	%   n_iters is the number of iterations
 	20 dict begin
@@ -263,8 +263,8 @@
 				% newy1 will be y0 + (y1-y0)*xa[i]   + D*ya[i]
 				10 index 4 index xa 9 index get mul add 8 index
 				ya 9 index get mul add
-				% newD  will be d[i]  % er... BUG? shouldn't it be D*d[i] ?
-				8 index d 9 index get mul  % newD
+				% newD  will be d[i-1]
+				8 index d 9 index 1 sub get mul  % newD
 				8 5 roll pop pop pop  % forget im1 x1mx0 y1my0
 				% stack is now x0 y0 x1 y1 D i newx0 newy0 newx1 newy1 newD
 				recurse pop pop pop pop pop

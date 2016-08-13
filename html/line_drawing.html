@@ -291,26 +291,44 @@ they get normalised to total 1.0 automatically.
 </P>
 
 </DD><DT><B><A NAME="fractal_interpolate">
-x y d { lineto } n_iters fractal_interpolate</A></B>
+x_array y_array d_array { lineto } n_iters fractal_interpolate</A></B>
 </DT><DD><P>
-See: Chapter 6, Michael Barnsley "Fractals Everywhere", Academic Press 1988<BR>
-&nbsp; <B>x</B> and <B>y</B> &nbsp; are arrays containing the series of points<BR>
-&nbsp; <B>d</B> &nbsp; is an array of the vertical-scaling-factors, see p214-215<BR>
-&nbsp; <B>{ lineto }</B> &nbsp; is the interpolation-function<BR>
-&nbsp; <B>n_iters</B> &nbsp; is the number of iterations<BR>
-In this example, the <B>x</B> value actually represents the angle <I>theta</I>
+<B>fractal_interpolate</B> is useful for drawing mountain ranges,
+forest horizons, and, if using <I>r, theta</I> coordinates,
+for drawing all sorts of irregular (but possibly symmetrical)
+organic shapes such as leaves, butterflies, animal-skins, and so on.<BR>
+See: Chapter 6, Michael Barnsley "Fractals Everywhere",
+Academic Press 1988.<BR>
+<B>x_array</B> and <B>y_array</B> &nbsp;
+are arrays containing the series of points.
+These two arrays must have equal lengths.<BR>
+<B>d_array</B> &nbsp;
+is an array of the vertical-scaling-factors (see p214-215)
+to be applied to the invervals between points.
+Because each vertical-scaling-factor describes the scaling
+<I>between</I> two points, this array
+<B>must be one shorter</B> than <I>x_array</I> and <I>y_array</I>.<BR>
+<B>{ lineto }</B> &nbsp; is the interpolation-function,
+which will be invoked with the next point <B>x y</B> on the stack.
+Therefore the function must eat its top two stack-items.<BR>
+<B>n_iters</B> &nbsp; is the number of iterations.
+CPU usage grows exponentially with <I>n_iters</I>, so be careful.
+</P><P>
+In the following example,
+the <B>x</B> value actually represents the angle <I>theta</I>
 and the <B>y</B> value represents the radius,
 so the interpolation-function calculates <I>y*cos(theta)</I> and
 <I>y*sin(theta)</I> to actually draw the line:<BR><CODE> &nbsp;
-/xmax currentpagedevice (PageSize) get 0 get def<BR> &nbsp;
-/ymax currentpagedevice (PageSize) get 1 get def<BR> &nbsp;
-xmax .5 mul ymax .5 mul translate xmax .1 mul ymax .1 mul scale<BR> &nbsp;
-/x [ 0 90   180 270  360 ] def<BR> &nbsp;
-/y [ 1  2   3    2    1 ] def<BR> &nbsp;
-/d [ 0 -0.2 0.35 0.4 -0.3 ] def<BR> &nbsp;
+/xmid currentpagedevice (PageSize) get 0 get .5 mul def<BR> &nbsp;
+/ymid currentpagedevice (PageSize) get 1 get .5 mul def<BR> &nbsp;
+xmid ymid translate  xmid .2 mul ymid .2 mul scale<BR> &nbsp;
+/x_array [ 0 90   180 270  360 ] def<BR> &nbsp;
+/y_array [ 1  2   3    2    1 ] def<BR> &nbsp;
+/d_array [ -0.2 0.35 0.35 -0.2 ] def<BR> &nbsp;
 newpath 0 -1 moveto  .10 setlinewidth<BR> &nbsp;
-x y d {  % stack is now x y ; but we want -y.cos(x) -y.sin(x)<BR> &nbsp;
-  1 index sin 1 index mul -1.0 mul 3 1 roll exch cos mul -1.0 mul lineto<BR> &nbsp;
+x_array y_array d_array {  % x y; we need -y.cos(x) -y.sin(x)<BR> &nbsp; &nbsp;
+  1 index sin 1 index mul -1.0 mul<BR> &nbsp; &nbsp;
+  3 1 roll exch cos mul -1.0 mul lineto<BR> &nbsp;
 } 6 fractal_interpolate<BR> &nbsp;
 stroke
 </CODE>
@@ -381,6 +399,7 @@ Peter J Billam &nbsp;
 
 <A NAME="changes"><HR></A><H3>CHANGES</H3>
 <PRE>
+ 20160813 add /fractal_interpolate
  20031122 in longcurve, prevent div by 0 if curvature=0
  20030313 roll some stuff out to colours.ps
  20010116 add subroutine pointdup
