@@ -16,21 +16,21 @@ CONTENT="PostScript, line drawing, shading">
     <B><A HREF="#name">NAME</A></B>
     </LI><LI>
     <B><A HREF="#synopsis">SYNOPSIS</A></B>
-    </LI></UL>
-</TD><TD ALIGN="left">
-    <UL><LI>
-    <B><A HREF="#description">DESCRIPTION</A></B>
     </LI><LI>
-    <B><A HREF="#tutorial">TUTORIAL</A></B>
+    <B><A HREF="#description">DESCRIPTION</A></B>
     </LI></UL>
 </TD><TD ALIGN="left">
     <UL><LI>
+    <B><A HREF="#tutorial">TUTORIAL</A></B>
+    </LI><LI>
     <B><A HREF="#procedures">PROCEDURES</A></B>
     </LI><LI>
-    <B><A HREF="#author">AUTHOR</A></B>
+    <B><A HREF="#install">INSTALL</A></B>
     </LI></UL>
 </TD><TD ALIGN="left">
     <UL><LI>
+    <B><A HREF="#author">AUTHOR</A></B>
+    </LI><LI>
     <B><A HREF="#changes">CHANGES</A></B>
     </LI><LI>
     <B><A HREF="#see_also">SEE&nbsp;ALSO</A></B>
@@ -88,14 +88,8 @@ is of course much slower than sketching with pencil and paper,
 it's closer to some of the older print-making techniques like
 <I>mezzotint</I> (as used by Escher) offering complete control of greyscale,
 extremely fine detail, and perfect reproducibility.
-</P><P>
-<B>To install:</B> go to
-<A HREF="http://www.pjb.com.au/comp/free/line_drawing.ps.txt">
-www.pjb.com.au/comp/free/line_drawing.ps.txt</A>
-and save the file to your local disc.<BR>
-Rename it to <I>line_drawing.ps</I> and move it into some appropriate
-directory such as <CODE>~/ps/lib</CODE>&nbsp;.&nbsp;.&nbsp;.
 </P>
+
 
 <A NAME="tutorial"><HR></A><H3>TUTORIAL</H3>
 <P>
@@ -388,6 +382,32 @@ This subroutine is also useful for shading in colour.
 See also <A HREF="colours.html">colours.ps</A>.
 </P>
 </DD></DL>
+
+<A NAME="install"><HR></A><H3>INSTALL</H3>
+<P>
+<B>To install:</B> go to
+<A HREF="http://www.pjb.com.au/comp/free/line_drawing.ps.txt">
+www.pjb.com.au/comp/free/line_drawing.ps.txt</A>
+and save the file to your local disc.<BR>
+Rename it to <I>line_drawing.ps</I> and move it into some appropriate
+directory such as <CODE>~/ps/lib</CODE>&nbsp;.&nbsp;.&nbsp;.
+<BR>
+Or, first change directory to where you keep your PostScript libraries:
+<BR><CODE> &nbsp; &nbsp;
+cd /home/wherever/ps/lib/
+</CODE><BR>
+(or wherever) &nbsp; and then either: <BR>
+<CODE>
+&nbsp; &nbsp; wget -O line_drawing.ps http://www.pjb.com.au/comp/free/line_drawing.ps.txt
+</CODE><BR> or: <BR> <CODE>
+&nbsp; &nbsp; curl http://www.pjb.com.au/comp/free/line_drawing.ps.txt -o line_drawing.ps
+</CODE></P><P>
+Or, get it from <I>github</I>:
+<BR><CODE> &nbsp; &nbsp;
+git clone
+<A HREF="https://github.com/peterbillam/postscriptlib">
+https://github.com/peterbillam/postscriptlib</A>
+</CODE></P>
 
 <A NAME="author"><HR></A><H3>AUTHOR</H3>
 <P>
