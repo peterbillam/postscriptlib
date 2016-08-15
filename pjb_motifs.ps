@@ -79,11 +79,28 @@ end } def
    2  -42 moveto  5 -42 lineto
    29 -36 moveto  26 -36  24 -37  21 -40 curveto  % R parieto-occipital fissure
   -29 -36 moveto -26 -36 -24 -37 -21 -40 curveto  % L parieto-occipital fissure
-   17  46 moveto 19  16 lineto 12 6 lineto
+   17  46 moveto 18 44 16 43 14 43 curveto 19 43 14 19 19 16 curveto
+     19 14 15 8 12 6 curveto
      19 16 moveto 23 16 25 14 28 16 curveto % R sup frontal sulcus
+   -6 49 moveto -15 40 lineto -18 15 lineto -15 8 lineto -8 7 lineto
+   -18 15 moveto -28 17 lineto
+   -15 8 moveto -19 6 lineto
+  39  -10 moveto  34 -13 lineto
+  -39 -10 moveto -34 -13 lineto
+  38 9 moveto 33 4 26 -15 22 -12 curveto % the sulcus in the R parietal ..
+  25 -15 21 -27 18 -26 curveto   20 -28 17 -30 14 -34 curveto
+  22 -12 moveto 19 -10 lineto
+  -38 9 moveto -33 4 -26 -15 -22 -12 curveto % mirrored in the L parietal ..
+  -25 -15 -21 -27 -18 -26 curveto   -20 -28 -17 -30 -14 -34 curveto
+  -22 -12 moveto -19 -10 lineto
   52 height div  dup  scale  0 x sub  0 y sub  translate
   end
 } def
+
+% https://en.wikipedia.org/wiki/Lobes_of_the_brain
+% https://en.wikipedia.org/wiki/Occipital_lobe   visual processing
+% https://en.wikipedia.org/wiki/Parietal_lobe    other senses, language
+% https://en.wikipedia.org/wiki/Frontal_lobe     attention, short-term memory
 
 /brain_show {   % usage: x y height  fillcolor strokecolor  brain_show
   % A convenient wrapper for the above brain_ procedures.
