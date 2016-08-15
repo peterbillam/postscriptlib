@@ -143,13 +143,14 @@ For easy viewing, PDF versions of the results are in
 <P><B> &nbsp; &nbsp;
 <A HREF="#longcurveto">longcurveto</A>, &nbsp;
 <A HREF="#longcurve">longcurve</A>, &nbsp;
-<A HREF="#reversecurve">reversecurve</A>,<BR> &nbsp; &nbsp;
+<A HREF="#reversecurve">reversecurve</A>, &nbsp;
+<A HREF="#points2curve">points2curve</A>,<BR> &nbsp; &nbsp;
 <A HREF="#pointdef">pointdef</A>, &nbsp;
 <A HREF="#pointadd">pointadd</A>, &nbsp;
 <A HREF="#pointdup">pointdup</A>, &nbsp;
 <A HREF="#interpolate2">interpolate2</A>, &nbsp;
-<A HREF="#interpolate3">interpolate3</A>, &nbsp;
-<A HREF="#fractal_interpolate">fractal_interpolate</A>,<BR> &nbsp; &nbsp;
+<A HREF="#interpolate3">interpolate3</A>,<BR> &nbsp; &nbsp;
+<A HREF="#fractal_interpolate">fractal_interpolate</A>, &nbsp;
 <A HREF="#fuzzygraystroke">fuzzygraystroke</A>, &nbsp;
 <A HREF="#fuzzygrayfill">fuzzygrayfill</A>, &nbsp;
 <A HREF="#fuzzyrgbstroke">fuzzyrgbstroke</A>, &nbsp;
@@ -222,6 +223,42 @@ it, and once in outlining the area to the other side.
 </P>
 
 </DD><DT>
+<B><A NAME="points2curve">[x1 y1 x2 y2 ... xN yN] &nbsp; points2curve</A></B>
+</DT><DT><B>[x1 y1 ... xN yN] &nbsp; initialangle finalangle &nbsp; points2curve</B>
+</DT>
+<DD><P>
+<B>points2curve</B> constructs a smooth path through an array of points. &nbsp;
+It can be called in two different ways:
+if called with just the array of points
+then it makes up its own starting and ending angles; &nbsp;
+or you may specify those two angles after the array of points,
+which you must do, for example for drawing smooth closed curves
+that join up smoothly.
+<BR>
+This also makes it easy to copy a smooth curve from a .jpg or
+.png, because you just note the pixel-positions at a few places
+along the curve and let the algorithm do the rest. And if it's not
+right yet, you insert an extra pixel-position into your list.
+<BR>
+In the first of these examples the explicit angles are needed
+to make sure the start and end of the closed curve join up
+with the same gradient:<CODE>
+<BR> &nbsp;
+[ 220 50 100 100 100 200 200 250 300 210 320 100 220 50 ] 170 170
+<BR> &nbsp; &nbsp;
+points2curve stroke
+<BR> &nbsp;
+[ 400 50 380 100 430 200 360 300 450 400 380 500 410 600 400 700 ] 120 90
+<BR> &nbsp; &nbsp;
+points2curve stroke
+<BR> &nbsp;
+[ 250 300 240 400 260 390 250 600 ]
+<BR> &nbsp; &nbsp;
+points2curve stroke
+</CODE>
+</P>
+
+</DD><DT>
 <B><A NAME="pointdef">/name_of_point x y pointdef</A></B>
 </DT><DD><P>
 The above invocation leaves
@@ -248,6 +285,7 @@ and is handy if a point needs to be used now
 but also left on the stack to come back to later.
 It's like a two-dimensional version of <CODE>dup</CODE>
 </P>
+
 
 </DD><DT>
 <B><A NAME="interpolate2">x1 y1 weight1 x2 y2 weight2 interpolate2</A></B>
@@ -419,6 +457,7 @@ Peter J Billam &nbsp;
 
 <A NAME="changes"><HR></A><H3>CHANGES</H3>
 <PRE>
+ 20160815 add <A HREF="#points2curve">/points2curve</A>
  20160813 add <A HREF="#fractal_interpolate">/fractal_interpolate</A>
  20031122 in longcurve, prevent div by 0 if curvature=0
  20030313 roll some stuff out to colours.ps
