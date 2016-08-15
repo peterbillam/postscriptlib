@@ -291,6 +291,59 @@
 	end
 } bind def
 
+% --------- adopted here 20160815 from points2curve.ps ---------
+
+/points2curve {  % [x1 y1 ... xN yN] initial_angle final_angle points2curve
+  % http://stackoverflow.com/questions/7715788/find-bezier-control-points-for-curve-passing-through-n-points
+  % http://www.math.ucla.edu/~baker/149.1.02w/handouts/dd_splines.pdf
+  % https://corner.squareup.com/2012/07/smoother-signatures.html
+  25 dict begin
+  /a_top exch def
+  a_top type (arraytype) eq { /points a_top def
+  } { /final_angle a_top def  /initial_angle exch def /points exch def
+  } ifelse
+  /p_0_x points 0 get def
+  /p_0_y points 1 get def
+  p_0_x p_0_y moveto
+  /initial_angle where { pop /subangle_m1 initial_angle def } if
+  /p_im1_x p_0_x def  /p_im1_y p_0_y def
+  2 2 points length 4 sub { /i exch def
+    points i       get /p_i_x   exch def
+    points i 1 add get /p_i_y   exch def
+    points i 2 add get /p_ip1_x exch def
+    points i 3 add get /p_ip1_y exch def
+    /angle_before  p_i_y p_im1_y sub p_i_x p_im1_x sub atan def
+    /angle_after   p_ip1_y p_i_y sub p_ip1_x p_i_x sub atan def
+	angle_before 180 gt { /angle_before angle_before 360 sub def } if
+	angle_after  180 gt { /angle_after  angle_after  360 sub def } if
+    /angle_tangent angle_before angle_after add .5 mul def
+    /dist_before
+      p_i_y p_im1_y sub dup mul  p_i_x p_im1_x sub dup mul  add  sqrt  def
+    /dist_after
+      p_i_y p_ip1_y sub dup mul  p_i_x p_ip1_x sub dup mul  add  sqrt  def
+    /subangle_m1 where { pop } { /subangle_m1 angle_before def } ifelse
+    dist_before dist_after gt {   % use the smaller one
+      /smaller_before_dist dist_after  0.40 mul def
+	} {
+      /smaller_before_dist dist_before 0.40 mul def
+	} ifelse
+    p_im1_x  subangle_m1 cos smaller_before_dist mul  add
+    p_im1_y  subangle_m1 sin smaller_before_dist mul  add
+    p_i_x  angle_tangent cos smaller_before_dist mul  sub
+    p_i_y  angle_tangent sin smaller_before_dist mul  sub
+    p_i_x p_i_y curveto
+    /p_im1_x p_i_x def  /p_im1_y p_i_y def
+    /subangle_m1 angle_tangent def
+  } for
+  /final_angle where { pop } { /final_angle subangle_m1 def } ifelse
+  p_i_x   subangle_m1 cos dist_before mul 0.40 mul add
+  p_i_y   subangle_m1 sin dist_before mul 0.40 mul add
+  p_ip1_x final_angle cos dist_before mul 0.40 mul sub
+  p_ip1_y final_angle sin dist_before mul 0.40 mul sub
+  p_ip1_x p_ip1_y curveto   % last point
+  end
+} def
+
 % ------------------ gray stuff ...
 /gray0 1.0 def /gray1 0.95 def /gray2 0.9  def /gray3 0.85 def /gray4 0.8 def
 /gray5 0.7 def /gray6 0.6  def /gray7 0.45 def /gray8 0.25 def /gray9 0.0 def
