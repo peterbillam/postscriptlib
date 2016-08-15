@@ -232,17 +232,15 @@ It can be called in two different ways:
 if called with just the array of points
 then it makes up its own starting and ending angles; &nbsp;
 or you may specify those two angles after the array of points,
-which you must do, for example for drawing smooth closed curves
-that join up smoothly.
+which you must do, eg: for drawing closed curves that join up smoothly.
 <BR>
-This also makes it easy to copy a smooth curve from a .jpg or
-.png, because you just note the pixel-positions at a few places
-along the curve and let the algorithm do the rest. And if it's not
-right yet, you insert an extra pixel-position into your list.
+This procedure makes it easy to copy a smooth curve from a <I>.jpg</I>
+or <I>.png</I>, because you just note the pixel-positions at a few places
+along the curve and let the algorithm do the rest.
+If it's not right yet, insert an extra pixel-position into your list.
 <BR>
-In the first of these examples the explicit angles are needed
-to make sure the start and end of the closed curve join up
-with the same gradient:<CODE>
+In the first of these examples, explicit angles are needed
+so the start and end of the closed curve get the same gradient:<CODE>
 <BR> &nbsp;
 [ 220 50 100 100 100 200 200 250 300 210 320 100 220 50 ] 170 170
 <BR> &nbsp; &nbsp;
