@@ -322,7 +322,7 @@
 	p_ip1_x p_im1_x gt  angle_before 180 sub angle_after 180 sub mul 0 lt and {
 	  angle_before 180 ge { /angle_before angle_before 360 sub def } if
 	  angle_after  180 gt { /angle_after  angle_after  360 sub def } if
-    } if
+    } if  % 20160816
     /angle_tangent angle_before angle_after add .5 mul def  % bisect the angle
     /subangle_m1 where { pop } { /subangle_m1 angle_before def } ifelse
     dist_before dist_after gt {   % use the smaller distance
@@ -338,7 +338,9 @@
     /p_im1_x p_i_x def  /p_im1_y p_i_y def
     /subangle_m1 angle_tangent def
   } for
-  /final_angle where { pop } { /final_angle subangle_m1 def } ifelse
+  /final_angle where { pop } {
+    /final_angle p_ip1_y p_i_y sub p_ip1_x p_i_x sub atan def % 20160817
+  } ifelse
   p_i_x   subangle_m1 cos dist_before mul 0.40 mul add
   p_i_y   subangle_m1 sin dist_before mul 0.40 mul add
   p_ip1_x final_angle cos dist_before mul 0.40 mul sub
