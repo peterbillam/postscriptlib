@@ -77,9 +77,7 @@ The artist thinks something like
 first there's about this distance of that curvature to the left,
 then about that distance of a much tighter curvature to the left,
 then a much longer listance of this fairly gentle curve to the right,
-etc, etc,
-ending up finally at that point."
-The main subroutine
+etc, etc, ending up finally at that point." &nbsp; The procedure
 <A HREF="#longcurveto">longcurveto</A>
 implements that process in PostScript.
 </P><P>
@@ -88,6 +86,12 @@ is of course much slower than sketching with pencil and paper,
 it's closer to some of the older print-making techniques like
 <I>mezzotint</I> (as used by Escher) offering complete control of greyscale,
 extremely fine detail, and perfect reproducibility.
+</P><P>
+Newer additions
+<A HREF="#fractal_interpolate">fractal_interpolate</A>
+and
+<A HREF="#points2curve">points2curve</A>
+add important functionality.
 </P>
 
 
@@ -158,7 +162,7 @@ For easy viewing, PDF versions of the results are in
 </B></P>
 <DL>
 <DT><B><A NAME="longcurveto">
-[ l c l c (pushxy) l c /apoint l c ] xto yto longcurveto</A></B>
+[ l c l c (pushxy) l c /apoint l c ] &nbsp; xto yto &nbsp; longcurveto</A></B>
 </DT><DD><P>
 Where the arguments are:<BR>
 <B>l</B>
@@ -196,7 +200,7 @@ See the PostScript Language Reference Manual for more about
 
 </DD><DT>
 <B><A NAME="longcurve">
-angle [ l c l c l c (pushxy) l c l c ] longcurve</A></B>
+angle [ l c l c l c (pushxy) l c l c ] &nbsp; longcurve</A></B>
 </DT><DD><P>
 Where the arguments are:<BR>
 the curve starts at angle <B>angle</B> from the current point<BR>
@@ -210,7 +214,7 @@ causes it to be defined as in a
 </P>
 
 </DD><DT>
-<B><A NAME="reversecurve">[ l1 c1 l2 c2 /name l3 c3 ] reversecurve</A></B>
+<B><A NAME="reversecurve">[ l1 c1 l2 c2 /name l3 c3 ] &nbsp; reversecurve</A></B>
 </DT><DD><P>
 The above invocation leaves
 <CODE>[ l3 -c3 /name l2 -c2 l1 -l1 ]</CODE> on the stack.
@@ -261,7 +265,7 @@ or an upward to a downward . . .-->
 </P>
 
 </DD><DT>
-<B><A NAME="pointdef">/name_of_point x y pointdef</A></B>
+<B><A NAME="pointdef">/name_of_point &nbsp; x y &nbsp; pointdef</A></B>
 </DT><DD><P>
 The above invocation leaves
 <CODE>name_of_point</CODE> defined as <CODE>{ x y }</CODE>
@@ -270,7 +274,7 @@ so it's like a two-dimensional version of <CODE>def</CODE>. For example,<BR>
 </P>
 
 </DD><DT>
-<B><A NAME="pointadd">x1 y1 x2 y2 pointadd</A></B>
+<B><A NAME="pointadd">x1 y1 &nbsp; x2 y2 &nbsp; pointadd</A></B>
 </DT><DD><P>
 The above invocation leaves
 <CODE>x1_plus_x2 y1_plus_y2</CODE> on the stack,
@@ -280,7 +284,7 @@ It's like a two-dimensional version of <CODE>add</CODE>
 </P>
 
 </DD><DT>
-<B><A NAME="pointdup">x y pointdup</A></B>
+<B><A NAME="pointdup">x y &nbsp; pointdup</A></B>
 </DT><DD><P>
 The above invocation leaves <CODE>x y x y</CODE> on the stack,
 and is handy if a point needs to be used now
@@ -290,7 +294,7 @@ It's like a two-dimensional version of <CODE>dup</CODE>
 
 
 </DD><DT>
-<B><A NAME="interpolate2">x1 y1 weight1 x2 y2 weight2 interpolate2</A></B>
+<B><A NAME="interpolate2">x1 y1 weight1 &nbsp; x2 y2 weight2 &nbsp; interpolate2</A></B>
 </DT><DD><P>
 The above invocation leaves on the stack,
 ready for <I>moveto</I> or <I>pointdef</I>,
@@ -307,7 +311,7 @@ they get normalised to total 1.0 automatically.
 
 </DD><DT>
 <B><A NAME="interpolate3">
-x1 y1 weight1 x2 y2 weight2 x3 y3 weight3 interpolate3</A></B>
+x1 y1 weight1 &nbsp; x2 y2 weight2 &nbsp; x3 y3 weight3 &nbsp; interpolate3</A></B>
 </DT><DD><P>
 The above invocation leaves on the stack,
 ready for <I>moveto</I> or <I>pointdef</I>,
@@ -325,7 +329,7 @@ they get normalised to total 1.0 automatically.
 </P>
 
 </DD><DT><B><A NAME="fractal_interpolate">
-x_array y_array d_array { lineto } n_iters fractal_interpolate</A></B>
+x_array y_array d_array &nbsp; { lineto } &nbsp; n_iters &nbsp; fractal_interpolate</A></B>
 </DT><DD><P>
 <B>fractal_interpolate</B> is useful for drawing mountain ranges,
 forest horizons, and, if using <I>r, theta</I> coordinates,
@@ -369,7 +373,7 @@ stroke
 </P>
 
 </DD><DT><B><A NAME="fuzzygraystroke">
-innergray outgray inwidth outwidth fuzzygraystroke</A></B>
+innergray outgray &nbsp; inwidth outwidth &nbsp; fuzzygraystroke</A></B>
 </DT><DD><P>
 The above invocation strokes a fuzzy grey line along the currentpath.
 At its centre, the line will be of a <CODE>innergray</CODE>
@@ -381,7 +385,7 @@ This subroutine is useful for shading.
 </P>
 
 </DD><DT><B><A NAME="fuzzygrayfill">
-innergray outergray fuzzwidth fuzzygrayfill</A></B>
+innergray outergray &nbsp; fuzzwidth &nbsp; fuzzygrayfill</A></B>
 </DT><DD><P>
 The above invocation fills the <I>currentpath</I> with <CODE>innergray</CODE>.
 Outside the <I>currentpath</I>, the greyness fades,
@@ -398,7 +402,7 @@ This is a deprecated synonym for
 </P>
 
 </DD><DT><B><A NAME="fuzzyrgbstroke">
-incolour outcolour inwidth outwidth fuzzyrgbstroke</A></B>
+incolour outcolour &nbsp; inwidth outwidth &nbsp; fuzzyrgbstroke</A></B>
 </DT><DD><P>
 The above invocation strokes a fuzzy coloured line along the currentpath.
 At its centre, the line will be of a <CODE>incolour</CODE>
@@ -411,7 +415,7 @@ See also <A HREF="colours.html">colours.ps</A>.
 </P>
 
 </DD><DT><B><A NAME="fuzzyrgbfill">
-innercolour outercolour fuzzwidth fuzzyrgbfill</A></B>
+innercolour outercolour &nbsp; fuzzwidth &nbsp; fuzzyrgbfill</A></B>
 </DT><DD><P>
 The above invocation fills the <I>currentpath</I> with
 <CODE>innercolour</CODE>.
