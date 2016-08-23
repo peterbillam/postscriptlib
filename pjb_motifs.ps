@@ -13,6 +13,16 @@
 /irand     where { pop } { (/home/pjb/ps/lib/random.ps)  run } ifelse
 /randomrgb where { pop } { (/home/pjb/ps/lib/colours.ps) run } ifelse
 
+/reverse {   % usage: [ 5 4 3 2 1 (bang) ] reverse => [ (bang) 1 2 3 4 5 ]
+  4 dict begin
+  /a exch def
+  /r a length array def
+  /n a length 1 sub def
+  0 1 n { /i exch def  r n i sub  a i get  put } for
+  r
+  end
+} bind def
+
 /rect { 4 dict begin   [ /h /w /y /x ] { exch def } forall
   x y moveto w 0 rlineto 0 h rlineto 0 w sub 0 rlineto x y lineto closepath
 end } def
