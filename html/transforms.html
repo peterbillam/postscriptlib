@@ -49,11 +49,11 @@ transforms.ps - Some useful transforms in PostScript
 
  /rect { 4 dict begin   [ /h /w /y /x ] { exch def } forall
    x y moveto  w 0 rlineto  0 h rlineto  0 w sub 0 rlineto  closepath
- end } def
+ end } def    % like rectfill, except it just constructs the path
 
  /HelveticaBold  310  selectfont
- % the vanishing-point will be 300,400
 
+ % the vanishing-point will be 300,400
  % left of the vanishing-point, we start printing text at x0
  /x0 20 def
  x0 375 moveto  (MHXWENZE) true charpath
