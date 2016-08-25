@@ -55,10 +55,10 @@ CONTENT="PostScript, line drawing, shading">
  /ear { 124 mm 145 mm } def
  /nose2brow { 10 20 60 1 /bridge 15 -65 15 50 60 5 } def   % define the Curves
  /brow2ear  { 10 20 60 1 /bridge 15 -45 } def
- /eye brow nose .4 brow .4 ear .2 interpolate3 pointdef
- /darkskin paleorange .4 brown .6 rgbmix rgbdef  % mix some Colours
+ /eye brow nose .4 brow .4 ear .2 <A HREF="#interpolate3">interpolate3</A> <A HREF="#pointdef">pointdef</A>
+ /darkskin paleorange .4 brown .6 rgbmix rgbdef  % mix some <A HREF="colours.html">Colours</A>
  newpath nosetip moveto  % run the Curves ...
- [ nose2brow ] brow longcurveto [ brow2ear ] ear longcurveto
+ [ nose2brow ] brow <A HREF="#longcurveto">longcurveto</A> [ brow2ear ] ear <A HREF="#longcurveto">longcurveto</A>
  % make closedpaths round areas; clip, fill, fuzzyrgbstroke &amp; fuzzyfill
  closepath darkskin setrgbcolor fill
  % run the Curves again, and this time stroke or fuzzyrgbstroke them
@@ -270,7 +270,12 @@ or an upward to a downward . . .-->
 The above invocation leaves
 <CODE>name_of_point</CODE> defined as <CODE>{ x y }</CODE>
 so it's like a two-dimensional version of <CODE>def</CODE>. For example,<BR>
-<CODE>&nbsp;&nbsp;/point_name currentpoint pointdef</CODE><BR>
+<CODE>&nbsp; &nbsp; /point_name currentpoint pointdef</CODE>
+<BR>
+Note that because a point has two components, the common
+<CODE>/x&nbsp;exch&nbsp;def</CODE> idiom doesn't work with <I>pointdef</I>;
+you'll need something like this instead:<BR>
+<CODE>&nbsp; &nbsp; /mynewpoint 3 1 roll pointdef</CODE>
 </P>
 
 </DD><DT>
@@ -463,6 +468,7 @@ Peter J Billam &nbsp;
 
 <A NAME="changes"><HR></A><H3>CHANGES</H3>
 <PRE>
+ 20160825 <A HREF="#points2curve">/points2curve</A> starts with a lineto if currentpoint exists
  20160817 final_angle in <A HREF="#points2curve">/points2curve</A> calculated like initial_angle
  20160816 probably fixed a bug in <A HREF="#points2curve">/points2curve</A>
  20160815 add <A HREF="#points2curve">/points2curve</A>

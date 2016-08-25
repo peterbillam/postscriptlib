@@ -293,6 +293,19 @@
 
 % --------- adopted here 20160815 from points2curve.ps ---------
 
+/reverse_points {  % usage: [x1 y1 x2 y2 ... xN yN] => [xN yN ... x2 y2 x1 y1]
+  4 dict begin
+  /a exch def
+  /r a length array def
+  /n a length 1 sub def
+  0 2 n { /i exch def
+    r n i sub 1 sub  a i get  put
+    r n i sub  a i 1 add get  put
+  } for
+  r
+  end
+} bind def
+
 /points2curve {  % [x1 y1 ... xN yN] initial_angle final_angle points2curve
   % http://stackoverflow.com/questions/7715788/find-bezier-control-points-for-curve-passing-through-n-points
   % http://www.math.ucla.edu/~baker/149.1.02w/handouts/dd_splines.pdf
@@ -304,7 +317,10 @@
   } ifelse
   /p_0_x points 0 get def
   /p_0_y points 1 get def
-  p_0_x p_0_y moveto
+  % 20160825  moveto if currentpoint undefined ; otherwise lineto
+  { currentpoint } stopped { p_0_x p_0_y moveto
+  } {                pop pop p_0_x p_0_y lineto
+  } ifelse
   /initial_angle where { pop /subangle_m1 initial_angle def } if
   /p_im1_x p_0_x def  /p_im1_y p_0_y def
   2 2 points length 4 sub { /i exch def
