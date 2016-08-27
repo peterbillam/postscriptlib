@@ -52,7 +52,7 @@
 
 % ------------------ curve stuff ...
 /pushxy (pushxy) def
-/longc_nopushxy 0 def   % allow 'pushxy' ...
+/longc_nopushxy false def   % disallow 'pushxy' ? ...
 /longcurveto { % usage: [ l c l c l c (pushxy) l c l c ] xto yto longcurveto
 	% 'l' is the nominal length of the segment in mm (will be scaled !)
 	% 'c' is the rightwards curvature of the segment in Radians/Metre (ditto)
@@ -61,9 +61,9 @@
 	/longct_aimy exch def /longct_aimx exch def
 	currentpoint /longct_starty exch def /longct_startx exch def
 	gsave   % prevent stroking of the trial curve
-	/longc_nopushxy 1 def  % prevent 'pushxy' for the trial curve ...
+	/longc_nopushxy true  def  % prevent 'pushxy' for the trial curve ...
 	dup 0 exch longcurve   % do the trial curve to see where it ends
-	/longc_nopushxy 0 def  % re-allow 'pushxy' ...
+	/longc_nopushxy false def  % re-allow 'pushxy' ...
 	currentpoint /longct_endy exch def /longct_endx exch def
 	grestore
 	% calculate the transformation that will take *end to *aim
@@ -108,7 +108,7 @@
 	{
 		dup longc_i get /longc_l exch def
 		longc_l pushxy eq {
-			longc_nopushxy 0 eq { currentpoint 3 2 roll } if
+			longc_nopushxy not { currentpoint 3 2 roll } if
 		} {
 			longc_l type (nametype) eq {
 				longc_l currentpoint pointdef
@@ -187,30 +187,28 @@
 
 /interpolate2 { % usage: x1 y1 weight1 x2 y2 weight2 interpolate2
 	% leaves interpolated point on stack ready for "moveto" or "pointdef"
-	/intpl_w2 exch def /intpl_y2 exch def /intpl_x2 exch def
-	/intpl_w1 exch def /intpl_y1 exch def /intpl_x1 exch def
+	10 dict begin
+	[ /w2 /y2 /x2  /w1 /y1 /x1 ] { exch def } forall
 	% normalise the weights to add up to 1 ...
-	/intpl_wtot intpl_w1 intpl_w2 add def
-	/intpl_w1 intpl_w1 intpl_wtot div def
-	/intpl_w2 intpl_w2 intpl_wtot div def
+	/wtot w1 w2 add def
+	/w1 w1 wtot div def  /w2 w2 wtot div def
 	% interpolate and leave on stack ...
-	intpl_x1 intpl_w1 mul intpl_x2 intpl_w2 mul add
-	intpl_y1 intpl_w1 mul intpl_y2 intpl_w2 mul add
+	x1 w1 mul  x2 w2 mul  add
+	y1 w1 mul  y2 w2 mul  add
+	end
 } def
 
 /interpolate3 { % usage: x1 y1 weight1 x2 y2 weight2 x3 y3 weight3 interpolate3
 	% leaves interpolated point on stack ready for "moveto" or "pointdef"
-	/intpl_w3 exch def /intpl_y3 exch def /intpl_x3 exch def
-	/intpl_w2 exch def /intpl_y2 exch def /intpl_x2 exch def
-	/intpl_w1 exch def /intpl_y1 exch def /intpl_x1 exch def
+	15 dict begin
+	[ /w3 /y3 /x3  /w2 /y2 /x2  /w1 /y1 /x1 ] { exch def } forall
 	% normalise the weights to add up to 1 ...
-	/intpl_wtot intpl_w1 intpl_w2 add intpl_w3 add def
-	/intpl_w1 intpl_w1 intpl_wtot div def
-	/intpl_w2 intpl_w2 intpl_wtot div def
-	/intpl_w3 intpl_w3 intpl_wtot div def
+	/wtot  w1 w2 add w3 add  def
+	/w1 w1 wtot div def  /w2 w2 wtot div def  /w3 w3 wtot div def
 	% interpolate and leave on stack ...
-	intpl_x1 intpl_w1 mul intpl_x2 intpl_w2 mul add intpl_x3 intpl_w3 mul add
-	intpl_y1 intpl_w1 mul intpl_y2 intpl_w2 mul add intpl_y3 intpl_w3 mul add
+	x1 w1 mul  x2 w2 mul add  x3 w3 mul add
+	y1 w1 mul  y2 w2 mul add  y3 w3 mul add
+	end
 } def
 
 
@@ -320,8 +318,8 @@
   % 20160825  moveto if currentpoint undefined ; otherwise lineto  WRONG!
   % p_0_x p_0_y{ currentpoint } stopped { moveto } { pop pop lineto } ifelse
   % 20160826  moveto if there's no current subpath ; otherwise lineto :-)
-  /is_open_subpath {   % Carlos on comp.lang.postscript  20160826
-    false % except I treat no-currentpath the same as no-open-subpath
+  /is_open_subpath {   % Carlos comp.lang.postscript 20160826 inverted
+    false  % except I treat no-currentpath the same as no-open-subpath
     { pop pop true exch pop }
     { pop pop true exch pop }
     { pop pop pop pop pop pop true exch pop }
