@@ -316,14 +316,14 @@
   /p_0_x points 0 get def
   /p_0_y points 1 get def
   % 20160825  moveto if currentpoint undefined ; otherwise lineto  WRONG!
-  % p_0_x p_0_y{ currentpoint } stopped { moveto } { pop pop lineto } ifelse
+  % p_0_x p_0_y { currentpoint } stopped { moveto } { pop pop lineto } ifelse
   % 20160826  moveto if there's no current subpath ; otherwise lineto :-)
-  /is_open_subpath {   % Carlos comp.lang.postscript 20160826 inverted
+  /is_open_subpath {   % Carlos comp.lang.postscript 20160825 inverted
     false  % except I treat no-currentpath the same as no-open-subpath
-    { pop pop true exch pop }
-    { pop pop true exch pop }
-    { pop pop pop pop pop pop true exch pop }
-    { false exch pop } pathforall
+    { pop pop  pop true }  % simplification by jdaw1 20160827
+    { pop pop  pop true }
+    { pop pop pop pop pop pop  pop true }
+    { pop false } pathforall
   } bind def
   p_0_x p_0_y  is_open_subpath { lineto } { moveto } ifelse
   /initial_angle where { pop /subangle_m1 initial_angle def } if
