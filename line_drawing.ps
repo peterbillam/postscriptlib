@@ -374,26 +374,23 @@
 /gray0 1.0 def /gray1 0.95 def /gray2 0.9  def /gray3 0.85 def /gray4 0.8 def
 /gray5 0.7 def /gray6 0.6  def /gray7 0.45 def /gray8 0.25 def /gray9 0.0 def
 /fuzzygraystroke { % usage: innergray outgray inwidth outwidth fuzzygraystroke
-	/fuzzys_ow exch def /fuzzys_iw exch def
-	/fuzzys_og exch def /fuzzys_ig exch def
+	10 dict begin
+	[ /ow /iw /og /ig ] { exch def } forall
 	gsave 1 setlinecap 1 setlinejoin
-	% should do more intermediate steps ...
-	gsave fuzzys_ow setlinewidth fuzzys_og setgray stroke grestore
-	gsave fuzzys_iw 0.2 mul fuzzys_ow 0.8 mul add setlinewidth
-		fuzzys_ig 0.2 mul fuzzys_og 0.8 mul add setgray stroke grestore
-	gsave fuzzys_iw 0.4 mul fuzzys_ow 0.6 mul add setlinewidth
-		fuzzys_ig 0.4 mul fuzzys_og 0.6 mul add setgray stroke grestore
-	gsave fuzzys_iw 0.6 mul fuzzys_ow 0.4 mul add setlinewidth
-		fuzzys_ig 0.6 mul fuzzys_og 0.4 mul add setgray stroke grestore
-	gsave fuzzys_iw 0.8 mul fuzzys_ow 0.2 mul add setlinewidth
-		fuzzys_ig 0.8 mul fuzzys_og 0.2 mul add setgray stroke grestore
-	fuzzys_iw setlinewidth fuzzys_ig setgray stroke grestore
+	0 .05 1.02 { /r exch def  /one_minus_r 1.0 r sub def
+		gsave iw r mul  ow one_minus_r mul  add  setlinewidth
+		ig r mul  og one_minus_r mul  add  setgray  stroke grestore
+	} for   % 20160828
+	grestore
+	end
 } def
 /fuzzygrayfill { % usage: innergray outergray fuzzwidth fuzzygrayfill
-	/fuzzyf_w exch def /fuzzyf_og exch def /fuzzyf_ig exch def
-	currentlinewidth currentlinecap currentgray gsave
-	fuzzyf_ig fuzzyf_og fuzzyf_w 0.1 mul fuzzyf_w 2.0 mul fuzzygraystroke
-	grestore fuzzys_ig setgray fill setgray setlinecap setlinewidth
+	5 dict begin
+	[ /w /og /ig ] { exch def } forall
+	currentlinewidth currentlinecap currentgray
+	ig og w 0.1 mul w 2.0 mul fuzzygraystroke    ig setgray fill
+	setgray setlinecap setlinewidth
+	end
 } def
 
 % ------------------ colour stuff ...
