@@ -1,0 +1,76 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+%                                                                       %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+
+(/home/pjb/ps/lib/colours.ps) run
+(/home/pjb/ps/lib/text.ps) run
+
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+
+999 srand
+
+/Helvetica-Bold 72 selectfont
+410 594 moveto
+{ pop pop -19 0 rmoveto }
+{ clip clippath pathbbox 2 index sub exch 3 index sub exch
+  [ black red blue ] randomrgb white false 0.5 rectgradientfill }
+(MALO) true kcharbychar
+
+/Helvetica-Bold 85 selectfont
+278 541 moveto
+{ pop pop -23 0 rmoveto }
+{ clip clippath pathbbox 2 index sub exch 3 index sub exch
+  [ black red blue ] randomrgb white false 0.5 rectgradientfill }
+(MALSANO) true kcharbychar
+
+/Helvetica-Bold 100 selectfont
+150 477 moveto
+{ pop pop -27 0 rmoveto }
+{ clip clippath pathbbox 2 index sub exch 3 index sub exch
+  [ black red blue ] randomrgb white false 0.5 rectgradientfill }
+(MALSANULO) true kcharbychar
+
+/Helvetica-Bold 120 selectfont
+15 402 moveto
+{ pop pop -35 0 rmoveto }
+{ clip clippath pathbbox 2 index sub exch 3 index sub exch
+  [ black red blue ] randomrgb white false 0.5 rectgradientfill }
+(MALSANULEJO) true kcharbychar
+
+/Helvetica-Bold 150 selectfont
+15 312 moveto
+{ pop pop -45 0 rmoveto }
+{ clip clippath pathbbox 2 index sub exch 3 index sub exch
+  [ black red blue ] randomrgb white false 0.5 rectgradientfill }
+(SANULEJO) true kcharbychar
+
+/Helvetica-Bold 180 selectfont
+15 208 moveto
+{ pop pop -51 0 rmoveto }
+{ clip clippath pathbbox 2 index sub exch 3 index sub exch
+  [ black red blue ] randomrgb white false 0.5 rectgradientfill }
+(ULEJO) true kcharbychar
+
+/Helvetica-Bold 210 selectfont
+15 90 moveto
+{ pop pop -54 0 rmoveto }
+{ clip clippath pathbbox 2 index sub exch 3 index sub exch
+  [ black red blue ] randomrgb white false 0.5 rectgradientfill }
+(EJO) true kcharbychar
+
+showpage
+%%EOF

@@ -1,0 +1,81 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+(/home/pjb/ps/fonts/Font7x5.ps) run
+(/home/pjb/ps/lib/colours.ps) run
+(/home/pjb/ps/lib/brownian.ps) run
+(/home/pjb/ps/lib/pjb_motifs.ps) run
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+
+black 0.5 darkgreen 0.5 rgbmix setrgbcolor  0 0 xmax ymax rectfill
+black 0.77 orange 0.23 rgbmix setrgbcolor
+/Font7x5 ymax .0464 mul selectfont
+/x xmax 0.012 mul def
+/y ymax 0.950 mul def
+/down { /y y ymax 0.0406 mul sub def } bind def
+x y moveto (CONFIRMSUBMISSIONY/N) show down
+x y moveto (FREETHEBANKINGSECTOR) show down
+x y moveto (THEREISNOALTERNATIVE) show down
+x y moveto (AMERICANEXPRESS/VISA) show down
+x y moveto (MASTERCARDOKTODELETE) show down
+x y moveto (*UNAUTHORIZEDACCESS*) show down
+x y moveto (AUTHENTICATIONNEEDED) show down
+x y moveto (ISHEONEOFUS?\(YES/NO\)) show down
+x y moveto (THEREGULATORYSECTORS) show down
+x y moveto (FREETRADEAGGREEMENTS) show down
+x y moveto (INVESTORSTATEDISPUTE) show down
+x y moveto (SETTLEMENTPROCEDURES) show down
+x y moveto (GREATECONOMICBENEFIT) show down
+x y moveto (FROMCULTURETOPRODUCT) show down
+x y moveto (FREEDOMFORTHEECONOMY) show down
+x y moveto (SUBMITNOW?YES/ACCEPT) show down
+x y moveto (THINKTANKLOBBYGROUPS) show down
+x y moveto (TOOUTSOURCEPRIVATISE) show down
+x y moveto (DEREGULATE&GLOBALISE) show down
+x y moveto (MORECOMPETITIVEBANKS) show down
+x y moveto (BENDTWIGWHENITSYOUNG) show down
+x y moveto (GLOBALISATIONISGREAT) show down
+x y moveto (SUBMITNOW?\(YESORNO\)Y) show down
+x y moveto (MISSIONACCOMPLISHED!) show down
+
+black setrgbcolor
+990 srand
+xmax 0.35 mul  ymax 0.02 mul  ymax 0.4 mul  0.5 bare_tree
+xmax 0.65 mul  ymax 0.02 mul  ymax 0.2 mul  0.5 bare_tree
+
+%gsave
+%  xmax 0.75 mul  ymax 0.0245 mul translate 271 rotate
+%  0 0 xmax 0.09 mul  false slouchmanprofile fill
+%grestore
+
+black setrgbcolor
+991 srand
+/redness 1.3 def   % 0=whitenoise, 1=pinknoise, 2=rednoise
+/n_harmonics 50 def
+/delta_x xmax 200 div def
+/horizon ymax 0.03 mul def
+0 xmax ymax 0.007 mul  redness n_harmonics new_brownian_curve
+newpath xmax 0 moveto 0 0 lineto
+/x 0 def {
+   /y x brownian_curve def
+   %  x y horizon add  xmax 0.47 mul x sub dup mul 1500 div add lineto
+     x y horizon add lineto
+   /x x delta_x add def   x xmax gt { exit } if
+} loop closepath fill
+
+
+showpage
+%%EOF

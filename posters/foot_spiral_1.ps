@@ -1,0 +1,157 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+%                                                                       %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+
+(/home/pjb/ps/lib/muscript.ps) run
+(/home/pjb/ps/lib/pjb_motifs.ps) run
+
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+/xmid xmax .50 mul def
+/ymid ymax .81 mul def
+/deg2rad 3.141592563589 180 div def
+
+% 996 srand  % gives a very nice cornea-sized concentration in the L eye
+992 srand
+
+0  0    xmax ymax 0.25 mul  mediumgrey white true 0.8 rectgradientfill
+0 ymax  xmax ymax -.75 mul  mediumgrey white true 0.8 rectgradientfill
+1.1 1.0 scale
+
+/eye_path {   % usage: x y width angle eye_path
+  % left/right? up/down? open/closed?
+  /eye_path_angle exch def /eye_path_halfwidth exch 0.5 mul def
+  /eye_path_y exch def     /eye_path_x exch def
+  eye_path_x eye_path_y translate
+  eye_path_halfwidth dup scale
+  eye_path_angle rotate
+  -1  0 moveto -0.2 0.8   0.2 0.8   1 0  curveto
+  0.2 -0.5   -0.2 -0.5   -1.0 0  curveto
+  closepath
+  0 eye_path_angle sub rotate
+  1.0 eye_path_halfwidth div dup scale
+  0 eye_path_x sub 0 eye_path_y sub translate
+} bind def
+
+/theta 240 def
+/rightleft true def
+{
+  % /theta theta 15 sub def
+  /theta theta 30 sub def
+  /radius 2.718281828  theta 240 sub deg2rad mul 0.5 mul exp  350 mul def
+  % /size radius 0.20 mul def
+  /size radius 0.40 mul def
+  /rightleft rightleft not def
+  [ blue black darkgrey darkgreen ] randomrgb setrgbcolor
+  newpath
+    xmid theta cos radius mul add  ymid theta sin radius mul add
+      size  rightleft  theta 125 sub  footprint_path
+  fill
+  theta -500 lt { exit } if
+} loop
+
+/theta 335 def
+/rightleft true def
+{
+  % /theta theta 15 sub def
+  /theta theta 30 sub def
+  /radius 2.718281828  theta 335 sub deg2rad mul 0.5 mul exp  350 mul def
+  % /size radius 0.20 mul def
+  /size radius 0.40 mul def
+  /rightleft rightleft not def
+  [ blue black darkgrey darkgreen ] randomrgb setrgbcolor
+  newpath
+    xmid theta cos radius mul add  ymid theta sin radius mul add
+      size  rightleft  theta -55 sub  footprint_path
+  fill
+  theta -500 lt { exit } if
+} loop
+
+/ymid ymax .19 mul def
+/theta 240 def
+/rightleft true def
+{
+  /theta theta 30 sub def
+  /radius 2.718281828  theta 240 sub deg2rad mul 0.5 mul exp  350 mul def
+  /size radius 0.40 mul def
+  /rightleft rightleft not def
+  [ red black orange violet ] randomrgb setrgbcolor
+  newpath
+    xmid theta cos radius mul add  ymid theta sin radius mul sub
+      size  rightleft  0 theta sub  60 sub  footprint_path
+  fill
+  theta -500 lt { exit } if
+} loop
+
+/theta 335 def
+/rightleft false def
+{
+  % /theta theta 15 sub def
+  /theta theta 30 sub def
+  /radius 2.718281828  theta 335 sub deg2rad mul 0.5 mul exp  350 mul def
+  % /size radius 0.20 mul def
+  /size radius 0.40 mul def
+  /rightleft rightleft not def
+  [ red black orange violet ] randomrgb setrgbcolor
+  newpath
+    xmid theta cos radius mul add  ymid theta sin radius mul sub
+      size  rightleft  0 theta sub 120 add  footprint_path
+  fill
+  theta -500 lt { exit } if
+} loop
+
+black setrgbcolor
+xmax 0.1 mul ymax 0.5 mul 100 true 90 footprint_path fill  % the keystone foot
+
+999 srand
+/letters [ (P) (J) (B) (p) (j) (b) (c) (o) (m) (a) (u) ] def
+/i 0 def { /i i 1 add def
+  newpath
+  xmax 0.64 mul  ymax 0.30 mul  ymax 0.25 mul  88  eye_path
+  /Helvetica-BoldItalic findfont 18 irand 08 add scalefont setfont
+  [ blue black darkgrey darkgreen ] randomrgb setrgbcolor
+  /x xmax 0.40 mul irand  xmax 0.50 mul add  def
+  /y ymax 0.40 mul irand  ymax 0.10 mul add  def
+  x y infill {
+    gsave
+      x y translate
+      60 irand 60 add rotate
+      0 0 moveto letters randomget show
+    grestore
+  } if
+  i 600 gt { exit } if
+} loop
+
+996 srand
+/signs [ /whiteblob /bassclef /trebleclef /sharp /natural /crochetrest ] def
+/i 0 def { /i i 1 add def
+  newpath
+  xmax 0.64 mul  ymax 0.70 mul  ymax 0.25 mul  92  eye_path
+  [ red black orange violet ] randomrgb setrgbcolor
+  /x xmax 0.40 mul irand  xmax 0.50 mul add  def
+  /y ymax 0.40 mul irand  ymax 0.60 mul add  def
+  x y infill {
+    gsave
+      x y translate
+      60 irand 60 add rotate
+      0 0  12 10 irand add  signs randomget cvx exec
+    grestore
+  } if 
+  i 750 gt { exit } if
+} loop
+
+showpage
+%%EOF

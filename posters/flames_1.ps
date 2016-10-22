@@ -1,0 +1,73 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+%                                                                       %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+
+(/home/pjb/ps/lib/colours.ps) run
+(/home/pjb/ps/lib/pjb_motifs.ps) run
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+
+% 8884 srand
+/irand { rand exch cvi mod } bind def
+
+%0 -10 xmax ymax blue 0.5 paleblue 0.5 rgbmix white true 0.2 rectgradientfill
+%xmax 0.1 mul 0 xmax 0.1 mul ymax lightgrey darkgrey false .1 rectgradientfill
+%xmax 0.6 mul 0 xmax 0.2 mul ymax lightgrey darkgrey false .1 rectgradientfill
+black setrgbcolor 0 0 xmax ymax rectfill
+
+/n 1200 def /i 0 def {
+  /i i 1 add def
+  [ red orange ] randomrgb setrgbcolor
+  /ang 80 irand 40 sub def
+  /x xmax irand def
+  /y ymax 0.20 mul irand  ymax 0.0 mul add  def
+  /dy ymax 0.03 i n div 15 div add mul def
+  newpath x y ang x y dy add ang curve_of_beauty_path fill
+  i n gt { exit } if
+} loop
+/n 1200 def /i 0 def {
+  /i i 1 add def
+  [ red orange yellow red orange ] randomrgb setrgbcolor
+  /ang 80 irand 40 sub def
+  /x xmax irand def
+  /y ymax 0.25 mul irand  ymax 0.20 mul add  def
+  /dy ymax 0.03 i n div 15 div add mul def
+  newpath x y ang x y dy add ang curve_of_beauty_path fill
+  i n gt { exit } if
+} loop
+/n 1050 def /i 0 def {
+  /i i 1 add def
+  [ red orange yellow yellow ] randomrgb setrgbcolor
+  /ang 80 irand 40 sub def
+  /x xmax irand def
+  /y ymax 0.25 mul irand  ymax 0.45 mul add  def
+  /dy ymax 0.03 i n div 15 div add mul def
+  newpath x y ang x y dy add ang curve_of_beauty_path fill
+  i n gt { exit } if
+} loop
+/n  900 def /i 0 def {
+  /i i 1 add def
+  [ orange yellow ] randomrgb setrgbcolor
+  /ang 80 irand 40 sub def
+  /x xmax irand def
+  /y ymax 0.20 mul irand  ymax 0.70 mul add  def
+  /dy ymax 0.03 i n div 15 div add mul def
+  newpath x y ang x y dy add ang curve_of_beauty_path fill
+  i n gt { exit } if
+} loop
+
+showpage
+%%EOF

@@ -1,0 +1,66 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+(/home/pjb/ps/lib/colours.ps) run
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+
+/myblack  darkred 0.5 black     0.5 rgbmix rgbdef
+
+/starburst {   % x y radius starburst
+  10 dict begin
+  [ /radius /y /x ] { exch def } forall
+  /myviolet violet 0.5 paleviolet 0.5 rgbmix rgbdef
+  /myblue   blue   0.5 paleblue   0.5 rgbmix rgbdef
+  x y  0              radius .28 mul  white myviolet -.5 radialgradientfill
+  x y  radius .28 mul radius .38 mul myviolet myblue 0.0 radialgradientfill
+  x y  radius .38 mul radius .49 mul  myblue green 0.0 radialgradientfill
+  x y  radius .49 mul radius .59 mul green  yellow 0.0 radialgradientfill
+  x y  radius .59 mul radius .69 mul yellow darkorange 0.0 radialgradientfill
+  x y  radius .69 mul radius .79 mul  darkorange red   0.0 radialgradientfill
+  x y  radius .79 mul radius .89 mul  red darkred  0.0 radialgradientfill
+  x y  radius .89 mul radius 1.0 mul darkred myblack 0.0 radialgradientfill
+  end
+} bind def
+
+myblack setrgbcolor 0 0 xmax ymax rectfill
+newpath
+  black 0.5 myblack 0.5 rgbmix setrgbcolor
+  % xmax 0.85 mul 0 moveto xmax 0 lineto xmax ymax .80 mul lineto
+  xmax 0.88 mul 0 moveto xmax 0 lineto xmax ymax .80 mul lineto
+  closepath fill
+xmax .58 mul  ymax .57 mul  xmax .35 mul  starburst
+xmax .10 mul  ymax .12 mul  xmax .03 mul  starburst
+
+gsave
+  xmax .23 mul  ymax .85 mul translate  10 rotate  1.0 .25 scale
+  0 0  xmax .07 mul  xmax .10 mul  myblack red  0.5 radialgradientfill
+  0 0  xmax .10 mul  xmax .13 mul  red myblack  -.5 radialgradientfill
+  0 0  0 xmax .02 mul orange myblack -.8 radialgradientfill
+grestore
+gsave
+  xmax .85 mul  ymax .85 mul translate  -10 rotate  1.0 .25 scale
+  0 0  xmax .07 mul  xmax .10 mul  myblack red  0.5 radialgradientfill
+  0 0  xmax .10 mul  xmax .13 mul  red myblack  -.5 radialgradientfill
+  0 0  0 xmax .02 mul orange myblack -.8 radialgradientfill
+grestore
+gsave
+  xmax .48 mul  ymax .2 mul translate  -10 rotate  1.0 .25 scale
+  0 0  xmax .23 mul  xmax .33 mul  myblack red  0.0 radialgradientfill
+  0 0  xmax .33 mul  xmax .43 mul  red myblack  0.0 radialgradientfill
+  0 0  0 xmax .07 mul orange myblack -.8 radialgradientfill
+grestore
+
+showpage
+%%EOF

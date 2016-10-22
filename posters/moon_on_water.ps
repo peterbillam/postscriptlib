@@ -1,0 +1,71 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+%                                                                       %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+
+(/home/pjb/ps/lib/colours.ps) run
+(/home/pjb/ps/lib/pjb_motifs.ps) run
+/xmax currentpagedevice (PageSize) get 1 get def
+/ymax currentpagedevice (PageSize) get 0 get def
+/horizon ymax 0.28 mul def
+0 xmax translate -90 rotate
+
+8883 srand
+/irand { rand exch cvi mod } bind def
+
+black setrgbcolor 0 0 xmax ymax rectfill
+%xmax 0.1 mul 0 xmax 0.1 mul ymax lightgrey darkgrey false .1 rectgradientfill
+%xmax 0.6 mul 0 xmax 0.2 mul ymax lightgrey darkgrey false .1 rectgradientfill
+
+newpath white setrgbcolor
+  xmax .71 mul  ymax 0.7 mul
+  xmax 0.050 mul  0 360  arc fill
+
+/n  500 def /i 0 def {
+  /i i 1 add def
+  mediumgrey setrgbcolor
+  /ang 40 irand 20 sub def
+  /y horizon 0.5 mul horizon irand 0.5 mul add def
+  /x xmax 0.12 mul irand xmax 0.64 mul add def
+  /dx xmax 0.006 mul def
+  newpath x y  ang  x dx add  y  ang curve_of_beauty_path fill
+  i n gt { exit } if
+} loop
+
+/n  200 def /i 0 def {
+  /i i 1 add def
+  mediumgrey setrgbcolor
+  /ang 40 irand 20 sub def
+  /y horizon 0.5 mul irand def
+  /x xmax 0.11 mul irand  xmax 0.64 mul  add def
+  /dx xmax 0.016 mul def
+  newpath x y  ang  x dx add y  ang  curve_of_beauty_path fill
+  i n gt { exit } if
+} loop
+
+gsave   % defend against clip
+  xmax 0.20 mul  horizon  xmax 0.75 mul  vedra_path  clip
+  xmax 0.20 mul  horizon  xmax 0.75 mul  horizon 1.5 mul 
+    darkred orange true .3 rectgradientfill
+grestore
+gsave
+  white setrgbcolor  1 setlinewidth
+  xmax 0.55 mul  horizon 3 add   xmax 0.28 mul horizon 1.5 mul rectclip
+  xmax 0.20 mul  horizon  xmax 0.75 mul  vedra_path stroke
+grestore
+
+
+showpage
+%%EOF

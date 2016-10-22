@@ -1,0 +1,64 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+%                                                                       %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+
+(/home/pjb/ps/lib/colours.ps) run
+(/home/pjb/ps/lib/random.ps) run
+(/home/pjb/ps/lib/pjb_motifs.ps) run
+(/home/pjb/ps/lib/muscript.ps) run
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+
+3326 srand
+
+/signs [ /whiteblob /breve /bassclef /trebleclef /sharp /natural
+  /crochetrest ] def
+
+0 0   xmax ymax 0.75 mul  orange darkbrown  true  0.9 rectgradientfill
+0 ymax .75 mul xmax ymax .25 mul darkbrown mediumgrey true .8 rectgradientfill
+
+% xmax 0.65 mul ymax 0.50 mul ymax 0.9 mul true 94 footprint_path
+xmax 0.60 mul ymax 0.47 mul ymax 0.9 mul true 85 footprint_path
+
+/i 0 def {
+  /i i 1 add def
+  /Helvetica-Bold findfont 30 irand 10 add scalefont setfont
+  [ blue black darkgrey mediumgrey darkgreen ] randomrgb setrgbcolor
+  /x xmax 0.60 mul irand  xmax 0.30 mul add  def
+  /y ymax 0.90 mul irand  ymax 0.05 mul add  def
+  x y infill {
+    gsave
+      x y translate
+      120 irand 60 sub rotate
+      0 0 moveto [ (P) (J) (B) (p) (j) (b) (c) (o) (m) (a) (u)] randomget show
+    grestore
+  } if
+  [ red black orange violet ] randomrgb setrgbcolor
+  /x xmax 0.55 mul irand  xmax 0.40 mul add  def
+  /y ymax 0.90 mul irand  ymax 0.05 mul add  def
+  x y infill {
+    gsave
+      x y translate
+      120 irand 60 sub rotate
+      0 0  10 35 irand add  signs randomget cvx exec
+    grestore
+  } if 
+
+  i 900 gt { exit } if
+} loop
+
+showpage
+%%EOF

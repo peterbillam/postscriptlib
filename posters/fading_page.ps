@@ -1,0 +1,39 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+(/home/pjb/ps/lib/text.ps) run
+(/home/pjb/ps/lib/colours.ps) run
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+
+/str
+(That had been an extraordinarily brilliant time. For example, just the \
+couple of years around 1910 gave us Stravinsky's Petrushka, and the Rite \
+of Spring, Bartók's Bluebeard's Castle, Debussy's La Mer and Ravel's \
+Daphnis and Chloe, Schoenberg's Five Orchestral Pieces, Busoni's Doktor \
+Faust, Delius' A Mass of Life, Scriabin's Prometheus, all the late Mahler \
+symphonies including The Song Of The Earth, and Elektra and Salome from \
+Richard Strauss. And those are just the big pieces. All that in just a \
+couple of years! It's a phenomenal outpouring.) def
+/Times-Roman-ISO findfont 12 scalefont setfont  grey setrgbcolor
+xmax 0.10 mul   ymax 0.90 mul  str  xmax .28 mul JustifyText
+/Times-Roman-ISO findfont 14 scalefont setfont  mediumgrey setrgbcolor
+xmax 0.23 mul   ymax 0.78 mul  str  xmax .32 mul JustifyText
+/Times-Roman-ISO findfont 16 scalefont setfont  darkgrey setrgbcolor
+xmax 0.36 mul   ymax 0.64 mul  str  xmax .36 mul JustifyText
+/Times-Roman-ISO findfont 18 scalefont setfont  black setrgbcolor
+xmax 0.49 mul   ymax 0.48 mul  str  xmax .4 mul JustifyText
+
+showpage
+%%EOF

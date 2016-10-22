@@ -1,0 +1,90 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% |: y GRG y RBR y RGR :|
+%%EndComments
+%%BeginProlog
+(/home/pjb/ps/lib/colours.ps) run
+(/home/pjb/ps/lib/line_drawing.ps) run
+(/home/pjb/ps/lib/random.ps) run
+(/home/pjb/ps/lib/transforms.ps) run
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+/xrand xmax .011 mul def
+/yrand ymax .009 mul def
+996 srand
+
+yellow setrgbcolor 0 0 xmax ymax rectfill
+
+/a 24 array def
+a 0 0.0 put  a 1 0.0 put  a 22 0.0 put  a 23 ymax put
+2 2 21 { /i exch def
+  a  i  0.0  put
+  a  i 1 add  ymax i mul 24 div  put
+} for
+
+/triplestripe {   %   a1_x a2_x a3_x a4_x edgecolour midcolour  triplestripe
+  30 dict begin /midcolour 4 1 roll rgbdef  /edgecolour 4 1 roll rgbdef
+  [ /a4_x /a3_x /a2_x /a1_x ] { exch def } forall
+  /a1 24 array def
+  a1 0 a1_x put  a1 1 0.0 put  a1 22 a1_x put  a1 23 ymax put
+  2 2 21 { /i exch def
+    a1  i  a1_x xrand grand  put
+    a1  i 1 add  a i 1 add get yrand grand  put
+  } for
+  /a2 24 array def
+  a2 0 a2_x put  a2 1 0.0 put  a2 22 a2_x put  a2 23 ymax put
+  2 2 21 { /i exch def
+    a2  i  a2_x a1_x sub  a1 i get add xrand .25 mul grand  put
+    a2  i 1 add  a1 i 1 add get put
+  } for
+  /a3 24 array def
+  a3 0 a3_x put  a3 1 0.0 put  a3 22 a3_x put  a3 23 ymax put
+  2 2 21 { /i exch def
+    a3  i  a3_x a1_x sub  a1 i get add xrand .25 mul grand  put
+    a3  i 1 add  a1 i 1 add get put
+  } for
+  /a4 24 array def
+  a4 0 a4_x put  a4 1 0.0 put  a4 22 a4_x put  a4 23 ymax put
+  2 2 21 { /i exch def
+    a4  i  a4_x a1_x sub  a1 i get add xrand .25 mul grand  put
+    a4  i 1 add  a1 i 1 add get put
+  } for
+  /my_transform {
+   [ xmax .35 mul  ymax 0.2  mul  xmax 0.1  mul  xmax 0.1 mul ] /collapse_xy2uv
+   c_transform
+   [ xmax .65 mul  ymax 0.16 mul  xmax 0.1  mul  xmax 0.1 mul ] /collapse_xy2uv
+   c_transform
+   [ xmax .55 mul  ymax 0.75 mul  xmax 0.25 mul  2 ] /softlens_xy2uv
+   c_transform
+   [ xmax .78 mul  ymax 0.40 mul  xmax 0.25 mul  2 ] /softlens_xy2uv
+   c_transform
+  } def
+  newpath     a1 points2curve
+   a4 reverse_points points2curve  closepath
+   gsave my_transform edgecolour setrgbcolor fill grestore
+  newpath     a2 points2curve
+   a3 reverse_points points2curve  closepath
+   gsave my_transform midcolour  setrgbcolor fill grestore
+  end
+} bind def
+
+% |: y GRG y RBR y RGR :|
+  xmax .10 mul  xmax .14 mul  xmax .22 mul  xmax .26 mul
+    darkgreen darkred  triplestripe
+  xmax .39 mul  xmax .43 mul  xmax .57 mul  xmax .61 mul
+    darkred  darkblue  triplestripe
+  xmax .74 mul  xmax .78 mul  xmax .86 mul  xmax .90 mul
+    darkred  darkgreen triplestripe
+
+showpage
+%%EOF

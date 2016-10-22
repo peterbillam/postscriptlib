@@ -1,0 +1,42 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Could do the "Three Worlds"  (Road to Reality p.18)
+% but I'd need a /brain procedure, probably circular and seen from above
+%%EndComments
+%%BeginProlog
+(/home/pjb/ps/lib/pjb_motifs.ps) run
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+/xmid xmax 0.5 mul def
+/ymid ymax 0.5 mul def
+
+/radius xmax 0.45 mul def
+black setrgbcolor 0 0 xmax ymax rectfill
+% xmid xmid  0 radius  darkblue black -0.9 radialgradientfill
+xmid xmid 0 radius darkred 0.5 black 0.5 rgbmix  black -0.9 radialgradientfill
+
+/colours [ white paleyellow yellow ] def
+999 srand
+0 1 1000 { pop
+  colours randomrgb setrgbcolor
+  /theta 360 irand def
+  /r  radius 1.7 exp irand  1.0 1.7 div exp  def  % slightly denser at centre
+  gsave newpath % scale the stars towards edge-on as r approaches radius
+    xmid r theta cos mul add  xmid r theta sin mul add translate
+    theta rotate  radius r sub radius div 0.4 exp 1 scale
+    0 0 radius 0.010 mul  radius 0.002 mul grand  star_path fill
+  grestore
+} for
+
+showpage
+%%EOF

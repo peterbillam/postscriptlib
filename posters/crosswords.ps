@@ -1,0 +1,87 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+(/home/pjb/ps/lib/fonts.ps) run
+(/home/pjb/ps/lib/colours.ps) run
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+
+/FatSimple findfont dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /FontMatrix [ 0.001 0.000707  0 0.0065 0 0 ] def
+  currentdict
+end
+/FatSimpleZoom exch definefont pop
+
+/FatSimple findfont dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /FontMatrix [ 0.001 -0.000707 0 0.0065 0 0 ] def
+  currentdict
+end
+/FatSimpleDown exch definefont pop
+
+/FatSimpleDown ymax 0.033 mul selectfont
+black setrgbcolor
+xmax 0.49 mul ymax 0.89  mul moveto (thepastiserased) show
+xmax 0.02 mul ymax 0.89  mul moveto ( maigre amoureuse au long cou) show
+% pierrot lunaire  la chanson de potence   p71
+xmax 0.02 mul ymax 0.67  mul moveto (y la flor impossible de la rama) show
+xmax 0.02 mul ymax 0.45  mul moveto (dunkel ist das leben ist der tod) show
+xmax 0.02 mul ymax 0.22  mul moveto (un de plus un de moins) show
+
+/FatSimpleZoom ymax 0.033 mul selectfont
+red setrgbcolor
+% too much historical quotes,  too much all in english
+xmax 0.02 mul ymax 0.65  mul moveto (\374berallundewig) show
+xmax 0.02 mul ymax 0.42  mul moveto (entireworldliesquietlyatpeace) show
+xmax 0.02 mul ymax 0.19  mul moveto (desmotsplusfortsquelescanons) show
+% Allende, Leo Ferre
+xmax 0.02 mul ymax -0.04  mul moveto (Die Sprache der Menschlichkeit) show
+xmax 0.49 mul ymax -0.04  mul moveto ( mountain  girl) show
+% xmax 0.02 mul ymax 0.25  mul moveto (campaign for nuclear disarmament) show
+% xmax 0.02 mul ymax 0.25  mul moveto (the truth is straight ahead) show
+% xmax 0.02 mul ymax 0.25  mul moveto (und aufbl\374hn im lenz) show
+% xmax 0.49 mul ymax -0.05  mul moveto (furtherwillneverdie) show
+
+% now weave
+/FatSimpleDown ymax 0.033 mul selectfont  black setrgbcolor
+gsave newpath
+  434 629 moveto 582 529 lineto 582 727 lineto closepath clip
+  xmax 0.49 mul ymax 0.89  mul moveto (thepastiserased) show
+grestore
+gsave newpath
+  294 535 moveto 428 625 lineto 294 723 lineto 160 625 lineto closepath
+  434 434 moveto 582 334 lineto 582 532 lineto closepath clip
+  xmax 0.02 mul ymax 0.89  mul moveto ( maigre amoureuse au long cou) show
+grestore
+gsave newpath
+  151 630 moveto 8 725 lineto 8 537 lineto closepath
+  294 340 moveto 428 430 lineto 294 528 lineto 160 430 lineto closepath
+  434 239 moveto 582 129 lineto 582 337 lineto closepath clip
+  xmax 0.02 mul ymax 0.67  mul moveto (y la flor impossible de la rama) show
+grestore
+gsave newpath
+  151 435 moveto 8 530 lineto 8 342 lineto closepath
+  294 145 moveto 428 235 lineto 294 333 lineto 160 235 lineto closepath
+  434  44 moveto 582 -166 lineto 582 143 lineto closepath clip
+  xmax 0.02 mul ymax 0.45  mul moveto (dunkel ist das leben ist der tod) show
+grestore
+gsave newpath
+  151 240 moveto 8 335 lineto 8 147 lineto closepath
+  294 -50 moveto 428  40 lineto 294 138 lineto 160  40 lineto closepath clip
+  xmax 0.02 mul ymax 0.22  mul moveto (un de plus un de moins) show
+grestore
+
+showpage
+%%EOF

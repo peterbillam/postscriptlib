@@ -1,0 +1,134 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+%                                                                       %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+
+(/home/pjb/ps/lib/pjb_motifs.ps) run
+
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+
+/xmid xmax .50 mul def
+/ymid ymax .50 mul def
+
+gsave
+  newpath xmid ymid moveto  xmax ymax lineto  0 ymax lineto closepath clip
+  0 ymid  xmax ymid  red orange  true 0.5 rectgradientfill
+grestore
+gsave
+  newpath xmid ymid moveto  0 ymax lineto  0 0 lineto closepath clip
+  xmid 0  0 xmid sub ymax  red orange  false 0.5 rectgradientfill
+grestore
+gsave
+  newpath xmid ymid moveto  0 0 lineto  xmax 0 lineto closepath clip
+  0 ymid  xmax 0 ymid sub red orange  true 0.5 rectgradientfill
+grestore
+gsave
+  newpath xmid ymid moveto  xmax 0 lineto  xmax ymax lineto closepath clip
+  xmid 0  xmid ymax  red orange  false 0.5 rectgradientfill
+grestore
+
+
+red setrgbcolor
+/margin xmax 0.10 mul def
+/size   xmax 0.13 mul def
+newpath xmax .29 mul  margin  size  false  5 footprint_path fill
+newpath xmax .48 mul  margin  size  true  -5 footprint_path fill
+newpath xmax .67 mul  margin  size  false  5 footprint_path fill
+newpath xmax .86 mul  margin  size  true  -5 footprint_path fill
+
+newpath xmax margin sub  ymax .18 mul  size  false  95  footprint_path fill
+newpath xmax margin sub  ymax .32 mul  size  true   85  footprint_path fill
+newpath xmax margin sub  ymax .47 mul  size  false  95  footprint_path fill
+newpath xmax margin sub  ymax .61 mul  size  true   85  footprint_path fill
+newpath xmax margin sub  ymax .76 mul  size  false  95  footprint_path fill
+newpath xmax margin sub  ymax .90 mul  size  true   85  footprint_path fill
+
+newpath xmax .71 mul  ymax margin sub  size  false 185 footprint_path fill
+newpath xmax .52 mul  ymax margin sub  size  true  175 footprint_path fill
+newpath xmax .33 mul  ymax margin sub  size  false 185 footprint_path fill
+newpath xmax .14 mul  ymax margin sub  size  true  175 footprint_path fill
+
+newpath margin  ymax .82 mul  size  false  275  footprint_path fill
+newpath margin  ymax .68 mul  size  true   265  footprint_path fill
+newpath margin  ymax .53 mul  size  false  275  footprint_path fill
+newpath margin  ymax .39 mul  size  true   265  footprint_path fill
+newpath margin  ymax .24 mul  size  false  275  footprint_path fill
+newpath margin  ymax .10 mul  size  true   265  footprint_path fill
+
+red 0.4 darkred 0.6 rgbmix setrgbcolor
+/margin xmax 0.20 mul def
+/size   xmax 0.08 mul def
+/Times-Bold findfont size scalefont setfont
+[ .27 .36 .46 .55 .65 .74 ] {
+  newpath xmax mul  margin  moveto gsave 90 rotate (?) show grestore
+} forall
+[ .19 .27 .35 .43 .51 .59 .67 .75 .82 ] {
+  newpath margin exch ymax mul moveto (?) show
+} forall
+[ .27 .36 .46 .55 .65 .74 ] {
+  newpath xmax mul  ymax margin sub moveto gsave 270 rotate (?) show grestore
+} forall
+[ .18 .25 .33 .41 .49 .57 .65 .73 .81 ] {
+  newpath xmax margin sub exch ymax mul moveto gsave 180 rotate (?) show grestore
+}forall
+
+darkred setrgbcolor
+/margin xmax 0.30 mul def
+/size   xmax 0.10 mul def
+newpath xmax .32 mul  margin size  false 185 footprint_path fill
+newpath xmax .46 mul  margin size  true  175 footprint_path fill
+newpath xmax .60 mul  margin size  false 185 footprint_path fill
+
+newpath margin ymax .300 mul  size  true   95  footprint_path fill
+newpath margin ymax .415 mul  size  false  85  footprint_path fill
+newpath margin ymax .530 mul  size  true   95  footprint_path fill
+newpath margin ymax .645 mul  size  false  85  footprint_path fill
+newpath margin ymax .760 mul  size  true   95  footprint_path fill
+
+newpath xmax .40 mul  ymax margin sub  size  false  5 footprint_path fill
+newpath xmax .54 mul  ymax margin sub  size  true  -5 footprint_path fill
+newpath xmax .68 mul  ymax margin sub  size  false  5 footprint_path fill
+
+newpath xmax margin sub ymax .700 mul  size  true  275  footprint_path fill
+newpath xmax margin sub ymax .585 mul  size  false 265  footprint_path fill
+newpath xmax margin sub ymax .470 mul  size  true  275  footprint_path fill
+newpath xmax margin sub ymax .355 mul  size  false 265  footprint_path fill
+newpath xmax margin sub ymax .240 mul  size  true  275  footprint_path fill
+
+darkred 0.6 black 0.4 rgbmix setrgbcolor
+/margin xmax 0.40 mul def
+/size   xmax 0.05 mul def
+/Times-Bold findfont size scalefont setfont
+[ .41 .49 .57 ] {
+  newpath xmax mul  ymax margin sub moveto gsave 90 rotate (?) show grestore
+} forall
+[ .31 .37 .43 .48 .53 .58 .64 .71 ] {
+  newpath xmax margin sub  exch ymax mul moveto (?) show
+} forall
+[ .58 .51 .44 ] {
+  newpath xmax mul  margin moveto gsave 270 rotate (?) show grestore
+} forall
+[ .69 .63 .57 .52 .47 .42 .36 .29 ] {
+  newpath margin exch ymax mul moveto gsave 180 rotate (?) show grestore
+} forall
+
+/Times-Roman findfont ymax 0.40 mul scalefont setfont
+% yellow 0.1 orange 0.9 rgbmix setrgbcolor
+orange setrgbcolor   % 20160825 white was just too crass
+xmid 0.80 mul  ymid 0.71 mul  moveto (!) show
+
+showpage
+%%EOF

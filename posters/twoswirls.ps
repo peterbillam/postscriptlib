@@ -1,0 +1,187 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+(/home/pjb/ps/lib/colours.ps) run
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 1 get 0.5 mul def
+/ymax currentpagedevice (PageSize) get 0 get def
+0 xmax translate -90 rotate
+/ymid ymax 0.5 mul def
+
+/inflect_x_lower [ .18  .27  .36  .45  .54  .63  .72  .81  .90  .99 ] def
+/inflect_y_lower [ .375 .35  .325 .30  .275 .25  .225 .20  .175 .15 ] def
+/inflect_x_upper [ .01  .10  .19  .28  .37  .46  .55  .64  .73  .82 ] def
+/inflect_y_upper [ .85  .825 .80  .775 .75  .725 .70  .675 .65  .625] def
+/x_lower { inflect_x_lower exch get xmax mul } def
+/y_lower { inflect_y_lower exch get ymax mul } def
+/x_upper { inflect_x_upper exch get xmax mul } def
+/y_upper { inflect_y_upper exch get ymax mul } def
+
+/warms {
+  0 2 8 { /i exch def
+    /peripherality 3 i sub dup mul .025 mul def
+    orange peripherality darkorange 1 peripherality sub rgbmix setrgbcolor
+    newpath 0 ymax 0.01 mul moveto
+    i x_lower 0.7 mul  i y_lower 0.1 mul
+      i x_lower  i y_lower 0.4 mul
+      i x_lower  i y_lower curveto
+    i x_lower    i y_lower ymid 0.4 mul add
+      i x_upper  i y_upper ymid 0.4 mul sub
+      i x_upper  i y_upper curveto
+    i x_upper  i y_upper 0.4 mul ymax 0.6 mul add
+      i x_upper 0.7 mul xmax 0.3 mul add  i y_upper 0.1 mul ymax 0.9 mul add
+      xmax ymax curveto
+    /i i 1 add def  % back down...
+    i x_upper 0.7 mul xmax 0.3 mul add  i y_upper 0.1 mul ymax 0.9 mul add
+      i x_upper  i y_upper 0.4 mul ymax 0.6 mul add
+      i x_upper  i y_upper curveto
+    i x_upper  i y_upper ymid 0.4 mul sub
+      i x_lower    i y_lower ymid 0.4 mul add
+      i x_lower  i y_lower curveto
+    i x_lower  i y_lower 0.4 mul
+      i x_lower 0.7 mul  i y_lower 0.1 mul
+      0 ymax 0.01 mul curveto
+     closepath fill
+  } for
+  violet setrgbcolor
+  1 2 7 { /i exch def
+    /peripherality 3 i sub dup mul .025 mul def
+    paleviolet peripherality violet 1 peripherality sub rgbmix setrgbcolor
+    newpath 0 ymax 0.01 mul moveto
+    i x_lower 0.7 mul  i y_lower 0.1 mul
+      i x_lower  i y_lower 0.4 mul
+      i x_lower  i y_lower curveto
+    i x_lower    i y_lower ymid 0.4 mul add
+      i x_upper  i y_upper ymid 0.4 mul sub
+      i x_upper  i y_upper curveto
+    i x_upper  i y_upper 0.4 mul ymax 0.6 mul add
+      i x_upper 0.7 mul xmax 0.3 mul add  i y_upper 0.1 mul ymax 0.9 mul add
+      xmax ymax curveto
+    /i i 1 add def  % back down...
+    i x_upper 0.7 mul xmax 0.3 mul add  i y_upper 0.1 mul ymax 0.9 mul add
+      i x_upper  i y_upper 0.4 mul ymax 0.6 mul add
+      i x_upper  i y_upper curveto
+    i x_upper  i y_upper ymid 0.4 mul sub
+      i x_lower    i y_lower ymid 0.4 mul add
+      i x_lower  i y_lower curveto
+    i x_lower  i y_lower 0.4 mul
+      i x_lower 0.7 mul  i y_lower 0.1 mul
+      0 ymax 0.01 mul curveto
+     closepath fill
+  } for
+} bind def
+
+/inflect_x_low_2 [ .01  .066 .123 .18  ] def
+/inflect_y_low_2 [ .365 .358 .351 .344 ] def
+/inflect_x_upp_2 [ .82  .883  .946 0.99 ] def
+/inflect_y_upp_2 [ .635 .642 .649 .656 ]  def
+/x_low_2 { inflect_x_low_2 exch get xmax mul } def
+/y_low_2 { inflect_y_low_2 exch get ymax mul } def
+/x_upp_2 { inflect_x_upp_2 exch get xmax mul } def
+/y_upp_2 { inflect_y_upp_2 exch get ymax mul } def
+
+/cools {
+  darkblue setrgbcolor
+  0 2 2 { /i exch def
+    newpath xmax 0 moveto
+    i x_low_2 0.7 mul  i y_low_2 0.05 mul
+      i x_low_2  i y_low_2 0.6 mul
+      i x_low_2  i y_low_2 curveto
+    i x_low_2    i y_low_2 ymid 0.3 mul add
+      i x_upp_2  i y_upp_2 ymid 0.3 mul sub
+      i x_upp_2  i y_upp_2 curveto
+    i x_upp_2  i y_upp_2 0.6 mul ymax 0.4 mul add
+      i x_upp_2 0.7 mul xmax 0.3 mul add  i y_upp_2 0.05 mul ymax 0.95 mul add
+      0 ymax 0.99 mul curveto
+    /i i 1 add def  % back down...
+    i x_upp_2 0.7 mul xmax 0.3 mul add  i y_upp_2 0.051 mul ymax 0.95 mul add
+      i x_upp_2  i y_upp_2 0.6 mul ymax 0.4 mul add
+      i x_upp_2  i y_upp_2 curveto
+    i x_upp_2    i y_upp_2 ymid 0.3 mul sub
+      i x_low_2  i y_low_2 ymid 0.3 mul add
+      i x_low_2  i y_low_2 curveto
+    i x_low_2  i y_low_2 0.6 mul
+      i x_low_2 0.7 mul  i y_low_2 0.05 mul
+      xmax 0 curveto
+     closepath fill
+  } for
+  1 2 1 { /i exch def
+    newpath xmax 0 moveto
+    i x_low_2 0.7 mul  i y_low_2 0.05 mul
+      i x_low_2  i y_low_2 0.6 mul
+      i x_low_2  i y_low_2 curveto
+    i x_low_2    i y_low_2 ymid 0.3 mul add
+      i x_upp_2  i y_upp_2 ymid 0.3 mul sub
+      i x_upp_2  i y_upp_2 curveto
+    i x_upp_2  i y_upp_2 0.6 mul ymax 0.4 mul add
+      i x_upp_2 0.7 mul xmax 0.3 mul add  i y_upp_2 0.05 mul ymax 0.95 mul add
+      0 ymax 0.99 mul curveto
+    /i i 1 add def  % back down...
+    i x_upp_2 0.7 mul xmax 0.3 mul add  i y_upp_2 0.05 mul ymax 0.95 mul add
+      i x_upp_2  i y_upp_2 0.6 mul ymax 0.4 mul add
+      i x_upp_2  i y_upp_2 curveto
+    i x_upp_2    i y_upp_2 ymid 0.3 mul sub
+      i x_low_2  i y_low_2 ymid 0.3 mul add
+      i x_low_2  i y_low_2 curveto
+    i x_low_2  i y_low_2 0.6 mul
+      i x_low_2 0.7 mul  i y_low_2 0.05 mul
+      xmax 0 curveto
+     closepath
+	 gsave clip
+       mediumgrey setrgbcolor 0 ymax 0.25 mul xmax ymax 0.5 mul rectfill
+       0 ymax 0.75 mul xmax ymid mediumgrey darkgrey 0.1 black 0.9 rgbmix
+         true -.50 rectgradientfill
+       0 0 xmax ymax 0.25 mul darkgrey 0.1 black 0.9 rgbmix  mediumgrey
+         true 0.50 rectgradientfill
+     grestore
+  } for
+} bind def
+
+gsave newpath
+  xmax -.4 mul ymax .970 mul moveto
+  xmax -.2 mul ymax .985 mul lineto
+  xmax 0.0 mul ymax .99  mul lineto
+  xmax 0.2 mul ymax .985 mul lineto
+  xmax 0.4 mul ymax .970 mul lineto
+  xmax 0.3 mul ymax .02  mul lineto
+  xmax 0.0 mul ymax .01  mul lineto
+  xmax -.3 mul ymax .02  mul lineto
+  closepath clip
+  %red setrgbcolor xmax -.4 mul ymax .01 mul  xmax 0.8 mul ymax .99 mul rectfill
+  xmax -.4 mul ymax .01 mul  xmax 0.8 mul ymax .99 mul
+  % red pink true 0.8 rectgradientfill
+  blue 0.7 mediumgrey 0.3 rgbmix  white  true 0.6 rectgradientfill
+grestore
+
+cools
+warms
+gsave
+  newpath 0  3 y_low_2 moveto  xmax 3 y_low_2 lineto
+   xmax 3 y_upp_2 lineto  0 3 y_upp_2 lineto closepath clip
+  cools
+grestore
+
+gsave
+  % 0 0 translate
+  -1.0 1.0 scale
+  cools
+  warms
+  gsave
+    newpath 0  3 y_low_2 moveto  xmax 3 y_low_2 lineto
+     xmax 3 y_upp_2 lineto  0 3 y_upp_2 lineto closepath clip
+    cools
+  grestore
+grestore
+
+showpage
+%%EOF

@@ -1,0 +1,55 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+%                                                                       %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+
+% (/home/pjb/ps/lib/pjb_motifs.ps) run
+(/home/pjb/ps/lib/colours.ps) run
+(/home/pjb/ps/lib/random.ps) run
+
+8888 srand
+
+/irand {
+  rand exch cvi mod
+} bind def
+
+/i 0 def {
+  /i i 1 add def
+  /Helvetica-Bold findfont 68 irand 10 add scalefont setfont
+  [ red black darkgrey ] randomrgb setrgbcolor
+  gauss_rand 120 mul 290 add gauss_rand 60 mul 600 add moveto
+  [ (P) (J) (B) (p) (j) (b) ] 6 irand get show
+  i 80 gt { exit } if
+} loop
+/i 0 def {
+  /i i 1 add def
+  /Helvetica-Bold findfont 68 irand 10 add scalefont setfont
+  [ red violet darkgrey ] randomrgb setrgbcolor
+  gauss_rand 110 mul 280 add gauss_rand 60 mul 400 add moveto
+  [ (C) (O) (M) (c) (o) (m) ] 6 irand get show
+  i 80 gt { exit } if
+} loop
+/i 0 def {
+  /i i 1 add def
+  /Helvetica-Bold findfont 68 irand 10 add scalefont setfont
+  [ red orange darkgrey ] randomrgb setrgbcolor
+  gauss_rand 100 mul 290 add gauss_rand 60 mul 250 add moveto
+  [ (A) (U) (a) (u) ] 4 irand get show
+  i 80 gt { exit } if
+} loop
+
+
+showpage
+%%EOF

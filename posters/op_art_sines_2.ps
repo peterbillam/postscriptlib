@@ -1,0 +1,102 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+(/home/pjb/ps/lib/colours.ps) run
+(/home/pjb/ps/lib/pjb_motifs.ps) run
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+
+/one_cycle {
+  /my_wvlen exch def
+  /my_dx my_wvlen 0.15 mul def
+  /my_dy dy 0.95 mul  my_wvlen 0 gt { -1.0 mul } if  def 
+  currentpoint /my_y exch def /my_x exch def
+  my_x my_dx add  my_y my_dy add
+    my_x my_wvlen 0.5 mul add my_dx sub  my_y my_dy add
+    my_x my_wvlen 0.5 mul add  my_y  curveto
+  currentpoint /my_y exch def /my_x exch def
+  my_x my_dx add  my_y my_dy sub
+    my_x my_wvlen 0.5 mul add my_dx sub  my_y my_dy sub
+    my_x my_wvlen 0.5 mul add  my_y  curveto
+%  my_wvlen 0 rlineto
+  
+} bind def
+
+/one_sinepath {
+  /i_one 1 def {
+    wavelength one_cycle
+    /i_one i_one 1 add def  i_one nwaves gt { exit } if
+  } loop
+  0 dy rlineto
+  /i_one 1 def {
+    wavelength -1 mul one_cycle
+    /i_one i_one 1 add def  i_one nwaves gt { exit } if
+  } loop
+} bind def
+
+/all_sinepaths {
+  newpath
+  /nwaves 8 def
+  /wavelength xmax nwaves div def
+  /dy wavelength 3.4 div def
+  /y dy def
+  0 y moveto
+  { 
+    one_sinepath
+    /dy         dy         0.955 mul def
+    % /wavelength wavelength 0.99 mul def
+    0  dy rmoveto
+    currentpoint /all_y exch def /all_x exch def
+    all_y ymax gt { exit } if
+  } loop
+  closepath
+} bind def
+
+/my_orange red 0.5 orange 0.5 rgbmix rgbdef
+/my_blue   blue  my_orange rgb2gray adjustbrightness  rgbdef
+/my_green  darkgreen darkred .5 red .5 rgbmix rgb2gray adjustbrightness rgbdef
+
+% 0 0 xmax ymax  red     my_orange true 0.3  rectgradientfill
+0 0 xmax ymax  yellow   my_orange   true 0.5  rectgradientfill
+
+newpath
+  xmax .20 mul ymax 0.20 mul xmax 0.25 mul true  20 footprint_path
+mediumgrey setrgbcolor fill
+newpath
+  xmax .50 mul ymax 0.40 mul xmax 0.20 mul false 55 footprint_path
+mediumgrey 0.80 darkgrey 0.20 rgbmix setrgbcolor fill
+newpath
+  xmax .80 mul ymax 0.50 mul xmax 0.15 mul true  20 footprint_path
+mediumgrey 0.60 darkgrey 0.40 rgbmix setrgbcolor fill
+
+newpath
+  xmax .85 mul ymax 0.70 mul xmax 0.12 mul false 175 footprint_path
+mediumgrey 0.40 darkgrey 0.60 rgbmix setrgbcolor fill
+newpath
+  xmax .67 mul ymax 0.80 mul xmax 0.09 mul true  150 footprint_path
+mediumgrey 0.30 darkgrey 0.70 rgbmix setrgbcolor fill
+newpath
+  xmax .45 mul ymax 0.83 mul xmax 0.07 mul false 175 footprint_path
+mediumgrey 0.25 darkgrey 0.75 rgbmix setrgbcolor fill
+newpath
+  xmax .32 mul ymax 0.88 mul xmax 0.05 mul true  150 footprint_path
+mediumgrey 0.20 darkgrey 0.80 rgbmix setrgbcolor fill
+
+all_sinepaths  clip
+% 0 0 xmax ymax  my_green my_blue  true -0.3  rectgradientfill
+0 0 xmax ymax  paleviolet my_blue true 0.0  rectgradientfill
+
+
+showpage
+%%EOF

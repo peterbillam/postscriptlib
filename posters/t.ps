@@ -1,0 +1,70 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% |: y GRG y RBR y RGR :|
+%%EndComments
+%%BeginProlog
+(/home/pjb/ps/lib/colours.ps) run
+(/home/pjb/ps/lib/line_drawing.ps) run
+(/home/pjb/ps/lib/random.ps) run
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+/xrand xmax .020 mul def
+/yrand ymax .015 mul def
+/a1_x 100 def
+/a2_x 150 def
+/a3_x 250 def
+/a4_x 300 def
+
+yellow setrgbcolor 0 0 xmax ymax rectfill
+
+/a 24 array def
+a 0 0.0 put  a 1 0.0 put  a 22 0.0 put  a 23 ymax put
+2 2 21 { /i exch def
+  a  i  0.0  put
+  a  i 1 add  ymax i mul 24 div  put
+} for
+% (a = ) print a ==
+
+3 setlinewidth
+/a1 24 array def
+a1 0 a1_x put  a1 1 0.0 put  a1 22 a1_x put  a1 23 ymax put
+2 2 21 { /i exch def
+  a1  i  a1_x xrand grand  put
+  a1  i 1 add  a i 1 add get yrand grand  put
+} for
+/a2 24 array def
+a2 0 a2_x put  a2 1 0.0 put  a2 22 a2_x put  a2 23 ymax put
+2 2 21 { /i exch def
+  a2  i  a2_x xrand grand  put
+  a2  i 1 add  a i 1 add get yrand grand  put
+} for
+/a3 24 array def
+a3 0 a3_x put  a3 1 0.0 put  a3 22 a3_x put  a3 23 ymax put
+2 2 21 { /i exch def
+  a3  i  a3_x xrand grand  put
+  a3  i 1 add  a i 1 add get yrand grand  put
+} for
+/a4 24 array def
+a4 0 a4_x put  a4 1 0.0 put  a4 22 a4_x put  a4 23 ymax put
+2 2 21 { /i exch def
+  a4  i  a4_x xrand grand  put
+  a4  i 1 add  a i 1 add get yrand grand  put
+} for
+% (a1 = ) print a1 ==
+% (a1 = ) print a1 ==
+% (a1 = ) print a1 ==
+a1 points2curve  a2 points2curve  a3 points2curve  a4 points2curve
+darkblue setrgbcolor  stroke
+
+showpage
+%%EOF

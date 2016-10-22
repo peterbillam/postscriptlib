@@ -1,0 +1,99 @@
+%!PS-Adobe-2.0
+%%BoundingBox: 0 0 842 1190
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+(/home/pjb/ps/lib/sequence.ps) run
+(/home/pjb/ps/lib/text.ps) run
+(/home/pjb/ps/lib/colours.ps) run
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+<</PageSize [ 842 1190 ] >> setpagedevice  % A3
+%%EndPageSetup
+
+% see ~/html/weaving/rich_variation_fractal.pl
+% and ~/html/weaving/wif2draft_svg
+% The square is coloured (red) if a frame is raised at that row,col
+%   down the left: which pedal you press, row after row
+%  across the top: which frames raise the coloured thread col by col: threading
+% top left corner: which frames get raised by each pedal            : treadling
+
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+% [ (xmax=) xmax ( ymax=) ymax (\n) ] warn
+
+/square_size 5 def
+/nx xmax square_size div ceiling cvi def
+% /nx 120 def
+/ny ymax square_size div ceiling cvi def
+% [ (nx=) nx ( ny=) ny (\n) ] warn
+/mt3 [ 0 1 2 ] ny morse_thue def
+
+%(  compare ~/html/weaving/rich_variation_fractal.svg ) =
+%(  and ~/ps/posters/examples/rich_variation_fractal.pl ) =
+
+/generate_rich_variation { 15 dict begin
+  /previous_threading exch def
+  /n exch def
+  /ix 0 def
+  /i 0 def
+  /threading n array def  % from sub print_threading
+  /mt3 [ 0 1 2 ] n morse_thue def
+  { ix n ge { exit } if
+    /a [ [0 1 2 3]  [1 2 3 4]  [2 3 4 5] ] mt3 i get  get  def
+    /idown previous_threading 1 sub def
+  %[(i=) i ( mt3[i]=) mt3 i get ( idown=) idown ( a=) a ] warn
+    { idown a 0 get le { exit } if
+      ix n ge { exit } if
+      threading ix  idown 4 mod  put
+      threading ix get  1 lt { threading ix  4 put } if
+  %[(1: ix=) ix ( threading[ix]=) threading ix get (\n)] warn
+      /ix    ix    1 add def
+      /idown idown 1 sub def
+    } loop
+    a { /v exch def  % v == value == $_
+      ix n ge { exit } if
+      threading ix  v 4 mod  put
+      threading ix get  1 lt { threading ix  4 put } if
+  %[(2: ix=) ix ( threading[ix]=) threading ix get (\n)] warn
+      /previous_threading v def
+      /ix  ix 1 add  def
+    } forall
+    /i i 1 add def
+  } loop
+  threading
+end } def
+
+/threading nx 1 generate_rich_variation def
+/treadling ny 4 generate_rich_variation def
+% (threading = ) = threading ==
+% (treadling = ) = treadling ==
+
+yellow 0.5 white 0.5 rgbmix  setrgbcolor  0 0 xmax ymax rectfill
+0 1 ny 1 sub {
+  /y exch def
+  /tread treadling y get def
+  0 1 nx 1 sub {
+    /x exch def
+    /thread 5  threading x get  sub  def
+    tread thread eq {
+      darkgrey 0.5 black 0.5 rgbmix  setrgbcolor
+      x square_size mul  y square_size mul  square_size  square_size rectfill
+    } {
+      tread  thread 2 add 4 mod 1 add eq {
+        darkred setrgbcolor
+        x square_size mul  y square_size mul  square_size  square_size rectfill
+      } if 
+    } ifelse
+  } for
+} for
+
+showpage
+%%EOF

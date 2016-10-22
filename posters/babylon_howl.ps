@@ -1,0 +1,58 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+(/home/pjb/ps/lib/text.ps) run
+(/home/pjb/ps/lib/colours.ps) run
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+
+0 0 xmax ymax black red true 0.5 rectgradientfill
+
+/ZapfChancery-MediumItalic findfont ymax 0.135 mul scalefont setfont
+yellow setrgbcolor
+xmax 0.05 mul ymax 0.265 mul moveto
+gsave
+  1.0 7.0 scale
+  { pop pop xmax -0.0105 mul 0 rmoveto } (Babylon Howl) true kcharpath clip
+  1.0 1.0 7.0 div scale
+  0 0 xmax ymax red .5 darkorange .5 rgbmix white  true 0.3  rectgradientfill
+% 0 0 xmax ymax red .9 darkorange .1 rgbmix yellow true -0.3 rectgradientfill
+grestore
+
+/ZapfChancery-MediumItalic findfont ymax 0.03 mul scalefont setfont
+white setrgbcolor
+gsave
+  1.0 1.5 scale
+  xmax 0.45 mul  ymax 0.10 mul
+(At the Name Club, 4392 Short St, 9:15pm 31 Feb 2017, \
+tickets at door 15$)
+  xmax 0.45 mul JustifyText
+grestore
+
+showpage
+
+%/HelveticaBold findfont ymax 0.1125 mul scalefont setfont
+%% orange 0.5 red 0.5 rgbmix setrgbcolor
+%darkorange  setrgbcolor
+%xmax 0.08 mul ymax 0.23 mul moveto
+%gsave  0.81 8.3 scale (Babylon Howl) show grestore
+%/Helvetica findfont ymax 0.03 mul scalefont setfont
+%red setrgbcolor
+%xmax 0.50 mul  ymax 0.13 mul
+%(At the Name Club, 4392 Short St, 9:15pm 31 Feb 2017, \
+%15$ at door)
+%xmax 0.40 mul JustifyText
+%showpage
+
+%%EOF

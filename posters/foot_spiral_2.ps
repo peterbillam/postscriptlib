@@ -1,0 +1,63 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+%                                                                       %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+
+(/home/pjb/ps/lib/pjb_motifs.ps) run
+
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+/xmid xmax .50 mul def
+/ymid ymax .70 mul def
+/deg2rad 3.141592563589 180 div def
+
+999 srand
+
+/theta 240 def
+/rightleft true def
+{
+  % /theta theta 15 sub def
+  /theta theta 30 sub def
+  /radius 2.718281828  theta 240 sub deg2rad mul 0.5 mul exp  350 mul def
+  % /size radius 0.20 mul def
+  /size radius 0.40 mul def
+  /rightleft rightleft not def
+  [ red black orange ] randomrgb setrgbcolor
+  newpath
+    xmid theta cos radius mul add  ymid theta sin radius mul add
+      size  rightleft  theta 125 sub  footprint_path
+  fill
+  theta -500 lt { exit } if
+} loop
+
+/theta 335 def
+/rightleft true def
+{
+  % /theta theta 15 sub def
+  /theta theta 30 sub def
+  /radius 2.718281828  theta 335 sub deg2rad mul 0.5 mul exp  350 mul def
+  % /size radius 0.20 mul def
+  /size radius 0.40 mul def
+  /rightleft rightleft not def
+  [ darkgrey violet ] randomrgb setrgbcolor
+  newpath
+    xmid theta cos radius mul add  ymid theta sin radius mul add
+      size  rightleft  theta -55 sub  footprint_path
+  fill
+  theta -500 lt { exit } if
+} loop
+
+showpage
+%%EOF

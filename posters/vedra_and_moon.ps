@@ -1,0 +1,49 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2014, Peter J Billam          %
+%                                                                       %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+
+(/home/pjb/ps/lib/colours.ps) run
+
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+
+(/home/pjb/ps/lib/pjb_motifs.ps) run
+
+/xmax currentpagedevice (PageSize) get 1 get def
+/ymax currentpagedevice (PageSize) get 0 get def
+/horizon ymax 0.28 mul def
+0 xmax translate -90 rotate
+
+% sea
+0    0    xmax horizon           darkblue white    true -0.8 rectgradientfill
+% sky
+0 horizon xmax ymax horizon sub  white    paleblue true  0.3 rectgradientfill
+% vedra
+gsave   % defend against clip
+  xmax 0.55 mul  horizon  xmax 0.4 mul  vedra_path  clip
+  xmax 0.55 mul  horizon  xmax 0.4 mul  horizon 0.5 mul 
+    white pink true .3 rectgradientfill
+grestore
+% moon
+gsave   % defend against clip
+  xmax 0.3 mul  ymax 0.5 mul  ymax 0.04 mul 45 0.3 moon_path clip
+  white setrgbcolor 0 0 xmax ymax rectfill
+grestore
+
+%/ZapfChancery-MediumItalic findfont horizon 0.4 mul scalefont setfont
+%[1.0 0.0 0.6 1.3 0.0 0.0] concat   % p.154-155
+%xmax 0.08 mul horizon 0.30 mul moveto (pjb.com.au) true charpath clip
+%0 horizon 0.05 mul xmax horizon 0.8 mul yellow red  true 0.5  rectgradientfill
+
+showpage
+%%EOF

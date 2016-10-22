@@ -1,0 +1,83 @@
+%!PS-Adobe-3.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+%                                                                       %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+
+% Postscript Shading
+% see ~/News/comp.lang.postscript  around eg:
+%   Subject: Re: gradient fill [multiple stop points possible?]
+%   Date: Sat, 11 Oct 2008 07:14:41 -0700 (PDT)
+% see https://en.wikipedia.org/wiki/PostScript#External_links
+% see ~/ps/PLRM.pdf  index p.898=884
+%   Type 1 shadings p.279=265    function-based
+%   Type 2 shadings p.280=266    linear axis
+%   Type 3 shadings p.281=267    radial
+%   Type 4 shadings p.284=270    Gouraud shaded triangle mesh
+%   Type 5 shadings p.288=274    lattice-form Gouraud shaded triangle mesh
+%   Type 6 shadings p.291=277    Coons patch meshes (of Bezier curves)
+%   Type 7 shadings p.297=283    tensor-product patch meshes
+% Then:
+%   makepattern      dict matrix makepattern ->pattern     p.639=625
+%   setpattern       pattern setpattern                    p.694=680
+
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+
+<< /PatternType 2
+  /Shading <<
+    /ShadingType 2
+    /Coords     [ 0.0 0.0 0.0 ymax ]   % x0 y0 x1 y1
+    /Extend     [ false false ]
+    /AntiAlias  false
+    /ColorSpace /DeviceRGB
+    /Function <<
+      /FunctionType 2
+      /Domain      [ 0 1 ]
+      /C0          [ 0.9000 0.5000 0.5000 ]
+      /C1          [ 0.5000 0.5000 0.9000 ]
+      /N           1.0000
+    >>
+  >>
+>> matrix makepattern /pattern1 exch def
+
+xmax 0.10 mul ymax 0.10 mul moveto
+xmax 0.45 mul ymax 0.10 mul lineto
+xmax 0.45 mul ymax 0.45 mul lineto
+xmax 0.10 mul ymax 0.45 mul lineto
+closepath
+pattern1 setpattern fill
+
+xmax 0.55 mul ymax 0.10 mul moveto
+xmax 0.90 mul ymax 0.10 mul lineto
+xmax 0.90 mul ymax 0.45 mul lineto
+xmax 0.55 mul ymax 0.45 mul lineto
+closepath
+pattern1 setpattern fill
+
+xmax 0.10 mul ymax 0.55 mul moveto
+xmax 0.45 mul ymax 0.55 mul lineto
+xmax 0.45 mul ymax 0.90 mul lineto
+xmax 0.10 mul ymax 0.90 mul lineto
+closepath
+pattern1 setpattern fill
+
+xmax 0.55 mul ymax 0.55 mul moveto
+xmax 0.90 mul ymax 0.55 mul lineto
+xmax 0.90 mul ymax 0.90 mul lineto
+xmax 0.55 mul ymax 0.90 mul lineto
+closepath
+pattern1 setpattern fill
+showpage
+%%EOF

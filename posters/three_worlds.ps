@@ -1,0 +1,112 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Could do the "Three Worlds"  (Road to Reality p.18)
+% but I'd need a /brain procedure, probably circular and seen from above
+%%EndComments
+%%BeginProlog
+(/home/pjb/ps/lib/pjb_motifs.ps) run
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+/xmid xmax 0.5 mul def
+/ymid ymax 0.5 mul def
+
+black setrgbcolor 0 0 xmax ymax rectfill
+
+% the universe emerges from the platonic world
+gsave
+  xmax .78 mul ymax .82 mul moveto  xmax .23 mul ymax .58 mul lineto
+  xmax .915 mul ymax .39 mul lineto closepath clip
+  -20 rotate
+  pathbboxwh darkgray black true .5 rectgradientfill
+grestore
+% the platonic world emerges from the brain
+gsave
+  xmax .20 mul ymax .85 mul moveto  xmax .77 mul ymax .927 mul lineto
+  xmax .74 mul ymax .72 mul lineto closepath clip
+  pathbboxwh black darkgray false -.7 rectgradientfill
+grestore
+% the brain emerges from the universe
+gsave
+  xmid xmid moveto   xmax .085 mul ymax .795 mul lineto
+  xmax .33 mul ymax .88 mul lineto closepath clip
+  xmax .35 mul ymax .62 mul translate 27 rotate
+  xmax -.2 mul  xmax .022 mul  xmax .4 mul  ymax .3 mul
+    black darkgray true .3 rectgradientfill
+grestore
+
+% the universe: first the cosmic microwave background
+/radius xmax 0.42 mul def
+xmid xmid 0 radius darkred 0.6 black 0.4 rgbmix  black -0.9 radialgradientfill
+/colours [ white paleyellow yellow ] def
+999 srand
+0 1 1000 { pop   % add some stars
+  colours randomrgb setrgbcolor
+  /theta 360 irand def
+  /r  radius 1.7 exp irand  1.0 1.7 div exp  def  % slightly denser at centre
+  gsave newpath % scale the stars towards edge-on as r approaches radius
+    xmid r theta cos mul add  xmid r theta sin mul add translate
+    theta rotate  radius r sub radius div 0.4 exp 1 scale
+    0 0 radius 0.010 mul  radius 0.002 mul grand  star_path fill
+  grestore
+} for
+
+% the brain
+gsave
+/height ymax .10 mul def
+xmax .20 mul ymax .85 mul translate -60 rotate
+  gsave
+  0 0 height brain_outline_path clip
+  height -1 mul height -1 mul  height 2 mul height 2 mul
+  black .6 darkgrey .4 rgbmix  darkred  false -.5 rectgradientfill
+  978 srand
+  1 1 10 {
+    white setrgbcolor /Helvetica 10 selectfont
+    -.35 .15 grand height mul .3 .13 grand height mul moveto
+    [ (!) (?) (?) ] randomget show
+    -.20 .12 grand height mul .6 .13 grand height mul moveto
+    [ (!) (?) (?) ] randomget show
+     .35 .15 grand height mul .3 .13 grand height mul moveto
+    [ (!) (?) (!) ] randomget show
+     .20 .12 grand height mul .6 .13 grand height mul moveto
+    [ (!) (?) (!) ] randomget show
+  } for
+  grestore
+  black setrgbcolor 0 0  height  brain_folds_path stroke
+grestore
+
+% the platonic world
+991 srand
+gsave
+  newpath
+  xmax .78 mul ymax .82 mul translate
+  0 0  xmax .15 mul  0 360 arc closepath
+  black setrgbcolor gsave  fill grestore
+  white setrgbcolor
+  1 1 300 { /greylevel exch 330 div .05 add def
+	/Symbol findfont 10 irand 10 add scalefont setfont
+      /x xmax 0.30 mul irand  xmax 0.15 mul sub  def
+      /y xmax 0.30 mul irand  xmax 0.15 mul sub  def
+      x y infill {
+        gsave
+          x y translate
+          20 irand 10 sub rotate
+          greylevel setgray   0 0 moveto
+          [ (\() (\)) (D) (L) (W) (=) (S) (p) (a) (\345) (\325) (s) (+) (d) ]
+          randomget show
+        grestore
+      } if
+  } for
+grestore
+
+showpage
+%%EOF

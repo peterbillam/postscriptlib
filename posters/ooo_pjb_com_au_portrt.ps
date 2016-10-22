@@ -1,0 +1,63 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2014, Peter J Billam          %
+%                                                                       %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+
+% (/home/pjb/ps/lib/colours.ps) run
+(/home/pjb/ps/lib/pjb_motifs.ps) run
+
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+/horizon ymax 0.28 mul def
+
+0    0    xmax horizon           darkblue white    true -0.8 rectgradientfill
+0 horizon xmax ymax horizon sub  white    paleblue true  0.3 rectgradientfill
+
+% /ZapfChancery-MediumItalic findfont 400 scalefont setfont
+/Helvetica-BoldOblique findfont 400 scalefont setfont
+/y_ooo horizon 1.25 mul def
+gsave
+	[0.5 0 0.5 1.5 -110 0] concat
+	0 200 moveto (Oo) true charpath clip
+	50 180 900 500 paleviolet paleorange true  0.3 rectgradientfill
+grestore
+gsave
+	[0.25 0 0.25 0.75 215 150] concat
+	0 200 moveto (Oo) true charpath clip
+	50 180 900 500 paleviolet paleorange true  0.3 rectgradientfill
+grestore
+gsave
+	[0.125 0 0.125 0.375 376 220] concat
+	0 200 moveto (Oo) true charpath clip
+	50 180 900 500 paleviolet paleorange true  0.3 rectgradientfill
+grestore
+490 367 moveto 490 ymax 0.85 mul lineto  % 0 260 rlineto
+  paleviolet 0.4 paleorange 0.6 rgbmix setrgbcolor 8 setlinewidth stroke
+
+gsave
+  /ZapfChancery-MediumItalic findfont horizon 0.4 mul scalefont setfont
+  [1.0 0.0 0.6 1.3 0.0 0.0] concat   % p.154-155
+  xmax 0.22 mul horizon 0.31 mul moveto (pjb.com.au) true charpath clip
+  0 horizon 0.05 mul xmax horizon 0.8 mul yellow red true 0.5 rectgradientfill
+grestore
+
+gsave
+  xmax 0.75 mul  horizon  xmax 0.30 mul  vedra_path  clip
+  xmax 0.75 mul  horizon  xmax 0.30 mul  horizon 0.5 mul
+    white red 0.6 pink 0.4 rgbmix true .3 rectgradientfill
+grestore
+
+showpage
+%%EOF

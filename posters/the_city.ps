@@ -1,0 +1,247 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+(/home/pjb/ps/lib/colours.ps) run
+(/home/pjb/ps/lib/fonts.ps) run
+(/home/pjb/ps/lib/text.ps) run
+(/home/pjb/ps/lib/random.ps) run
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+
+/slouchmanprofile {  % x y height direction slouchmanprofile   (sets path)
+  10 dict begin
+    [ /directn /height /y /x ] { exch def } forall
+    x       y       translate height 106 div dup scale directn {-1 1 scale} if
+    0 0 moveto 8 0 12 2 12 4 curveto 13 44 lineto 17 46 lineto 18 68 lineto
+    18 80 12 88 7 93 curveto 3 97 1 106 -4 106 curveto % now at top of head
+    -10 106 -14 103 -14 97 curveto -14 96 -14 90 -6 86 curveto
+    -8 81 lineto  % now at shoulder
+    -8 65 -4 60 -4 55 curveto -3 7 lineto -12 5 lineto
+    -12 3 -10 2 -8 2 curveto  -8 0 -6 0 0 0 curveto
+    closepath
+    directn {-1 1 scale} if 106 height div dup scale 0 x sub 0 y sub translate
+  end
+} bind def
+
+%  (TranscendYourRemanentIntelligence!)
+%  (AbsoluteOptimismIncorporated)
+%  (Incasting Broadcasting)
+%  (TheWhipHandDragStripClub)
+%  (ReadOnlyThisReadOnlyHere)
+%  (FlashCashFashionCash)
+/slogans [
+  (InCasting)
+  (BroadCasting)
+  (FastFast)
+  (NowStartPowerCarNow)
+  (MoreOrMore)
+  (MoreMoreMore)
+  (MoreNowMoreNow)
+  (StealthWealth)
+  (FunenufUnenufefun)
+  (FreeMoney)
+  (Motion Promotion)
+  (ImmediateLife)
+  (FlashCashFashion)
+  (HappinessIsAWarmGun)
+  (BangBangShootShoot)
+  (EverForEverNever)
+  (NowForEverNow)
+  (DragStripClub)
+  (TheWhipHand)
+  (BurnDriveBurnDrive)
+  (DriveFaster)
+  (BurnMore)
+  (InBetWinBet)
+  (WinningBetWin)
+  (WorshipHereNow)
+  (InstantWorship)
+  (WorkFasterLongerWork)
+  (ForgetMoreNeverLearn)
+  (ReadOnlyThis)
+  (ReadOnlyHere)
+  (LicitPublicityLicit)
+  (FreeWork! FreeMoney!)
+  (ByBuyByeBuyBiBabyBuyBye)
+  (TranscendYour)
+  (CorporateIncorprated)
+  (ImmortalityWhilYouWait)
+  (AbsoluteOptimism)
+  (Adoptacopter)
+  (CutPriceYuppies)
+  (WaterGates)
+  (BillBoard)
+  (FatProphetGuruHire)
+] def
+/x0       0      def  /x1 xmax .23 mul def  /x2 xmax .28 mul def
+/x3 xmax .52 mul def  /x4 xmax .52 mul def  /x5 xmax .69 mul def
+/x6 x5 37.5 add def
+/facade1 { newpath
+  x0 ymax .50 mul moveto  x1 ymax .25 mul lineto
+  x1 ymax .75 mul lineto  0 ymax  0.65 mul lineto closepath
+} bind def
+/facade2 { newpath
+  x2 ymax .25 mul moveto  x3 ymax .45 mul lineto
+  x3 ymax .60 mul lineto  x2 ymax .75 mul lineto
+  closepath } bind def
+/facade3 { newpath
+  x4 ymax .45 mul moveto  x5 ymax .15 mul lineto
+  x5 ymax .80 mul lineto  x4 ymax .60 mul lineto
+  closepath } bind def
+/facade4 { newpath
+  x6 ymax .135 mul moveto  xmax ymax .25 mul lineto
+  xmax ymax .64 mul lineto  x6 ymax .78 mul lineto
+  closepath } bind def
+/pavement { newpath
+  0 0 moveto  xmax 0 lineto  xmax ymax .115 mul lineto x6 ymax .115 mul lineto
+  x5 ymax .13 mul lineto x4 ymax .43 mul lineto x3 ymax .43 mul lineto
+  x2 ymax .23 mul lineto x1 ymax .23 mul lineto x0 ymax .48 mul lineto
+  closepath } bind def
+
+/FatSimple findfont dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /FontMatrix [ .0005 -.0008 0 .0013 0 0 ] def
+  currentdict
+end
+/Font1f exch definefont pop
+/Helvetica-Bold findfont dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /FontMatrix [ .0005 -.0008 0 .0013 0 0 ] def
+  currentdict
+end
+/Font1h exch definefont pop
+/randomfont1 { [ /Font1f /Font1h ] randomget } bind def
+
+/FatSimple findfont dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /FontMatrix [ .0004 0.00049 0 .0013 0 0 ] def
+  currentdict
+end
+/Font2f exch definefont pop
+/Helvetica-Bold findfont dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /FontMatrix [ .0004 0.00049 0 .0013 0 0 ] def
+  currentdict
+end
+/Font2h exch definefont pop
+/randomfont2 { [ /Font2f /Font2h ] randomget } bind def
+
+/set_random_colour {
+  [ darkorange red darkblue violet green yellow ] randomrgb setrgbcolor
+} bind def
+
+/FatSimple findfont dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /FontMatrix [ .0003 -.0008 0 .0016 0 0 ] def
+  currentdict
+end
+/Font3f exch definefont pop
+/Helvetica-Bold findfont dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /FontMatrix [ .0003 -.0008 0 .0016 0 0 ] def
+  currentdict
+end
+/Font3h exch definefont pop
+/randomfont3 { [ /Font3f /Font3h ] randomget } bind def
+/randomfont4 {
+  [ /FatSimple /FatSimpleItalic /HelveticaBoldSmallCaps ] randomget
+} bind def
+
+0 0 xmax ymax darkred black true 0.5 rectgradientfill
+
+
+darkgrey 0.3 black 0.7 rgbmix setrgbcolor
+facade1 fill
+facade2 fill
+facade3 fill
+facade4 fill
+
+% facade 1 ...
+996 srand
+0 1 10 { /n exch def
+  /y ymax .50  n 0.015 mul  add mul def
+  [ darkorange red darkblue violet green ] randomrgb setrgbcolor
+  x0 y  randomfont1 15  slogans randomget leftshow
+} for
+0 1 12 { /n exch def
+  /y ymax .25  n 0.039 mul  add mul def
+  [ orange red darkblue violet green ] randomrgb setrgbcolor
+  x1 y  randomfont1 30   slogans randomget  rightshow
+} for
+
+999 srand
+gsave
+  x2  ymax .25 mul  translate  90 rotate 1.0 2.5 scale
+  pink setrgbcolor
+  0 0 moveto /FatSimple 16 selectfont
+  {pop pop set_random_colour}
+  (ANDNOWFORSOMETHINGCOMPLETELYDIFFERENT) kshow
+grestore
+
+% facade 2 ...
+% [ (rrand=) rrand (\n) ] warn
+176520163 srand
+0 1 12 { /n exch def
+  /y ymax .25  n 0.04 mul  add mul def  set_random_colour
+  x2 y randomfont2 30 slogans randomget leftshow
+} for
+995 srand
+0 1 12 { /n exch def
+  /y ymax .45  n 0.014 mul  add mul def  set_random_colour
+  x3 y randomfont2 12 slogans randomget rightshow
+} for
+
+% facade 3 ...
+989 srand
+0 1 12 { /n exch def
+  /y ymax .45  n 0.014 mul  add mul def  set_random_colour
+  x4 y  randomfont3 12  slogans randomget leftshow
+} for
+0 1 11 { /n exch def
+  /y ymax .15  n 0.05 mul  add mul def  set_random_colour
+  x5 y  randomfont3 30   slogans randomget  rightshow
+} for
+
+999 srand
+gsave
+  x6  ymax .14 mul  translate  90 rotate 1.0 2.5 scale
+  pink setrgbcolor
+  0 0 moveto /FatSimpleItalic 19 selectfont
+  {pop pop set_random_colour}
+  (NowEverNowEverEverNowEverNowNowForever) kshow
+grestore
+
+% facade 4 ...
+991 srand
+0 1 15 { /n exch def
+  /y ymax .135  n 0.041 mul  add mul def
+  [ darkorange red darkblue violet darkgreen ] randomrgb setrgbcolor
+  x6 y  randomfont4 43  slogans randomget leftshow
+} for
+
+black setrgbcolor  % the pedestrians ...
+990 srand   % 996 not bad
+20  20  xmax 20 sub { % x
+  20 ymax .45 mul irand add   % y
+  2 copy pavement infill {
+    dup 0.060 mul  ymax 0.05 mul  exch sub  % y -> height
+    [ true false ] randomget  % facing right or left
+    newpath slouchmanprofile fill
+  } {
+    pop pop
+  } ifelse
+} for
+
+showpage
+%%EOF

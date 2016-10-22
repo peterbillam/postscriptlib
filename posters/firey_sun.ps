@@ -1,0 +1,50 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+%                                                                       %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+
+% (/home/pjb/ps/lib/pjb_motifs.ps) run
+% (/home/pjb/ps/lib/colours.ps) run
+(/home/pjb/ps/lib/pjb_motifs.ps) run
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+
+8898 srand
+
+0 0 xmax ymax darkred blue true -0.7 rectgradientfill
+
+/radius 120 def
+/x xmax 0.6 mul def
+/y ymax 0.7 mul def
+newpath
+  white 0.5 yellow 0.5 rgbmix setrgbcolor x y radius 0.95 mul 0 360 arc fill
+/i 0 def  /n radius dup mul 35 div def  {
+  /theta 360 irand def
+  /r radius dup mul irand sqrt def
+  /ang 60 irand 30 sub def
+  /r2 radius 1.2 8 irand 30 div add mul def   % outer end
+  newpath
+    r  theta cos mul x add   r theta sin mul y add  ang
+    r2 theta cos mul x add   r2 theta sin mul y add  ang
+	curve_of_beauty_path
+    r radius 0.6 mul gt { [ yellow orange ] randomrgb
+	} { yellow
+	} ifelse
+	setrgbcolor fill
+  /i i 1 add def   i n gt { exit } if
+} loop
+
+showpage
+%%EOF

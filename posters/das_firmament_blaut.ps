@@ -1,0 +1,85 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2016, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+(/home/pjb/ps/lib/colours.ps) run
+(/home/pjb/ps/lib/fonts.ps) run
+(/home/pjb/ps/lib/text.ps) run
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 1 get def
+/ymax currentpagedevice (PageSize) get 0 get def
+ymax 0 translate 90 rotate
+
+/FatSimple findfont
+dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /FontMatrix [ 0.001 0 0 0.004 0 0 ] def
+  currentdict
+end
+/FatSimpleTall exch definefont pop
+/Helvetica-Bold findfont
+dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  % no need to change UniqueID for a FontMatrix; PLRM2 p284
+  /FontMatrix [ 0.001 0 0.0008 0.0035 0 0 ] def
+  currentdict
+end
+/HelveticaBoldItalicTall exch definefont pop
+
+/Helvetica-Bold-ISO findfont
+dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  % no need to change UniqueID for a FontMatrix; PLRM2 p284
+  /FontMatrix [ 0.001 0 -0.0008 0.0035 0 0 ] def
+  currentdict
+end
+/HelveticaBoldBackTall exch definefont pop
+
+0 0 xmax ymax darkgreen darkblue true 0.5 rectgradientfill
+
+/fontsize ymax 0.0506 mul def  /x xmax 0.02 mul def   /y  ymax 0.525 mul def
+gsave newpath
+  0 1 27 { pop
+    /HelveticaBoldItalicTall fontsize selectfont x y moveto
+    % (DasFirmamentblautewig) show
+    (DASFIRMAMENTBLAUTEWIG) true charpath
+    /y y fontsize 2.1 mul sub def
+    /fontsize fontsize 0.786 mul def
+  } for
+clip 0 0 xmax ymax darkblue blue true 0.0 rectgradientfill
+grestore
+
+blue setrgbcolor
+/fontsize ymax 0.024 mul def  /x xmax 0.74 mul def   /y  ymax 0.90 mul def
+0 1 17 { pop
+  /HelveticaBoldItalicTall fontsize selectfont
+  % (UNDAUFBL\334HNIMLENZ) rightshow  % ISO Uuml breaks the line too much?
+  x y moveto (DASFIRMAMENTBLAUTEWIG) show
+  /x x fontsize .75 mul add def
+  /y y fontsize 2.1 mul sub def
+  /fontsize fontsize 0.77  mul def
+} for
+
+/fontsize ymax 0.06 mul def   /x xmax 0.54 mul def   /y  ymax 0.03 mul def
+0 1 25 { pop
+  % x y /FatSimpleTall fontsize (und die Erde wird lange feststehen) centrexshow
+  /r y ymax div dup mul dup mul def
+  black 1.0 r sub  white r  rgbmix setrgbcolor
+  x y /FatSimpleTall fontsize (unddieErdewirdlangefeststehen) centrexshow
+  /x x fontsize .95 mul add def
+  /y y fontsize 3.1 mul add def
+  /fontsize fontsize 0.80 mul def
+} for
+
+
+showpage
+%%EOF
