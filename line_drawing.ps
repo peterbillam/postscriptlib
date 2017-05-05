@@ -373,6 +373,7 @@
 % ------------------ gray stuff ...
 /gray0 1.0 def /gray1 0.95 def /gray2 0.9  def /gray3 0.85 def /gray4 0.8 def
 /gray5 0.7 def /gray6 0.6  def /gray7 0.45 def /gray8 0.25 def /gray9 0.0 def
+
 /fuzzygraystroke { % usage: innergray outgray inwidth outwidth fuzzygraystroke
 	10 dict begin
 	[ /ow /iw /og /ig ] { exch def } forall
@@ -384,6 +385,7 @@
 	grestore
 	end
 } def
+
 /fuzzygrayfill { % usage: innergray outergray fuzzwidth fuzzygrayfill
 	5 dict begin
 	[ /w /og /ig ] { exch def } forall
@@ -393,45 +395,32 @@
 	end
 } def
 
-% ------------------ colour stuff ...
-% Needs colours.ps (see http://www.pjb.com.au/comp)
+% ---------- colour stuff ; needs colours.ps ! http://www.pjb.com.au/comp/
 % currentcolorspace 0 get 256 string cvs % e.g. DeviceGray or DeviceRGB
 
-/fuzzystroke { fuzzyrgbstroke } def
-/fuzzyfill   { fuzzyrgbfill } def
+/fuzzystroke { fuzzyrgbstroke } def  % deprecated
+/fuzzyfill   { fuzzyrgbfill } def    % deprecated
 
 /fuzzyrgbstroke { % usage: incolour outcolour inwidth outwidth fuzzyrgbstroke
-	/fuzzyrgbs_ow exch def /fuzzyrgbs_iw exch def
-	/fuzzyrgbs_oc 4 1 roll rgbdef /fuzzyrgbs_ic 4 1 roll rgbdef
+	10 dict begin
+	/rgbs_ow exch def /rgbs_iw exch def
+	/rgbs_oc 4 1 roll rgbdef /rgbs_ic 4 1 roll rgbdef
 	gsave 1 setlinecap 1 setlinejoin
-	% should do more intermediate steps ...
-	gsave fuzzyrgbs_ow setlinewidth fuzzyrgbs_oc setrgbcolor stroke grestore
-	gsave fuzzyrgbs_iw 0.1 mul fuzzyrgbs_ow 0.9 mul add setlinewidth
-		fuzzyrgbs_ic 0.1 fuzzyrgbs_oc 0.9 rgbmix setrgbcolor stroke grestore
-	gsave fuzzyrgbs_iw 0.2 mul fuzzyrgbs_ow 0.8 mul add setlinewidth
-		fuzzyrgbs_ic 0.2 fuzzyrgbs_oc 0.8 rgbmix setrgbcolor stroke grestore
-	gsave fuzzyrgbs_iw 0.3 mul fuzzyrgbs_ow 0.7 mul add setlinewidth
-		fuzzyrgbs_ic 0.3 fuzzyrgbs_oc 0.7 rgbmix setrgbcolor stroke grestore
-	gsave fuzzyrgbs_iw 0.4 mul fuzzyrgbs_ow 0.6 mul add setlinewidth
-		fuzzyrgbs_ic 0.4 fuzzyrgbs_oc 0.6 rgbmix setrgbcolor stroke grestore
-	gsave fuzzyrgbs_iw 0.5 mul fuzzyrgbs_ow 0.5 mul add setlinewidth
-		fuzzyrgbs_ic 0.5 fuzzyrgbs_oc 0.5 rgbmix setrgbcolor stroke grestore
-	gsave fuzzyrgbs_iw 0.6 mul fuzzyrgbs_ow 0.4 mul add setlinewidth
-		fuzzyrgbs_ic 0.6 fuzzyrgbs_oc 0.4 rgbmix setrgbcolor stroke grestore
-	gsave fuzzyrgbs_iw 0.7 mul fuzzyrgbs_ow 0.3 mul add setlinewidth
-		fuzzyrgbs_ic 0.7 fuzzyrgbs_oc 0.3 rgbmix setrgbcolor stroke grestore
-	gsave fuzzyrgbs_iw 0.8 mul fuzzyrgbs_ow 0.2 mul add setlinewidth
-		fuzzyrgbs_ic 0.8 fuzzyrgbs_oc 0.2 rgbmix setrgbcolor stroke grestore
-	gsave fuzzyrgbs_iw 0.9 mul fuzzyrgbs_ow 0.1 mul add setlinewidth
-		fuzzyrgbs_ic 0.9 fuzzyrgbs_oc 0.1 rgbmix setrgbcolor stroke grestore
-	fuzzyrgbs_iw setlinewidth fuzzyrgbs_ic setrgbcolor stroke grestore
+	0 .04 1.02 { /r exch def  /one_minus_r 1.0 r sub def
+	  gsave  rgbs_iw r mul  rgbs_ow one_minus_r mul  add  setlinewidth
+	   rgbs_ic r  rgbs_oc one_minus_r  rgbmix  setrgbcolor stroke grestore
+	} for   % 20160828
+	end
 } def
 
 /fuzzyrgbfill { % usage: innercolour outercolour fuzzwidth fuzzyrgbfill
-	/fuzzyrgbf_w exch def /fuzzyrgbf_oc 4 1 roll rgbdef
-	/fuzzyrgbf_ic 4 1 roll rgbdef gsave
-	fuzzyrgbf_ic fuzzyrgbf_oc fuzzyrgbf_w 0.1 mul fuzzyrgbf_w 2.0 mul
-	fuzzyrgbstroke grestore gsave fuzzyrgbs_ic setrgbcolor fill grestore
+	5 dict begin
+	/w exch def  /oc 4 1 roll rgbdef  /ic 4 1 roll rgbdef
+	gsave  ic  oc  w 0.01 mul   w 2.0 mul  fuzzyrgbstroke grestore
+	% gsave   % no perceptible effect :-(
+	ic setrgbcolor fill
+	% grestore
+	end
 } def
 
 %%EndResource

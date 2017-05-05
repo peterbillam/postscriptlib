@@ -218,12 +218,12 @@ causes it to be defined as in a
 </DT><DD><P>
 The above invocation leaves
 <CODE>[ l3 -c3 /name l2 -c2 l1 -l1 ]</CODE> on the stack.
-When a path (as used by
-<A HREF="#longcurveto">longcurveto</A>
+When a curve
+(as used by <A HREF="#longcurveto">longcurveto</A>)
 has been defined, it is often useful to be able to use
-it in either direction; e.g. once in outlining the area to one side of
-it, and once in outlining the area to the other side.
-<B>reversecurve</B> offers an easy way to reverse a path.
+it in either direction; e.g. once in outlining the area to one side of it,
+and once in outlining the area to the other side.
+<B>reversecurve</B> offers an easy way to reverse a <I>longcurveto</I> curve.
 </P>
 
 </DD><DT>
@@ -468,6 +468,7 @@ Peter J Billam &nbsp;
 
 <A NAME="changes"><HR></A><H3>CHANGES</H3>
 <PRE>
+ 20160828 revise <A HREF="#fuzzygraystroke">fuzzygraystroke</A> and <A HREF="#fuzzygrayfill">fuzzygrayfill</A>
  20160827 scope <A HREF="#interpolate2">interpolate2</A> and <A HREF="#interpolate3">interpolate3</A> properly
  20160826 <A HREF="#points2curve">/points2curve</A> starts with a lineto if an open subpath exists
  20160825 <A HREF="#points2curve">/points2curve</A> starts with a lineto if currentpoint exists
