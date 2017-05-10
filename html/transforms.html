@@ -92,6 +92,14 @@ transforms.ps - Some useful transforms in PostScript
  % [ x y r range ]
  [ 400 600 70 90 ]   <A HREF="#collapse_xy2uv">/collapse_xy2uv</A> c_transform  fill
 
+ (/home/wherever/ps/lib/random.ps) run
+  /Times-Roman 110 selectfont
+  20 500 moveto ( Gaussian) true charpath
+  20 400 moveto (PQSCDOGJ) true charpath
+  [3 7]  <A HREF="#grand_xy2uv">/grand_xy2uv</A>  c_transform
+  gsave 1 0 0 setrgbcolor fill grestore
+  0 0 0 setrgbcolor 3 setlinewidth stroke 
+
 </PRE>
 
 <A NAME="description"><HR></A><H3>DESCRIPTION</H3>
@@ -149,6 +157,7 @@ where the transformation <CODE>x,y</CODE> to <CODE>x',y'</CODE> is:<BR>
 <A HREF="#softlens_xy2uv">softlens_xy2uv</A> &nbsp;
 <A HREF="#hardlens_xy2uv">hardlens_xy2uv</A> &nbsp;
 <A HREF="#twist_xy2uv">twist_xy2uv</A> &nbsp;
+<A HREF="#grand_xy2uv">grand_xy2uv</A> &nbsp;
 </B></P>
 
 <DL><DT>
@@ -301,6 +310,33 @@ An array of four parameters is needed. In order:
 The degrees-of-twist decay exponentially with the radial distance
 from the centre.
 
+</P></DD><DT>
+<B><A NAME="grand_xy2uv">
+[stdev_x stdev_y] &nbsp; /grand_xy2uv &nbsp; c_transform</A></B>
+</DT><DD><P>
+<B>grand_xy2uv</B> moves each point by gaussian-random distance,
+and the standard-deviation in the <B>x</B> and <B>y</B> coordinates
+is specified separately.
+So an array of two parameters is needed, namely:
+<CODE>stdev_x</CODE> and
+<CODE>stdev_y</CODE><BR>
+If you use this, you will need to run the
+<A HREF="random.html">random.ps</A> library. &nbsp;
+For example:<BR><CODE>
+&nbsp; (/home/wherever/ps/lib/random.ps) run<BR>
+&nbsp; /Times-Roman  110  selectfont<BR>
+&nbsp; 20 700 moveto  (  Gaussian) true charpath<BR>
+&nbsp; 20 600 moveto  (SCDOGJPQ) true charpath<BR>
+&nbsp; 20 500 moveto  (QSCDOGJP) true charpath<BR>
+&nbsp; 20 400 moveto  (PQSCDOGJ) true charpath<BR>
+&nbsp; 20 300 moveto  (JPQSCDOG) true charpath<BR>
+&nbsp; 20 200 moveto  (GJPQSCDO) true charpath<BR>
+&nbsp; 20 100 moveto  (OGJPQSCD) true charpath<BR>
+&nbsp; [3 7] /grand_xy2uv  c_transform <BR>
+&nbsp; gsave 1 0 0 setrgbcolor fill grestore<BR>
+&nbsp;  0 0 0 setrgbcolor  3 setlinewidth   stroke
+</CODE>
+
 </P></DD>
 </DL>
 
@@ -340,6 +376,7 @@ www.pjb.com.au/comp/contact.html</A>
 </P>
 
 <A NAME="changes"><HR></A><H3>CHANGES</H3><PRE>
+ 20170510 added grand_xy2uv
  20160723 perspective and perspective_flat get a [xvp yvp x0 theta] syntax
  20160722 added collapse, perspective_flat, sine, softlens, hardlens, twist
  20160717 first release

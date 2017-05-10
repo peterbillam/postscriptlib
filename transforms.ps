@@ -196,6 +196,12 @@ end } def
   end
 } def
 
-
+/grand_xy2uv {  % usage:  [stdev_x stdev_y]  /grand_xy2uv  c_transform
+  10 dict begin  [ /y /x ] { exch def } forall
+  /stdev_x ::p 0 get def  /stdev_y ::p 1 get def
+  /u x stdev_x grand def  /v y stdev_y grand def
+  u v
+  end
+} def
 
 %%EndResource
