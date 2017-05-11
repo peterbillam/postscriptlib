@@ -58,6 +58,10 @@ gauss_rand pop  % initialise, and discard the resulting zero
   rand exch round cvi mod
 } bind def
 
+/urand {   % usage: urand   ->  a random number between 0 and 1
+  rand gauss_rand_r mul
+} bind def
+
 /randomget {   % usage:  [ an array ] randomget
   dup length  rand  exch mod  get
 } bind def
