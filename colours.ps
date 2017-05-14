@@ -64,6 +64,10 @@
        rgbget_i 2 add  get
 } bind def
 
+/rgblength {   % usage: [ red black grey ] rgblength  ->  3
+  length 3 div cvi
+} bind def
+
 /rgbmix { % usage : colour1 weight1 colour2 weight2 rgbmix
 	/rgbmix_w2 exch def /rgbmix_b2 exch def
 	/rgbmix_g2 exch def /rgbmix_r2 exch def

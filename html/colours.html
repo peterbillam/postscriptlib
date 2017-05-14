@@ -146,6 +146,7 @@ any other colours that you may need, just like a painter would.
 <A HREF="#radialgradientfill">radialgradientfill</A>
 <A HREF="#rgbdef">rgbdef</A>
 <A HREF="#rgbget">rgbget</A>
+<A HREF="#rgblength">rgblength</A>
 <A HREF="#randomrgb">randomrgb</A>
 <A HREF="#rgb2gray">rgb2gray</A></B>
 <B><A HREF="#adjustbrightness">adjustbrightness</A></B>
@@ -255,6 +256,16 @@ you'll need something like this instead:<BR>
 This extracts the colour <I>black</I>
 and puts it on the stack (in <CODE>r g b</CODE> form),
 so it's like a three-dimensional version of <CODE>get</CODE>.
+</P>
+
+</DD><DT>
+<B><A NAME="rgblength"> [ red black grey ] &nbsp; rgblength</A></B>
+</DT><DD><P>
+This returns the number of  colours in the array,
+namely <B>3</B> in this case,
+In other words,  it uses <I>length</I> and divides by three,
+and is a very minimal procedure.
+It also converts to integer using <I>cvi</I>.
 </P>
 
 </DD><DT>
@@ -462,6 +473,8 @@ See also
 <A HREF="text.html">text.ps</A>
 </LI><LI>
 <A HREF="fonts.html">fonts.ps</A>
+</LI><LI>
+<A HREF="random.html">random.ps</A>
 </LI><LI>
 <A HREF="include_run.html">include_run</A>
 </LI><LI>
