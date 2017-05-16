@@ -1,0 +1,85 @@
+%!PS-Adobe-2.0
+% connett.ps realises John E. Connett's CIRCLE algorithm,
+% Scientific American Sept 1986, "Computer Recreations", A. K. Dewdney
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2004, Peter J Billam          %
+%     c/o P J B Computing, GPO Box 669, Hobart TAS 7001, Australia      %
+%                                                                       %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit,  and provided this notice is retained.   Neither Peter Billam %
+% nor  P J B Computing  make any representations  about the suitability %
+% of this software for any purpose. It is provided "as is", without any %
+% express or implied warranty.                http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+(/home/pjb/ps/lib/colours.ps) run
+(/home/pjb/ps/lib/random.ps) run
+(/home/pjb/ps/lib/transforms.ps) run
+
+% Can I get a Connett-like pattern with a hexagonal grid ?
+
+% http://www.nahee.com/spanky/www/fractint/fractal_types.html  See circle:
+% Circle pattern by John Connett
+%    x + iy = pixel
+%    z = a*(x^2 + y^2)
+%    c = integer part of z
+%    color = c modulo(number of colors)
+% http://www.nahee.com/spanky/www/fractint/circle_type.html
+% This fractal type is from A. K. Dewdney's "Computer Recreations"
+% column in "Scientific American".
+% It is attributed to John Connett of the University of Minnesota.
+
+/connett {  % usage: x y width height dx [colours] startx starty a connett
+  % the pattern is unbelievably sensitive to  dx !
+  % must be able to start it off in a different place in its pattern: start[xy]
+  15 dict begin
+  [/a /starty /startx /colours /dx /height /width /y0 /x0] {exch def} forall
+  /xmax x0 width  add def
+  /ymax y0 height add def
+  /ncolours colours rgblength def
+  /i x0 def {
+    /j y0 def {
+      % z = a*(x^2 + y^2)     where  side^2 == a
+      /z  startx i add dup mul  starty j add  dup mul add  a mul def
+      /c z floor cvi ncolours mod def  % c = z mod ncolours
+      colours c rgbget setrgbcolor
+      i j dx dx rectfill
+      j ymax gt { exit } if     % ymax
+      /j j dx add def
+    } loop
+    i xmax gt { exit } if       % xmax
+    /i i dx add def
+  } loop
+  end
+} bind def
+
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+/xmid xmax 0.5 mul def  /ymid ymax 0.5 mul def
+/margin 0 def   % xmax 0.05 mul def
+%%EndProlog
+
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+0 0 xmax ymax 0.90 [ violet red orange ] -300 -540  .00729 connett
+79 srand
+darkgrey setrgbcolor
+xmax 0.35 mul ymax .77 mul 20 -180 180 arc
+[3 5] /grand_xy2uv   c_transform fill
+xmax 0.73 mul ymax .53 mul 20 -180 180 arc
+[3 5] /grand_xy2uv   c_transform fill
+xmax 0.35 mul ymax .23 mul 20 -180 180 arc
+[3 5] /grand_xy2uv   c_transform fill
+darkgrey 0.5 black 0.5 rgbmix setrgbcolor
+xmax 0.67 mul ymax .77 mul 20 -180 180 arc
+[3 5] /grand_xy2uv   c_transform fill
+xmax 0.30 mul ymax .53 mul 20 -180 180 arc
+[3 5] /grand_xy2uv   c_transform fill
+xmax 0.67 mul ymax .23 mul 20 -180 180 arc
+[3 5] /grand_xy2uv   c_transform fill
+showpage
+
+%%EOF

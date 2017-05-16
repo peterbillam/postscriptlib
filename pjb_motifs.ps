@@ -32,6 +32,14 @@ end } def
   end
 } def
 
+/max {   % usage: a b max
+    dup 3 2 roll dup 3 1 roll   % stack is now b a b a
+    gt { pop } { exch pop } ifelse
+} def
+/min {   % usage: a b min
+    dup 3 2 roll dup 3 1 roll lt { pop } { exch pop } ifelse
+} def
+
 /brain_outline_path {   % usage: x y height brain_outline_path
   % Gray's Anatomy p.644
   10 dict begin [ /height /y /x ] { exch def } forall
