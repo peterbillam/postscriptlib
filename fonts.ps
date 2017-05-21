@@ -307,6 +307,7 @@ pstack  % prints out 76 numbers; 101 99 99 110 110 101 101 105 105 etc...
 Encoding   9 /TAB    put
 Encoding  32 /SPACE  put
 Encoding  33 /EXCLAM put
+Encoding  34 /QUOTES put
 Encoding  39 /APOSTR put
 Encoding  40 /BRAK_L put
 Encoding  41 /BRAK_R put
@@ -416,7 +417,8 @@ Encoding 252 /Uuml   put
   /TAB     800 def
   /SPACE   400 def
   /EXCLAM  300 def
-  /APOSTR  250 def
+  /QUOTES  320 def
+  /APOSTR  240 def
   /BRAK_L  450 def
   /BRAK_R  450 def
   /PLUS    450 def
@@ -488,7 +490,8 @@ end
   /TAB     [ 0 0 800 750 ] def
   /SPACE   [ 0 0 400 750 ] def
   /EXCLAM  [ 0 0 250 750 ] def
-  /APOSTR  [ 0 0 250 750 ] def
+  /QUOTES  [ 0 0 320 750 ] def
+  /APOSTR  [ 0 0 240 750 ] def
   /BRAK_L  [ 0 0 400 750 ] def
   /BRAK_R  [ 0 0 400 750 ] def
   /PLUS    [ 0 0 400 750 ] def
@@ -562,8 +565,13 @@ end
     225 400 225 450 225 750 curveto 25 750 lineto
     25  450 25  400  85 240 curveto
     closepath fill } bind def
+  /QUOTES { 70 690 60 0 260 arc 60 590  60 580 5 530 curveto
+     125 560 125 590 130 690 curveto 265 690 moveto
+     205 690 60 0 260 arc      195 590 195 580 140 530 curveto
+     260 560 260 590 265 690 curveto
+     closepath fill } bind def
   /APOSTR { 65 690 60 0 260 arc 55 590 55 580 0 530 curveto
-     120 560 120 560 125 570 curveto closepath fill } bind def
+     120 560 120 590 125 690 curveto closepath fill } bind def
   /BRAK_L { 300 0 moveto 400 0 lineto 250 75 150 250 150 375 curveto
     150 475 200 675 400 750 curveto 300 750 lineto
     100 675 0 475 0 375 curveto 0 250 100 75 300 0 curveto
