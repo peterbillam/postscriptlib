@@ -6,7 +6,7 @@
 #     This script is free software; you can redistribute it and/or      #
 #            modify it under the same terms as Perl itself.             #
 #########################################################################
-my $Version       = '1.7'; # use either avconv ffmpeg, or mencoder
+my $Version       = '1.0';
 my $VersionDate   = '20may2017';
 
 # Movies on film are almost exclusively projected at 24 fps.
@@ -28,7 +28,7 @@ my $Height        = '900';  # or 1760
 my $Fps           = 24.0;   # or  25         or 29.97 or  15
 # my $NFrames       = 3500;   # or 500 or 1000 or 1000  or 1250 or 2700
 my $NFrames       = 10000;   # or 500 or 1000 or 1000  or 1250 or 2700
-my $Ratio         = 0.998;  # or .99 or .995 or .995  or .996
+my $Ratio         = 0.9985;  # or .99 or .995 or .995  or .996
 my $GridStart     = 2000;   # 2000
 my $Dx            = 2;
 my $TitleJpg      = '';
@@ -290,11 +290,12 @@ sub page2jpg { my $grid = @_[$[];  # generate the eps thence the jpg
   /ymax y0 height add def
   /ncolours colours rgblength def
   % I move to using grid-spacing instead of a as a parameter 
-  /a ncolours dx div 0.5 mul grid div def
+  /a ncolours 2 div   % dx div   I don't understand this formula for a :-(
+     grid div def
   /i x0 def {
     /j y0 def {
       /z  i xorigin sub dup mul  j yorigin sub  dup mul add  a mul def
-      /c z floor cvi ncolours mod def  % c = z mod ncolours
+      /c z dx div floor cvi ncolours mod def  % c = z mod ncolours
       colours c rgbget setrgbcolor
       i j dx dx rectfill
       j ymax gt { exit } if     % ymax
@@ -334,4 +335,96 @@ sub round { my $x = $_[$[];
 }
 
 __END__
+
+=pod
+
+=head1 NAME
+
+make_connett_video - synthesises a video of John Connett's pattern
+
+=head1 SYNOPSIS
+
+ make_connett_video
+
+=head1 DESCRIPTION
+
+This script uses I<gs> to generate a jpg for each frame,
+and then either I<avconv> or I<ffmpeg> or I<mencoder>
+to put them together into an mp4 video.
+
+In the following, the screen is covered with tiny squares,
+size I<dx> times I<dx>.
+aligned vertically and horizontally in rows and columns,
+each square filled with one colour.
+It is located at I<x,y>, with respect to an I<origin> at 0,0.
+These coordinates I<x,y> and the I<origin> and I<dx> are in real screen-pixels, 
+The colour is then chosen as follows:
+
+  r^2 = x^2 + y^2               r = radial distance from the origin
+  c = integer part of (a r^2)   where a is some constant
+  color = c modulo (number of colors)
+
+At first glance, the algorithm looks circularly symmetric,
+and so should just paint concentric coloured rings.
+Indeed when I<a> is small, that looks to be true - 
+but as I<c> becomes greater than the number of colours,
+then the fact that the squares are aligned in rows and columns
+becomes important.
+
+If I<y = 0> then, when I<c> is a multiple of I<ncolours>
+the colour is the same as at the origin; 
+indeed concentric coloured rings develop, just like round the origin, since
+
+  if   (a x^2) modulo ncolours  =  0
+  then (a x^2 + a y^2) modulo ncolours = a y^2 modulo ncolours
+
+(In other words, r^2 has a Manhattan Metric,)
+so a regular grid of concentric-rings appears
+
+  a = ncolours / ( 2 * dx * grid )
+
+(although I don't understand why the factor 2 is necessary ...)
+
+As the grid size shrinks, larger-sacle metapatterns appear and
+become more dominant.
+The metapattern fills the screen when grid is an integer multiple of dx;
+this is what happens as I<grid> approaches I<dx> at the end of the video.
+
+=head1 OPTIONS
+
+=over 3
+
+=item I<-v>
+
+Prints version number.
+
+=back
+
+=head1 CHANGES
+
+ 20170526  1.0  first working version
+
+=head1 AUTHOR
+
+Peter J Billam   http://www.pjb.com.au/comp/contact.html
+
+=head1 CREDITS
+
+Based on the algorithm by John E. Connett, of the University of Minnesota,
+originally published by A. K. Dewdney in his "Computer Recreations" column
+in the September 1986 issue of Scientific American.
+
+=head1 SEE ALSO
+
+ http://www.nahee.com/spanky/www/fractint/fractal_types.html
+ http://www.nahee.com/spanky/www/fractint/circle_type.html
+ https://www.jstor.org/stable/2686389?
+ http://www.mpeters.de/mpeweb/hop/files/interfac.txt
+ http://xochipilli.com/content/circlesquared/
+ Dewdney's 'Computer Recreations' in Scientific American, Sept 1986
+ https://en.wikipedia.org/wiki/Taxicab_geometry
+ http://www.pjb.com.au/
+ perl(1).
+
+=cut
 

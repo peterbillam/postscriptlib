@@ -499,12 +499,12 @@ end } def
   /ymax y0 height add def
   /ncolours colours rgblength def
   % I move to using grid-spacing instead of a as a parameter 
-  /a ncolours dx div 0.5 mul grid div def
+  /a ncolours 0.5 mul grid div def
   /i x0 def {
     /j y0 def {
       % z = a*(x^2 + y^2)     where   a = ncolours * dx * 0.5 / grid 
       /z  i xorigin sub dup mul  j yorigin sub  dup mul add  a mul def
-      /c z floor cvi ncolours mod def  % c = z mod ncolours
+      /c z dx div floor cvi ncolours mod def  % c = z mod ncolours
       colours c rgbget setrgbcolor
       i j dx dx rectfill
       j ymax gt { exit } if     % ymax
