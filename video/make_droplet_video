@@ -1,0 +1,350 @@
+#! /usr/bin/perl
+#
+#########################################################################
+#        This Perl script is Copyright (c) 2013, Peter J Billam         #
+#               c/o P J B Computing, www.pjb.com.au                     #
+#     This script is free software; you can redistribute it and/or      #
+#            modify it under the same terms as Perl itself.             #
+#########################################################################
+my $Version       = '1.0';
+my $VersionDate   = '20may2017';
+
+# Movies on film are almost exclusively projected at 24 fps.
+# Television, however, does not have an internationally accepted frame rate.
+# In Europe and many other countries, PAL and SECAM use 25 fps,
+# whereas NTSC video in North America and Japan uses 29.97 fps.
+# Other common frame rates are usually multiples of these.
+
+# How much of the action should be in the Perl that generates the PostScript
+# and how much should be in the PostScript itself ?
+
+my $TmpDir        = "/tmp/droplet_video.$$";
+my $FrameNumber   = 0;      # used and incremented by next_filename()
+my $Width         = '1600'; # or 1760
+my $Height        = '900';  # or 1760
+my $Fps           = 24.0;   # or  25         or 29.97 or  15
+my $NFrames       = 1000;    
+my $PrePad        = 5;      # seconds
+my $PostPad       = 5;      # seconds
+my $Mencoder      = which('mencoder');
+my $Avconv        = which('avconv');
+my $Ffmpeg        = which('ffmpeg');
+
+while ($ARGV[$[] =~ /^-([a-z])/) {
+	if ($1 eq 'v')      { shift;
+		my $n = $0; $n =~ s{^.*/([^/]+)$}{$1};
+		print "$n version $Version $VersionDate\n";
+		exit 0;
+	} elsif ($1 eq 't') { shift; $TitleJpg   = shift;
+	} elsif ($1 eq 'c') { shift; $CreditsJpg = shift;
+	} else {
+		print "usage:\n";  my $synopsis = 0;
+		while (<DATA>) {
+			if (/^=head1 SYNOPSIS/)     { $synopsis = 1; next; }
+			if ($synopsis && /^=head1/) { last; }
+			if ($synopsis && /\S/)      { s/^\s*/   /; print $_; next; }
+		}
+		exit 0;
+	}
+}
+
+if (!$Mencoder and !$Ffmpeg and !$Avconv) {
+	die(" Sorry, can't find avconv, ffmpeg nor mencoder in your \$PATH\n");
+}
+
+if (! mkdir $TmpDir) { die "can't mkdir $TmpDir: $!\n"; }
+if (! chdir $TmpDir) { die "can't chdir $TmpDir: $!\n"; }
+warn " TmpDir = $TmpDir\n";
+
+if (! $TitleJpg)   { title2jpg(); }
+	my $title_filename = next_filename();
+	rename 'pre.jpg', $title_filename;
+	my $num_title_frames = round($Fps*$PrePad - 3);
+	foreach (1..$num_title_frames) {
+		my $new_filename = next_filename();
+		if (! link $title_filename, $new_filename) {
+			die "can't link $title_filename, $new_filename : $!\n";
+		}
+	}
+for ($iframe=1; $iframe <= $NFrames; $iframe++) {
+	frame2jpg($iframe);
+}
+if (! $CreditsJpg) { credits2jpg($grid); }
+	my $credits_filename = next_filename();
+	rename 'post.jpg', $credits_filename;
+	my $num_creditframes = round($Fps*$PostPad - 1);
+	foreach (1..$num_creditframes) {
+		my $new_filename = next_filename();
+		if (! link $credits_filename, $new_filename) {
+			die "can't link $credits_filename, $new_filename : $!\n";
+		}
+	}
+
+if ($Avconv) {
+	system "$Avconv -f image2 -r $Fps -i t_%06d.jpg "
+	  . " -s ${Width}x$Height t.mp4";
+} elsif ($Ffmpeg) {
+	# "image2" is the image file demuxer,
+	#   which reads from a list of image files specified by a pattern.
+	system "$Ffmpeg -f image2 -r $Fps -i t_%06d.jpg "
+	  . "-r $Fps -s ${Width}x$Height t.mp4";   # 1.7 worked first try :-)
+} elsif ($Mencoder) {
+	# mp3lame, faac and x264enc are not necessarily compiled in; pcm works.
+	my $aspect = sprintf '%5g', $Width/$Height;
+	system "$Mencoder -oac pcm -fps $Fps -ofps $Fps "
+	  . "'mf://t_*.jpg' -mf h=$Height:w=$Width:fps=$Fps:type=jpeg "
+	  .  "-o t.mp4 -ovc lavc -lavcopts vcodec=mpeg4:aspect=$aspect";
+} else {
+	die " BUG: shouldn't reach here...";
+}
+
+system "mplayer t.mp4";
+
+warn "\n your video is: $TmpDir/t.mp4\n";
+
+# clean up ?
+
+exit;
+
+sub which {
+	my @PATH = split (":",$ENV{PATH});
+	my $f; foreach $d (@PATH) {$f="$d/$_[$[]";  return $f if -x $f; }
+}
+
+sub eps2jpg {  my ($eps_text, $fn) = @_;
+	if (!open(P,
+	  "| gs -sDEVICE=jpeg -sOutputFile=$fn -q -g${Width}x$Height -r72 -" )) {
+		die "sorry, can't run $gs: $!\n";
+	}
+	print P $eps_text; close P;
+}
+
+sub title2jpg {
+	my $jpg_filename = 'pre.jpg';
+	eps2jpg <<EOT , 'pre.jpg';
+%!PS-Adobe-3.0 EPSF-3.0
+%%BoundingBox: 0 0 $Width $Height
+% http://www.pjb.com.au
+%%BeginProlog
+(/home/pjb/ps/lib/fonts.ps) run
+/xmax $Width def
+/ymax $Height def
+/xmid xmax 0.5 mul def
+/ymid ymax 0.5 mul def
+/centreshow { % usage: x y font fontsize (string) centreshow
+  3 dict begin
+    [ /s /fontsize /font ] { exch def } forall
+    gsave moveto font findfont fontsize scalefont setfont
+    gsave s false charpath flattenpath pathbbox grestore
+    exch 4 -1 roll pop pop s stringwidth pop -0.5 mul  % dx/2
+    3 1 roll sub 0.5 mul % dy/2
+    rmoveto s show grestore
+  end
+} bind def
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+% or /FatSimpleItalic from fonts.ps
+xmid 0.96 mul ymax .62 mul /FatSimpleItalic xmax 7 div
+  (Droplets) centreshow
+xmid ymax .35 mul /FatSimpleItalic xmax 42 div
+  (generated by the script make_droplet_video) centreshow
+xmid ymax .20 mul /FatSimpleItalic xmax 37 div
+  (written by  Peter Billam,  2017) centreshow
+showpage
+%%EOF
+EOT
+	close P;
+	wait;
+}
+
+sub credits2jpg {
+	my $grid = sprintf('%.2f', $_[$[]);
+	eps2jpg(<<EOT, 'post.jpg');
+%!PS-Adobe-3.0 EPSF-3.0
+%%BoundingBox: 0 0 $Width $Height
+% http://www.pjb.com.au
+%%BeginProlog
+(/home/pjb/ps/lib/fonts.ps) run
+/xmax $Width def
+/ymax $Height def
+/xmid xmax 0.5 mul def
+/ymid ymax 0.5 mul def
+/centreshow { % usage: x y font fontsize (string) centreshow
+  3 dict begin
+    [ /s /fontsize /font ] { exch def } forall
+    gsave moveto font findfont fontsize scalefont setfont
+    gsave s false charpath flattenpath pathbbox grestore
+    exch 4 -1 roll pop pop s stringwidth pop -0.5 mul  % dx/2
+    3 1 roll sub 0.5 mul % dy/2
+    rmoveto s show grestore
+  end
+} bind def
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+xmid ymax .65 mul /Helvetica-Bold xmax 25 div
+  (www.pjb.com.au/comp/free/) centreshow
+xmid ymax .50 mul /Helvetica-Bold xmax 25 div
+  (www.pjb.com.au/comp) centreshow
+xmid ymax .35 mul /Helvetica-Bold xmax 25 div
+  (www.pjb.com.au) centreshow
+showpage
+
+%%EOF
+EOT
+	close P;
+	wait;
+}
+
+sub frame2jpg { my $iframe = @_[$[];
+	my $jpg_filename = next_filename();
+	warn "\e[K iframe = $iframe   jpg_filename = $jpg_filename\e[A\n";
+	eps2jpg(<<EOT, $jpg_filename);
+%!PS-Adobe-3.0 EPSF-3.0
+%%BoundingBox: 0 0 $Width $Height
+%%BeginProlog
+(/home/pjb/ps/lib/pjb_motifs.ps) run
+
+/iframe $iframe def
+/xmax $Width def
+/ymax $Height def
+/xmid xmax 0.5 mul def
+/ymid ymax 0.5 mul def
+
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+/amplitude ymax 0.40 mul def
+/angle1 20 def
+/x0 xmax 0.3 mul def
+/y0 iframe 200 div 360 mul sin  amplitude mul  ymid add  def
+/x1 x0 def    /y1 ymid def
+x0 y0  x1 y1  angle1  droplet_path
+
+/x0 xmid def
+/y0 iframe 100 div 360 mul sin  amplitude mul  ymid add  def
+/x1 x0 def    /y1 ymid def
+x0 y0  x1 y1  angle1  droplet_path
+
+/x0 xmax 0.7 mul def
+/y0 iframe 300 div 360 mul sin  amplitude mul  ymid add  def
+/x1 x0 def    /y1 ymid def
+x0 y0  x1 y1  angle1  droplet_path
+
+blue setrgbcolor fill
+showpage
+%%EOF
+EOT
+	close P;
+	wait;
+}
+
+sub next_filename {
+	$FrameNumber += 1;
+	my $filename = sprintf "t_%06d.jpg", $FrameNumber;
+}
+
+sub round { my $x = $_[$[];
+	if ($x > 0.0) { return int ($x + 0.5); }
+	if ($x < 0.0) { return int ($x - 0.5); }
+	return 0;
+}
+
+__END__
+
+=pod
+
+=head1 NAME
+
+make_connett_video - synthesises a video of John Connett's pattern
+
+=head1 SYNOPSIS
+
+ make_connett_video
+
+=head1 DESCRIPTION
+
+This script uses I<gs> to generate a jpg for each frame,
+and then either I<avconv> or I<ffmpeg> or I<mencoder>
+to put them together into an mp4 video.
+
+In the following, the screen is covered with tiny squares,
+size I<dx> times I<dx>.
+aligned vertically and horizontally in rows and columns,
+each square filled with one colour.
+It is located at I<x,y>, with respect to an I<origin> at 0,0.
+These coordinates I<x,y> and the I<origin> and I<dx> are in real screen-pixels, 
+The colour is then chosen as follows:
+
+  r^2 = x^2 + y^2               r = radial distance from the origin
+  c = integer part of (a r^2)   where a is some constant
+  color = c modulo (number of colors)
+
+At first glance, the algorithm looks circularly symmetric,
+and so should just paint concentric coloured rings.
+Indeed when I<a> is small, that looks to be true - 
+but as I<c> becomes greater than the number of colours,
+then the fact that the squares are aligned in rows and columns
+becomes important.
+
+If I<y = 0> then, when I<c> is a multiple of I<ncolours>
+the colour is the same as at the origin; 
+indeed concentric coloured rings develop, just like round the origin, since
+
+  if   (a x^2) modulo ncolours  =  0
+  then (a x^2 + a y^2) modulo ncolours = a y^2 modulo ncolours
+
+(In other words, r^2 has a Manhattan Metric,)
+so a regular grid of concentric-rings appears
+
+  a = ncolours / ( 2 * dx * grid )
+
+(although I don't understand why the factor 2 is necessary ...)
+
+As the grid size shrinks, larger-sacle metapatterns appear and
+become more dominant.
+The metapattern fills the screen when grid is an integer multiple of dx;
+this is what happens as I<grid> approaches I<dx> at the end of the video.
+
+=head1 OPTIONS
+
+=over 3
+
+=item I<-v>
+
+Prints version number.
+
+=back
+
+=head1 CHANGES
+
+ 20170526  1.0  first working version
+
+=head1 AUTHOR
+
+Peter J Billam   http://www.pjb.com.au/comp/contact.html
+
+=head1 CREDITS
+
+Based on the algorithm by John E. Connett, of the University of Minnesota,
+originally published by A. K. Dewdney in his "Computer Recreations" column
+in the September 1986 issue of Scientific American.
+
+=head1 SEE ALSO
+
+ http://www.nahee.com/spanky/www/fractint/fractal_types.html
+ http://www.nahee.com/spanky/www/fractint/circle_type.html
+ https://www.jstor.org/stable/2686389?
+ http://www.mpeters.de/mpeweb/hop/files/interfac.txt
+ http://xochipilli.com/content/circlesquared/
+ Dewdney's 'Computer Recreations' in Scientific American, Sept 1986
+ https://en.wikipedia.org/wiki/Taxicab_geometry
+ http://www.pjb.com.au/
+ perl(1).
+
+=cut
+
