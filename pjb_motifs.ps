@@ -138,30 +138,34 @@ end } def
 /droplet_path {  % usage: x0 y0  x1 y1  angle1  droplet_path
   15 dict begin
   [ /angle1 /y1 /x1 /y0 /x0 ] { exch def } forall
-  /len  x1 x0 sub dup mul  y1 y0 sub dup mul  add  sqrt def
-  /rot x1 x0 sub  y1 y0 sub  atan  -1 mul def
-  /pw 0.17 def  /nw 0.0 pw sub def  % positive and negative halfwidths
-  /ro .60 def    % roundness at base
-  /sinang angle1 1.5 mul sin def
-  /dx_hip   .06  sinang mul def
-  /dy_hip   .30  sinang mul def
-  /hip_tilt .025 sinang mul def
-  x0 y0 translate  len dup scale  rot rotate
-  0 0 moveto     % bottom
-  pw ro mul                       0
-    pw dx_hip add hip_tilt sub   pw 1.4 dy_hip add mul 1.0 ro sub mul
-    pw dx_hip add                 pw 1.4 dy_hip add mul curveto   % right hip
-  pw   dx_hip add hip_tilt add   .4
-   .03 0.3 sinang mul add         .7
-    0 1 curveto  % top
-  -.03 0.3 sinang mul add         .7
-    nw dx_hip add hip_tilt add   .4
-    nw dx_hip add                 pw 1.4 dy_hip sub mul curveto  % left hip
-  nw   dx_hip add hip_tilt sub   pw 1.4 dy_hip sub mul 1.0 ro sub mul
-    nw ro mul                     0
-    0 0 curveto  % bottom
-  closepath
-  0.0 rot sub rotate  1.0 len div dup scale  0 x0 sub 0 y0 sub translate
+  x0 x1 eq y0 y1 eq and { % 20170603  defend atan against x0==x1 and y0=y1
+    x0 y0 moveto x1 y1 lineto closepath % create a zero-size path at x0,y0
+  } {
+    /len  x1 x0 sub dup mul  y1 y0 sub dup mul  add  sqrt def
+    /rot x1 x0 sub  y1 y0 sub  atan  -1 mul def
+    /pw 0.17 def  /nw 0.0 pw sub def  % positive and negative halfwidths
+    /ro .60 def    % roundness at base
+    /sinang angle1 1.5 mul sin def
+    /dx_hip   .06  sinang mul def
+    /dy_hip   .30  sinang mul def
+    /hip_tilt .025 sinang mul def
+    x0 y0 translate  len dup scale  rot rotate
+    0 0 moveto     % bottom
+    pw ro mul                       0
+      pw dx_hip add hip_tilt sub   pw 1.4 dy_hip add mul 1.0 ro sub mul
+      pw dx_hip add                 pw 1.4 dy_hip add mul curveto   % right hip
+    pw   dx_hip add hip_tilt add   .4
+     .03 0.3 sinang mul add         .7
+      0 1 curveto  % top
+    -.03 0.3 sinang mul add         .7
+      nw dx_hip add hip_tilt add   .4
+      nw dx_hip add                 pw 1.4 dy_hip sub mul curveto  % left hip
+    nw   dx_hip add hip_tilt sub   pw 1.4 dy_hip sub mul 1.0 ro sub mul
+      nw ro mul                     0
+      0 0 curveto  % bottom
+    closepath
+    0.0 rot sub rotate  1.0 len div dup scale  0 x0 sub 0 y0 sub translate
+  } ifelse
   end
 } bind def   % 20160704
 
