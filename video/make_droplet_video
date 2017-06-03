@@ -23,7 +23,7 @@ my $FrameNumber   = 0;      # used and incremented by next_filename()
 my $Width         = '1600'; # or 1760
 my $Height        = '900';  # or 1760
 my $Fps           = 24.0;   # or  25         or 29.97 or  15
-my $NFrames       = 1000;    
+my $NFrames       = 1200;    
 my $PrePad        = 5;      # seconds
 my $PostPad       = 5;      # seconds
 my $Mencoder      = which('mencoder');
@@ -126,6 +126,7 @@ sub title2jpg {
 %%BoundingBox: 0 0 $Width $Height
 % http://www.pjb.com.au
 %%BeginProlog
+(/home/pjb/ps/lib/colours.ps) run
 (/home/pjb/ps/lib/fonts.ps) run
 /xmax $Width def
 /ymax $Height def
@@ -145,7 +146,8 @@ sub title2jpg {
 %%Page: 1 1
 %%BeginPageSetup
 %%EndPageSetup
-% or /FatSimpleItalic from fonts.ps
+red setrgbcolor  0 0 xmax ymax rectfill
+yellow setrgbcolor
 xmid 0.96 mul ymax .62 mul /FatSimpleItalic xmax 7 div
   (Droplets) centreshow
 xmid ymax .35 mul /FatSimpleItalic xmax 42 div
@@ -166,6 +168,7 @@ sub credits2jpg {
 %%BoundingBox: 0 0 $Width $Height
 % http://www.pjb.com.au
 %%BeginProlog
+(/home/pjb/ps/lib/colours.ps) run
 (/home/pjb/ps/lib/fonts.ps) run
 /xmax $Width def
 /ymax $Height def
@@ -185,6 +188,8 @@ sub credits2jpg {
 %%Page: 1 1
 %%BeginPageSetup
 %%EndPageSetup
+blue setrgbcolor  0 0 xmax ymax rectfill
+white setrgbcolor
 xmid ymax .65 mul /Helvetica-Bold xmax 25 div
   (www.pjb.com.au/comp/free/) centreshow
 xmid ymax .50 mul /Helvetica-Bold xmax 25 div
@@ -206,8 +211,10 @@ sub frame2jpg { my $iframe = @_[$[];
 %!PS-Adobe-3.0 EPSF-3.0
 %%BoundingBox: 0 0 $Width $Height
 %%BeginProlog
+% (/home/pjb/ps/lib/colours.ps) run
 (/home/pjb/ps/lib/pjb_motifs.ps) run
 
+/nframes $NFrames def
 /iframe $iframe def
 /xmax $Width def
 /ymax $Height def
@@ -218,6 +225,9 @@ sub frame2jpg { my $iframe = @_[$[];
 %%Page: 1 1
 %%BeginPageSetup
 %%EndPageSetup
+blue iframe red nframes iframe sub rgbmix setrgbcolor
+0 0 xmax ymax rectfill
+
 /amplitude ymax 0.40 mul def
 /angle1 20 def
 /x0 xmax 0.3 mul def
@@ -235,7 +245,8 @@ x0 y0  x1 y1  angle1  droplet_path
 /x1 x0 def    /y1 ymid def
 x0 y0  x1 y1  angle1  droplet_path
 
-blue setrgbcolor fill
+iframe 600 le { blue } { red } ifelse
+ setrgbcolor fill
 showpage
 %%EOF
 EOT
