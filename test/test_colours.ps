@@ -11,14 +11,32 @@
 %%BeginProlog
 
 (/home/pjb/ps/lib/colours.ps) run
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
 
 %%EndProlog
 %%Page: 1 1
 %%BeginPageSetup
 %%EndPageSetup
-
  50 100 500 170 darkblue white    true -0.8 rectgradientfill
  50 270 500 500 white    paleblue true  0.3 rectgradientfill
+showpage
+
+%%Page: 2 2
+%%BeginPageSetup
+%%EndPageSetup
+/gray 0.5 def
+red    gray adjustbrightness
+   setrgbcolor  0 0           xmax ymax .2 mul rectfill
+orange gray adjustbrightness
+   setrgbcolor  0 ymax .2 mul xmax ymax .2 mul rectfill
+yellow gray adjustbrightness
+   setrgbcolor  0 ymax .4 mul xmax ymax .2 mul rectfill
+green  gray adjustbrightness
+   setrgbcolor  0 ymax .6 mul xmax ymax .2 mul rectfill
+blue   gray adjustbrightness
+   setrgbcolor  0 ymax .8 mul xmax ymax .2 mul rectfill
 
 showpage
+
 %%EOF

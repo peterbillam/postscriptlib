@@ -169,29 +169,25 @@
 /callibrate_rgb2gray 0.15 def  % user-settable 0..1
 
 /rgb2gray { % usage: /equivalentgray r g b rgb2gray def
-	callibrate_rgb2gray 0.0 eq {
-		.11 mul 3 1 roll .59 mul 3 1 roll .3 mul add add
-	} {
-		/rgb2gray_b exch def /rgb2gray_g exch def /rgb2gray_r exch def
-		rgb2gray_r rgb2gray_g ge rgb2gray_r rgb2gray_b ge and {
-			/rgb2gray_g rgb2gray_r rgb2gray_g sub callibrate_rgb2gray mul
-			rgb2gray_g add def
-			/rgb2gray_b rgb2gray_r rgb2gray_b sub callibrate_rgb2gray mul
-			rgb2gray_b add def
-		} {
-			rgb2gray_g rgb2gray_r ge rgb2gray_g rgb2gray_b ge and {
-				/rgb2gray_r rgb2gray_g rgb2gray_r sub callibrate_rgb2gray mul
-				rgb2gray_r add def
-				/rgb2gray_b rgb2gray_g rgb2gray_b sub callibrate_rgb2gray mul
-				rgb2gray_b add def
-			} {
-				/rgb2gray_r rgb2gray_b rgb2gray_r sub callibrate_rgb2gray mul
-				rgb2gray_r add def
-				/rgb2gray_g rgb2gray_b rgb2gray_g sub callibrate_rgb2gray mul
-				rgb2gray_g add def
-			} ifelse
-		} ifelse
-		rgb2gray_r .3 mul rgb2gray_g .59 mul rgb2gray_b .11 mul add add
+  callibrate_rgb2gray 0.0 eq {
+    .11 mul 3 1 roll .59 mul 3 1 roll .3 mul add add
+  } {
+    5 dict begin
+    [ /b /g /r ] { exch def } forall
+    r g ge  r b ge  and {
+      /g r g sub callibrate_rgb2gray mul g add def
+      /b r b sub callibrate_rgb2gray mul b add def
+    } {
+      g r ge g b ge and {
+        /r g r sub callibrate_rgb2gray mul r add def
+        /b g b sub callibrate_rgb2gray mul b add def
+      } {
+        /r b r sub callibrate_rgb2gray mul r add def
+        /g b g sub callibrate_rgb2gray mul g add def
+      } ifelse
+    } ifelse
+    r .3 mul g .59 mul b .11 mul add add
+  	end
 	} ifelse
 } bind def
 
@@ -201,35 +197,33 @@
 
 /adjustbrightness { % usage: r g b graylevel adjustbrightness
   10 dict begin
-    % find rgb2gray, and scale. If any component is >1, then scale back
-    % to set it =1, then mix with white to get desired graylevel.
-    [ /gray /b /g /r ] { exch def } forall
-    gray 1.0  gt { /gray 1.0  def } if
-    gray 0.01 lt { /gray 0.01 def } if
-    r g b rgb2gray gray div /a exch def
-    a 0.01 lt { /a 0.01 def } if
-    /b b a div def
-    /g g a div def
-    /r r a div def
+  % find rgb2gray, and scale. If any component is >1, then scale back
+  % to set it =1, then mix with white to get desired graylevel.
+  [ /gray /b /g /r ] { exch def } forall
+  gray 1.0  gt { /gray 1.0  def } if
+  gray 0.01 lt { /gray 0.01 def } if
+  r g b rgb2gray gray div /a exch def
+  a 0.01 lt { /a 0.01 def } if
+  /b b a div def   /g g a div def   /r r a div def
 
-    /max r def
-    max g lt { /max g def } if
-    max b lt { /max b def } if
-    max 1.0 gt {  % we must decrease the saturation (mix with white)
-      /r r max div def
-      /g g max div def
-      /b b max div def
-      % we mix linearly :-(
-      % could also 2) binary search using rgbmix or 3) explicitly
-      callibrate_rgb2gray .98 gt { /callibrate_rgb2gray .98 def } if
-      /w 1.0 gray sub
-      1.0 0.3 r mul .59 g mul .11 b mul add add sub
-      div 1.0 callibrate_rgb2gray sub div def
-      /r r w mul 1.0 add w sub def
-      /g g w mul 1.0 add w sub def
-      /b b w mul 1.0 add w sub def
-    } if
-    r g b % return
+  /max r def
+  max g lt { /max g def } if
+  max b lt { /max b def } if
+  max 1.0 gt {  % we must decrease the saturation (mix with white)
+    /r r max div def
+    /g g max div def
+    /b b max div def
+    % we mix linearly :-(
+    % could also 2) binary search using rgbmix or 3) explicitly
+    callibrate_rgb2gray .98 gt { /callibrate_rgb2gray .98 def } if
+    /w 1.0 gray sub
+    1.0 0.3 r mul .59 g mul .11 b mul add add sub
+    div 1.0 callibrate_rgb2gray sub div def
+    /r r w mul 1.0 add w sub def
+    /g g w mul 1.0 add w sub def
+    /b b w mul 1.0 add w sub def
+  } if
+  r g b % return
   end
 } def  % not bind in case the user wants to overwrite rgb2gray ...
 
@@ -244,35 +238,36 @@
 /rectgradientfill {
   % x y width height startrgb endrgb vertical? convexity rectgradientfill
   20 dict begin
-    [ /convexity /vertical  /end_b /end_g /end_r
-      /start_b /start_g /start_r  /height /width ] { exch def } forall
-    convexity  1.0 gt { /convexity  1.0 def } if
-    convexity -1.0 lt { /convexity -1.0 def } if
-    gsave translate
-      width height scale
-      end_r end_g end_b setrgbcolor
-      % steps chosen so fastest-changing RGB component increments by 0.005
-      /big end_b start_b sub abs def
-      /tmp end_g start_g sub abs def
-      tmp big gt { /big tmp def } if   % find biggest change
-      /tmp end_r start_r sub abs def
-      tmp big gt { /big tmp def } if
-      /n big 0.005 div ceiling def % num of steps
-      /i 0 def {   % 20160425   0 not 1
-        /z i n div def  % 0<=z<1
-        /r start_r  end_r start_r sub z mul  add def
-        /g start_g  end_g start_g sub z mul  add def
-        /b start_b  end_b start_b sub z mul  add def
-        r g b setrgbcolor
-        /thisf  convexity z  rectgradientinterp def
-        /nextf  convexity i 1 add n div  rectgradientinterp 0.005 add def
-        nextf 1 gt { /nextf 1.0 def } if
+  [ /convexity /vertical  /end_b /end_g /end_r
+    /start_b /start_g /start_r  /height /width ] { exch def } forall
+  convexity  1.0 gt { /convexity  1.0 def } if
+  convexity -1.0 lt { /convexity -1.0 def } if
+  gsave translate
+    width height scale
+    end_r end_g end_b setrgbcolor
+    % steps chosen so fastest-changing RGB component increments by 0.005
+    /big end_b start_b sub abs def
+    /tmp end_g start_g sub abs def
+    tmp big gt { /big tmp def } if   % find biggest change
+    /tmp end_r start_r sub abs def
+    tmp big gt { /big tmp def } if
+    /n big 0.005 div ceiling def % num of steps
+    /i 0 def {   % 20160425   0 not 1
+      /z i n div def  % 0<=z<1
+      /r start_r  end_r start_r sub z mul  add def
+      /g start_g  end_g start_g sub z mul  add def
+      /b start_b  end_b start_b sub z mul  add def
+      r g b setrgbcolor
+      /thisf  convexity z  rectgradientinterp def
+      /nextf  convexity i 1 add n div  rectgradientinterp 0.005 add def
+      nextf 1 gt { /nextf 1.0 def } if
         vertical { 0 thisf 1.0 nextf thisf sub rectfill
-        } {        thisf 0 nextf thisf sub 1.0 rectfill
-        } ifelse
-        /i i 1 add def
-        i n gt { exit } if
-      } loop
+      } {
+        thisf 0 nextf thisf sub 1.0 rectfill
+      } ifelse
+      /i i 1 add def
+      i n gt { exit } if
+    } loop
 	grestore
   end
 } bind def
