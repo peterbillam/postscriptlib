@@ -113,18 +113,7 @@ for ($i=1; $i<=$NFrames; $i++) {
 		last;
 	}
 }
-if (! $CreditsJpg) { credits2jpg($grid); }
-#if ($CreditsJpg) {
-	my $credits_filename = next_filename();
-	rename 'post.jpg', $credits_filename;
-	my $num_creditframes = round($Fps*$PostPad - 1);
-	foreach (1..$num_creditframes) {
-		my $new_filename = next_filename();
-		if (! link $credits_filename, $new_filename) {
-			die "can't link $credits_filename, $new_filename : $!\n";
-		}
-	}
-#}
+for ($i=1; $i<=240; $i++) { credits2jpg($i); }
 
 if ($Avconv) {
 	system "$Avconv -f image2 -r $Fps -i t_%06d.jpg "
@@ -211,48 +200,6 @@ EOT
 	wait;
 }
 
-sub credits2jpg {
-	my $grid = sprintf('%.2f', $_[$[]);
-	eps2jpg(<<EOT, 'post.jpg');
-%!PS-Adobe-3.0 EPSF-3.0
-%%BoundingBox: 0 0 $Width $Height
-% http://www.pjb.com.au
-%%BeginProlog
-(/home/pjb/ps/lib/fonts.ps) run
-/xmax $Width def
-/ymax $Height def
-/xmid xmax 0.5 mul def
-/ymid ymax 0.5 mul def
-/centreshow { % usage: x y font fontsize (string) centreshow
-  3 dict begin
-    [ /s /fontsize /font ] { exch def } forall
-    gsave moveto font findfont fontsize scalefont setfont
-    gsave s false charpath flattenpath pathbbox grestore
-    exch 4 -1 roll pop pop s stringwidth pop -0.5 mul  % dx/2
-    3 1 roll sub 0.5 mul % dy/2
-    rmoveto s show grestore
-  end
-} bind def
-%%EndProlog
-%%Page: 1 1
-%%BeginPageSetup
-%%EndPageSetup
-xmid ymax .70 mul /Helvetica-Bold xmax 30 div
-  (With dx=$Dx, the grid shrank from $GridStart to $grid) centreshow
-xmid ymax .55 mul /Helvetica-Bold xmax 25 div
-  (www.pjb.com.au/comp/free/) centreshow
-xmid ymax .40 mul /Helvetica-Bold xmax 25 div
-  (www.pjb.com.au/comp) centreshow
-xmid ymax .25 mul /Helvetica-Bold xmax 25 div
-  (www.pjb.com.au) centreshow
-showpage
-
-%%EOF
-EOT
-	close P;
-	wait;
-}
-
 sub page2jpg { my $grid = @_[$[];  # generate the eps thence the jpg
 	my $jpg_filename = next_filename();
 	warn "\e[K grid = $grid   jpg_filename = $jpg_filename\e[A\n";
@@ -322,6 +269,126 @@ EOT
 	close P;
 	wait;
 }
+
+sub credits2jpg { my $iframe = $_[$[];
+    my $scale;
+    if ($iframe > 150) { $scale = '1.0';
+    } else {
+        $scale = sprintf('%.2f', $iframe/150);
+    }
+    my $jpg_filename = next_filename();
+    warn "\e[K iframe = $iframe   jpg_filename = $jpg_filename\e[A\n";
+    eps2jpg(<<EOT, $jpg_filename);
+%!PS-Adobe-3.0 EPSF-3.0
+%%BoundingBox: 0 0 $Width $Height
+%%BeginProlog
+% (/home/pjb/ps/lib/colours.ps) run
+/white       { 1    1    1    } def
+/black       { 0    0    0    } def
+/red         { 1    0    0    } def
+/orange      { 1    0.7  0.0  } def
+/yellow      { 1    1    0    } def
+/green       { 0    1    0    } def
+/blue        { 0    0    1    } def
+/darkviolet  { 0.5  0.15 0.5  } def
+/violet      { 0.7  0.2  0.7  } def
+/rgbget {   % usage: [ red black grey ] 1 rgbget  ->  black
+  /rgbget_i exch 3 mul def
+  dup  rgbget_i        get exch
+  dup  rgbget_i 1 add  get exch
+       rgbget_i 2 add  get
+} bind def
+/rgblength {   % usage: [ red black grey ] rgblength  ->  3
+  length 3 div cvi
+} bind def
+/rgbmix { % usage : colour1 weight1 colour2 weight2 rgbmix
+    10 dict begin
+    [ /w2 /b2 /g2 /r2  /w1 /b1 /g1 /r1 ] { exch def } forall
+    % normalise weights ...
+    w1 0.0 lt { /w1 0.0 def } if
+    w2 0.0 lt { /w2 0.0 def } if
+    /tot w1 w2 add def
+    /w1 w1 tot div def
+    /w2 w2 tot div def
+    % leave mixed colour on stack ...
+    r1 dup mul w1 mul r2 dup mul w2 mul add sqrt
+    g1 dup mul w1 mul g2 dup mul w2 mul add sqrt
+    b1 dup mul w1 mul b2 dup mul w2 mul add sqrt
+    end
+} bind def
+/connett {  % usage: x y width height dx [colours] xorigin yorigin grid connett
+  % dx is the size in points of the little coloured squares: e.g.: 2, 3, 4 or 5
+  % [xy]origin to place the pattern's origin within the rectangle
+  % grid = the spacing of the grid, in points
+  20 dict begin
+  [/grid /yorigin /xorigin /colours /dx /height /width /y0 /x0]
+    {exch def} forall
+  /xmax x0 width  add def
+  /ymax y0 height add def
+  /ncolours colours rgblength def
+  % I move to using grid-spacing instead of a as a parameter 
+  /a ncolours 2 div   % dx div   I don't understand this formula for a :-(
+     grid div def
+  /i x0 def {
+    /j y0 def {
+      /z  i xorigin sub dup mul  j yorigin sub  dup mul add  a mul def
+      /c z dx div floor cvi ncolours mod def  % c = z mod ncolours
+      colours c rgbget setrgbcolor
+      i j dx dx rectfill
+      j ymax gt { exit } if     % ymax
+      /j j dx add def
+    } loop
+    i xmax gt { exit } if       % xmax
+    /i i dx add def
+  } loop
+  end
+} bind def
+/centreshow { % usage: x y font fontsize (string) centreshow
+  3 dict begin
+    [ /s /fontsize /font ] { exch def } forall
+    gsave moveto font findfont fontsize scalefont setfont
+    gsave s false charpath flattenpath pathbbox grestore
+    exch 4 -1 roll pop pop s stringwidth pop -0.5 mul  % dx/2
+    3 1 roll sub 0.5 mul % dy/2
+    rmoveto s show grestore
+  end
+} bind def
+/xmax $Width def
+/ymax $Height def
+/xmid xmax 0.5 mul def
+/ymid ymax 0.5 mul def
+/s $scale def  /one_minus_s 1 s sub def
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+0 0 xmax ymax $Dx [
+  red        one_minus_s black s rgbmix
+  orange     one_minus_s black s rgbmix
+  yellow     one_minus_s black s rgbmix
+  green      one_minus_s black s rgbmix
+  blue       one_minus_s black s rgbmix
+  violet     one_minus_s black s rgbmix
+  darkviolet one_minus_s black s rgbmix
+]
+xmid ymid   2   connett
+xmid ymid translate   s 180 mul 180 add rotate   s dup scale
+white setrgbcolor
+0 ymax .20 mul /Helvetica-Bold xmax 30 div
+  (With dx=$Dx, the grid shrank from $GridStart to $grid) centreshow
+0 ymax .05 mul /Helvetica-Bold xmax 25 div
+  (www.pjb.com.au/comp/free/) centreshow
+0 ymax -.10 mul /Helvetica-Bold xmax 25 div
+  (www.pjb.com.au/comp) centreshow
+0 ymax -.25 mul /Helvetica-Bold xmax 25 div
+  (www.pjb.com.au) centreshow
+showpage
+%%EOF
+EOT
+    close P;
+    wait;
+}
+
 
 sub next_filename {
 	$FrameNumber += 1;
