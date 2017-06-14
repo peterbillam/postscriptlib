@@ -67,36 +67,20 @@
   length 3 div cvi
 } bind def
 
-%/rgbmix { % usage : colour1 weight1 colour2 weight2 rgbmix
-%	/rgbmix_w2 exch def /rgbmix_b2 exch def
-%	/rgbmix_g2 exch def /rgbmix_r2 exch def
-%	/rgbmix_w1 exch def /rgbmix_b1 exch def
-%	/rgbmix_g1 exch def /rgbmix_r1 exch def
-%	% normalise weights ...
-%	rgbmix_w1 0.0 lt { /rgbmix_w1 0.0 def } if
-%	rgbmix_w2 0.0 lt { /rgbmix_w2 0.0 def } if
-%	/rgbmix_tot rgbmix_w1 rgbmix_w2 add def
-%	/rgbmix_w1 rgbmix_w1 rgbmix_tot div def
-%	/rgbmix_w2 rgbmix_w2 rgbmix_tot div def
-%	% leave mixed colour on stack ...
-%	rgbmix_r1 dup mul rgbmix_w1 mul rgbmix_r2 dup mul rgbmix_w2 mul add sqrt
-%	rgbmix_g1 dup mul rgbmix_w1 mul rgbmix_g2 dup mul rgbmix_w2 mul add sqrt
-%	rgbmix_b1 dup mul rgbmix_w1 mul rgbmix_b2 dup mul rgbmix_w2 mul add sqrt
-%} bind def
 /rgbmix { % usage : colour1 weight1 colour2 weight2 rgbmix
-    10 dict begin
-    [ /w2 /b2 /g2 /r2  /w1 /b1 /g1 /r1 ] { exch def } forall
-    % normalise weights ...
-    w1 0.0 lt { /w1 0.0 def } if
-    w2 0.0 lt { /w2 0.0 def } if
-    /tot w1 w2 add def
-    /w1 w1 tot div def
-    /w2 w2 tot div def
-    % leave mixed colour on stack ...
-    r1 dup mul w1 mul r2 dup mul w2 mul add sqrt
-    g1 dup mul w1 mul g2 dup mul w2 mul add sqrt
-    b1 dup mul w1 mul b2 dup mul w2 mul add sqrt
-    end
+  10 dict begin
+  [ /w2 /b2 /g2 /r2  /w1 /b1 /g1 /r1 ] { exch def } forall
+  % normalise weights ...
+  w1 0.0 lt { /w1 0.0 def } if
+  w2 0.0 lt { /w2 0.0 def } if
+  /tot w1 w2 add def
+  /w1 w1 tot div def
+  /w2 w2 tot div def
+  % leave mixed colour on stack ...
+  r1 dup mul w1 mul r2 dup mul w2 mul add sqrt
+  g1 dup mul w1 mul g2 dup mul w2 mul add sqrt
+  b1 dup mul w1 mul b2 dup mul w2 mul add sqrt
+  end
 } bind def
 
 /rgbinterpolate {  % usage: [ a1 colour1 .. aN colourN ] a rgbinterpolate
