@@ -66,19 +66,10 @@ if (! $TitleJpg)   { title2jpg(); }
 			die "can't link $title_filename, $new_filename : $!\n";
 		}
 	}
-for ($iframe=1; $iframe <= $NFrames; $iframe++) {
-	frame2jpg($iframe);
-}
-if (! $CreditsJpg) { credits2jpg($grid); }
-	my $credits_filename = next_filename();
-	rename 'post.jpg', $credits_filename;
-	my $num_creditframes = round($Fps*$PostPad - 1);
-	foreach (1..$num_creditframes) {
-		my $new_filename = next_filename();
-		if (! link $credits_filename, $new_filename) {
-			die "can't link $credits_filename, $new_filename : $!\n";
-		}
-	}
+warn "Movie:\n";
+for ($iframe=1; $iframe <= $NFrames; $iframe++) { frame2jpg($iframe); }
+warn "\nCredits:\n";
+for ($iframe=1; $iframe <= 250; $iframe++) { credits2jpg($iframe); }
 
 if ($Avconv) {
 	system "$Avconv -f image2 -r $Fps -i t_%06d.jpg "
@@ -161,9 +152,13 @@ EOT
 	wait;
 }
 
-sub credits2jpg {
-	my $grid = sprintf('%.2f', $_[$[]);
-	eps2jpg(<<EOT, 'post.jpg');
+sub credits2jpg {  my $iframe = $_[$[];
+	my $jpg_filename = next_filename();
+	warn "\e[K iframe = $iframe   jpg_filename = $jpg_filename\e[A\n";
+	my $glide = 1.0;   if ($iframe < 72) { $glide = $iframe/72; }
+	my $fade  = 0.0;   if ($iframe >120) { $fade  = ($iframe-120)/120; }
+	if ($fade > 1.0) { $fade = 1.0; }
+	eps2jpg(<<EOT, $jpg_filename);
 %!PS-Adobe-3.0 EPSF-3.0
 %%BoundingBox: 0 0 $Width $Height
 % http://www.pjb.com.au
@@ -184,17 +179,23 @@ sub credits2jpg {
     rmoveto s show grestore
   end
 } bind def
+/lininterp {   % x1 x2 lininterp  ==>  x
+	$glide mul exch    1.0 $glide sub mul add
+} def
 %%EndProlog
 %%Page: 1 1
 %%BeginPageSetup
 %%EndPageSetup
 blue setrgbcolor  0 0 xmax ymax rectfill
-white setrgbcolor
-xmid ymax .65 mul /Helvetica-Bold xmax 25 div
+white 1.0 $fade sub blue $fade rgbmix setrgbcolor
+xmid ymax 0.5 .65 lininterp mul
+  /Helvetica-Bold   0.01 xmax 25 div lininterp
   (www.pjb.com.au/comp/free/) centreshow
-xmid ymax .50 mul /Helvetica-Bold xmax 25 div
+xmax 0.3 mul xmid lininterp ymax .50 mul
+  /Helvetica-Bold   0.01 xmax 25 div lininterp
   (www.pjb.com.au/comp) centreshow
-xmid ymax .35 mul /Helvetica-Bold xmax 25 div
+xmax 0.7 mul xmid lininterp ymid ymax .35 mul lininterp
+  /Helvetica-Bold   0.01 xmax 25 div lininterp
   (www.pjb.com.au) centreshow
 showpage
 
