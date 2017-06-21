@@ -223,7 +223,24 @@ www.pjb.com.au/comp/free/brownian.ps.txt</A>
 and save the file to your local disc.<BR>
 Rename it to <I>brownian.ps</I> and move it into some appropriate
 directory such as <B>~/ps/lib</B>&nbsp;.&nbsp;.&nbsp;.
-</P>
+</P><P>
+Or, first change directory to where you keep your PostScript libraries:
+<BR><CODE> &nbsp; &nbsp;
+cd /home/wherever/ps/lib/
+</CODE><BR>
+(or wherever) &nbsp; and then either: <BR>
+<CODE>
+&nbsp; &nbsp; wget -O brownian.ps http://www.pjb.com.au/comp/free/brownian.ps.txt
+</CODE><BR> or: <BR> <CODE>
+&nbsp; &nbsp; curl http://www.pjb.com.au/comp/free/brownian.ps.txt -o brownian.ps
+</CODE></P>
+</P><P>
+Or, get it from <I>github</I>:
+<BR><CODE> &nbsp; &nbsp;
+git clone
+<A HREF="https://github.com/peterbillam/postscriptlib">
+https://github.com/peterbillam/postscriptlib</A>
+</CODE></P>
 
 <A NAME="author"><HR></A><H3>AUTHOR</H3><P>
 Peter J Billam, &nbsp;
