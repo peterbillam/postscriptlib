@@ -86,16 +86,24 @@ for using random numbers.
 <DT><B><A NAME="grand">
 mean standarddeviation grand</A></B>
 </DT><DD><P>
-This example leaves on the stack,
-a number from a Gaussian (or Normal) random distribution
+This example leaves on the stack, a number from a
+<A HREF="https://en.wikipedia.org/wiki/Normal_distribution">
+Gaussian (or Normal) random distribution</A>
 with the given <I>mean</I> and <I>standard deviation</I>.
-&nbsp;
-Thus, the density is
-&nbsp; &nbsp; <CODE>f(x) = exp(.5 * x**2) / sqrt(2 * pi)</CODE>
+<!-- Thus, the density is
+&nbsp; &nbsp; <CODE>f(x) = exp(.5 * x**2) / sqrt(2 * pi)</CODE>-->
 </P><P>
 It uses the algorithm given by Erik Carter in
 <A HREF="http://www.design.caltech.edu/erik/Misc/Gaussian.html">
-www.design.caltech.edu/erik/Misc/Gaussian.html</A>
+www.design.caltech.edu/erik/Misc/Gaussian.html</A><BR>
+This algorithm generates results in pairs, but returns them one by one. <BR>
+Therefore if you are using &nbsp;<CODE>srand</CODE>&nbsp;
+to reset the random-number generator to a known state, and your code
+happens to make an odd number of calls to &nbsp;<CODE>grand</CODE>,&nbsp;
+and you want the page to display consistently on reload,
+then you should set<BR>
+&nbsp; &nbsp; <CODE>/gauss_rand_already false def</CODE><BR>
+each time you call &nbsp;<CODE>srand</CODE>.
 </P>
 
 </DD><DT>
@@ -103,14 +111,14 @@ www.design.caltech.edu/erik/Misc/Gaussian.html</A>
 n irand</A></B>
 </DT><DD><P>
 This example leaves on the stack
-an integer from 0 to n-1
+an Integer from 0 to n-1
 </P>
 
 </DD><DT>
 <B><A NAME="urand">
 urand</A></B>
 </DT><DD><P>
-This leaves on the stack an number between 0.0 and 1.0 
+This leaves on the stack an number between zero and Unity
 </P>
 
 </DD><DT>

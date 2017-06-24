@@ -39,8 +39,18 @@
 %   The _xy2uv routines would not notice the change.
 % Then in the API the params could be either named, or ordered.
 
+% 20170621
+% I also need somehow to do reflections, or other one-to-many transforms
+% for example, a kaleidoscope needs to drop 5/6 of its x,y input
+% and for the remaining 1/6 needs to return six u,v pairs !
+% return an array either  [ ]  or  [ u1 v1 u2 v2 u3 v3 u4 v4 u5 v5 u6 v6 ]  ?
+% PS offers rotate, but not reflect :-(     x0 y0 angle reflect
+% should put together the necessary matrix then invoke transform !
+% Better draw stroke and fill the whole page, clip to a 60-degree segment,
+% then redraw :-( (eg: having saved any rangdom values) clip, reflect, rotate
+
 /ctransform {   % the argument is the named function f(x,y) -> u,v
-  load        % first load the procedure onto the stack
+  load          % first load the procedure onto the stack
   1 dict begin  /f exch def  % and give it a local name
   % could keep track of x,y and weed out zero-length stuff ?
   % or break "long" line-segments into subsections, or into curves ?
