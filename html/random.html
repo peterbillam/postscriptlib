@@ -53,7 +53,7 @@ random.ps - Some useful random-number stuff in PostScript
 
  /mean 43.2 def  /stddev 8.5 def
  {  ...
-    mean stddev <A HREF="#grand">grand</A>   % gaussian random
+    mean stddev <A HREF="#grand">grand</A>   % Gaussian Random
     ...  i n gt { exit } if
  } loop
 
@@ -61,16 +61,17 @@ random.ps - Some useful random-number stuff in PostScript
 
  <A HREF="#urand">urand</A>  % random number between 0.0 and 1.0
 
+ sigma <A HREF="#rayleigh_rand">rayleigh_rand</A>  % Rayleigh Distribution
+
  [ <I>an array</I> ] <A HREF="#randomget">randomget</A>   % random element
 
 </PRE>
 
 <A NAME="description"><HR></A><H3>DESCRIPTION</H3>
 <P>
-This module implements in PostScript
-a few simple
+This module implements in PostScript a few simple
 <A HREF="#procedures">procedures</A>
-for using random numbers.
+for generating random numbers according to various distributions.
 
 </P>
 
@@ -79,6 +80,7 @@ for using random numbers.
 <A HREF="#grand">grand</A>, &nbsp;
 <A HREF="#irand">irand</A>, &nbsp;
 <A HREF="#urand">urand</A>, &nbsp;
+<A HREF="#rayleigh_rand">rayleigh_rand</A>, &nbsp;
 <A HREF="#randomget">randomget</A>
 </H3>
 
@@ -119,6 +121,23 @@ an Integer from 0 to n-1
 urand</A></B>
 </DT><DD><P>
 This leaves on the stack an number between zero and Unity
+</P>
+
+</DD><DT>
+<B><A NAME="rayleigh_rand">
+sigma rayleigh_rand</A></B>
+</DT><DD><P>
+This function leaves on the stack a random number according to the
+<A HREF="https://en.wikipedia.org/wiki/Rayleigh_distribution">
+Rayleigh Distribution</A>,
+which is a continuous probability distribution for
+positive-valued random variables. It occurs, for example, when random
+complex numbers whose real and imaginary components are independent
+Gaussian distributions with equal variance and zero mean, in which
+case, the absolute value of the complex number is Rayleigh-distributed:
+<BR><CODE> &nbsp;
+f(x; sigma) = x exp(-x^2 / 2*sigma^2) / sigma^2 &nbsp; &nbsp; for x&gt;=0
+</CODE>
 </P>
 
 </DD><DT>
@@ -169,9 +188,10 @@ www.pjb.com.au/comp/contact.html</A>
 </P>
 
 <A NAME="changes"><HR></A><H3>CHANGES</H3><PRE>
- 20170512 introduce <A HREF-"#urand">urand</A>
+ 20170716 introduce <A HREF="#rayleigh_rand">rayleigh_rand</A>
+ 20170512 introduce <A HREF="#urand">urand</A>
  20170511 the old code deleted; much neater
- 20170510 gauss_rand gets a new algorithm, fixing some obscure bugs
+ 20170510 <A HREF="#grand">grand</A> gets a new algorithm, fixing some obscure bugs
  20160501 first released version
 </PRE>
 

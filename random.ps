@@ -65,3 +65,7 @@ gauss_rand pop  % initialise, and discard the resulting zero
 /randomget {   % usage:  [ an array ] randomget
   dup length  rand  exch mod  get
 } bind def
+
+/rayleigh_rand {   % usage:  sigma rayleigh_rand
+  1.0 urand sub ln -2 mul sqrt mul
+} bind def
