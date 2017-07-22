@@ -1,0 +1,101 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2017, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+(/home/pjb/ps/lib/colours.ps) run
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+/tau 5 sqrt 1 add 2 div def
+/taum1 1 tau div  def
+
+/y1 ymax tau div def
+/x1 xmax tau div def
+/y2 ymax dup y1 sub tau div sub def
+/x2 xmax dup x1 sub tau div sub def
+/y3 y1 y2 y1 sub tau div add def
+/x3 x1 x2 x1 sub tau div add def
+/y4 y2 y3 y2 sub tau div add def
+
+darkgrey setrgbcolor
+0 0 xmax ymax rectfill
+
+/curve1 {
+  /a 0.40 def
+  newpath xmax 0 moveto xmax a mul 0 0 y1 a mul 0 y1 curveto
+} def
+/curve2 {
+  /a 0.44 def
+  newpath 0 y1 moveto 0 ymax y1 sub a mul y1 add
+    x1 a mul ymax x1 ymax curveto
+} def
+/curve3 {
+  /a 0.45 def
+  newpath x1 ymax moveto xmax x1 sub a mul x1 add ymax
+    xmax ymax y2 sub a mul y2 add  xmax y2 curveto
+} def
+/curve4 {
+  /a 0.46 def
+  newpath xmax y2 moveto xmax y2 y2 y1 sub a mul sub
+    xmax xmax x2 sub a mul sub y1 x2 y1 curveto
+} def
+/curve5 {
+  /a 0.50 def
+  newpath x2 y1 moveto x2 x2 x1 sub a mul sub y1
+    x1 y3 y3 y1 sub a mul sub  x1 y3 curveto
+} def
+/curve6 {
+  /a 0.52 def
+  newpath x1 y3 moveto x1 y2 y3 sub a mul y3 add
+    x3 x3 x1 sub a mul sub y2 x3 y2 curveto
+} def
+/curve7 {
+  /a 0.54 def
+  newpath x3 y2 moveto x3 x2 x3 sub a mul add y2
+    x2 y2 y2 y4 sub a mul sub  x2 y4 curveto
+} def
+
+paleviolet setrgbcolor
+  curve1 xmax y1 lineto closepath fill
+paleviolet 0.5 blue 0.5 rgbmix setrgbcolor
+  curve2 x1 y1 lineto closepath fill
+blue setrgbcolor
+  curve3 x1 y2 lineto closepath fill
+green 0.5 darkgreen 0.5 rgbmix setrgbcolor
+  curve4 x2 y2 lineto closepath fill
+yellow setrgbcolor
+  curve5 x2 y3 lineto closepath fill
+orange setrgbcolor
+  curve6 x3 y3 lineto closepath fill
+red setrgbcolor
+  curve7 x3 y4 lineto closepath fill
+white setrgbcolor
+  x3 y3 x2 x3 sub y4 y3 sub rectfill
+
+black setrgbcolor
+newpath 0 y1 moveto xmax y1 lineto stroke
+newpath x1 y1 moveto x1 ymax lineto stroke
+newpath x1 y2 moveto xmax y2 lineto stroke
+newpath x2 y2 moveto x2 y1 lineto stroke
+newpath x1 y3 moveto x2 y3 lineto stroke
+newpath x3 y3 moveto x3 y2 lineto stroke
+newpath x2 y4 moveto x3 y4 lineto stroke
+curve1 stroke
+curve2 stroke
+curve3 stroke
+curve4 stroke
+curve5 stroke
+curve6 stroke
+curve7 stroke
+
+showpage
+%%EOF
