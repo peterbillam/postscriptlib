@@ -65,6 +65,8 @@ random.ps - Some useful random-number stuff in PostScript
 
  [ <I>an array</I> ] <A HREF="#randomget">randomget</A>   % random element
 
+ [ <I>an array</I> 5 ] <A HREF="#randomgetn">randomgetn</A>   % 5 random elements
+
 </PRE>
 
 <A NAME="description"><HR></A><H3>DESCRIPTION</H3>
@@ -81,7 +83,8 @@ for generating random numbers according to various distributions.
 <A HREF="#irand">irand</A>, &nbsp;
 <A HREF="#urand">urand</A>, &nbsp;
 <A HREF="#rayleigh_rand">rayleigh_rand</A>, &nbsp;
-<A HREF="#randomget">randomget</A>
+<A HREF="#randomget">randomget</A>, &nbsp;
+<A HREF="#randomgetn">randomgetn</A>
 </H3>
 
 <DL>
@@ -149,6 +152,18 @@ For example, the following executes one of the given procedures at random:<BR>
 &nbsp; &nbsp;
 <CODE>[ /bassclef /trebleclef /sharp /natural ] randomget cvx exec</CODE>
 </P>
+
+</DD><DT>
+<B><A NAME="randomgetn">
+[ an array ] 5 randomgetn</A></B>
+</DT><DD><P>
+This example leaves on the stack
+an array containing five random elements from the given array. <BR>
+Those elements have distinct indices in the given array,
+so that if the elements of the given array are all distinct,
+the elements of the returned array will also be distinct.
+</P>
+
 </DD></DL>
 
 <A NAME="install"> <HR> </A>

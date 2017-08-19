@@ -36,7 +36,27 @@ green  gray adjustbrightness
    setrgbcolor  0 ymax .6 mul xmax ymax .2 mul rectfill
 blue   gray adjustbrightness
    setrgbcolor  0 ymax .8 mul xmax ymax .2 mul rectfill
-
 showpage
+
+%%Page: 3 3
+%%BeginPageSetup
+%%EndPageSetup
+/Helvetica-Bold 20 selectfont
+/arr_in [ darkgrey  black red orange yellow blue violet green ] def
+/y ymax 10 sub def
+/dx xmax 20 sub 5 div def
+{
+  /y y 25 sub def
+  /arr_out  arr_in 5 randomrgbgetn def
+  /x 10 def
+  20 y moveto
+  0  1  arr_out rgblength 1 sub {
+    arr_out exch rgbget setrgbcolor  x y dx 25 rectfill
+    /x x dx add def
+  } for
+  y 10 lt { exit } if
+} loop
+showpage
+
 
 %%EOF

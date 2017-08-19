@@ -74,6 +74,8 @@ colours.ps - Some useful colour-handling stuff in PostScript
 
 [ red black darkgrey ] <A HREF="#randomrgb">randomrgb</A> setrgbcolor
 
+/my3olours [ darkgrey  red orange yellow violet ] 3 <A HREF="#randomrgbgetn">randomrgbgetn</A> def
+
 </PRE>
 
 <A NAME="description"><HR></A><H3>DESCRIPTION</H3>
@@ -148,6 +150,7 @@ any other colours that you may need, just like a painter would.
 <A HREF="#rgbget">rgbget</A>
 <A HREF="#rgblength">rgblength</A>
 <A HREF="#randomrgb">randomrgb</A>
+<A HREF="#randomrgbgetn">randomrgbgetn</A>
 <A HREF="#rgb2gray">rgb2gray</A></B>
 <B><A HREF="#adjustbrightness">adjustbrightness</A></B>
 <B><A HREF="#pathbboxwh">pathbboxwh</A></B>
@@ -277,6 +280,22 @@ and then leaves that colour on the stack.
 </P><P>
 By default it will make different a choice every time you load the
 page, so if you need consistency you should invoke <I>srand</I> first.
+</P>
+
+</DD><DT>
+<B><A NAME="randomrgbgetn">[ red black darkgrey violet blue ]
+ &nbsp; 3 &nbsp; randomrgbgetn</A></B>
+</DT><DD><P>
+This invocation leaves on the stack
+an array of 3 random colours chosen from the given array
+(i.e. from red, black, darkgrey, violet and blue in this example).
+</P><P>
+The chosen colours have distinct indices in the given array,
+so that if the colours of the given array are all distinct,
+the colours of the returned array will also be distinct.
+</P><P>
+By default it will make different choices every time you load the page,
+so if you need consistency you should invoke <I>srand</I> first.
 </P>
 
 </DD><DT>
@@ -418,6 +437,7 @@ www.pjb.com.au/comp/contact.html</A>
 </P>
 
 <A NAME="changes"><HR></A><H3>CHANGES</H3><PRE>
+ 20170819 add randomrgbgetn
  20160629 add paleyellow
  20160623 add radialgradientfill
  20160519 add pathbboxwh

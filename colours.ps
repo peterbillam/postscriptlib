@@ -49,10 +49,29 @@
 /violet      { 0.7  0.2  0.7  } def
 /paleviolet  { 1    0.75 1    } def
 
-/randomrgb {   % usage: [ red black grey ] randomrgb
+/randomrgbget {   % usage: [ red black grey ] randomrgbget
   5 dict begin
   dup length 3.0 div 0.01 add floor  rand exch round cvi mod  3 mul /i exch def
   dup i get exch   dup i 1 add get exch   i 2 add get
+  end
+} bind def
+
+/randomrgb { randomrgbget } def    % for back-compatibility
+
+/randomrgbgetn {   % usage: [ red black grey ] 2 randomrgbgetn -> [ red grey ]
+  10 dict begin [ /n /arr_in ] { exch def } forall
+  n arr_in rgblength ge {
+    arr_in
+  } {
+    /already n dict def [
+    n {
+      {
+        /i  rand arr_in rgblength mod def
+        /candidate arr_in i rgbget rgbdef
+        already i known not { already i true put candidate exit } if
+      } loop
+    } repeat
+  ] } ifelse
   end
 } bind def
 
@@ -66,6 +85,8 @@
 /rgblength {   % usage: [ red black grey ] rgblength  ->  3
   length 3 div cvi
 } bind def
+
+% perhaps rgbforall ?
 
 /rgbmix { % usage : colour1 weight1 colour2 weight2 rgbmix
   10 dict begin

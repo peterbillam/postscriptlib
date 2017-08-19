@@ -66,6 +66,22 @@ gauss_rand pop  % initialise, and discard the resulting zero
   dup length  rand  exch mod  get
 } bind def
 
+/randomgetn {   % usage:  [ an array ] n randomgetn
+  10 dict begin [ /n /arr_in ] { exch def } forall
+  n arr_in length ge {
+    arr_in
+  } {
+    /already n dict def [
+    n {
+      {
+        /i  rand arr_in length mod def
+        /candidate arr_in i get def
+        already i known not { already i true put candidate exit } if
+      } loop
+    } repeat
+  ] } ifelse
+} bind def
+
 /rayleigh_rand {   % usage:  sigma rayleigh_rand
   1.0 urand sub ln -2 mul sqrt mul
 } bind def
