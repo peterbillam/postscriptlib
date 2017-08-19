@@ -27,7 +27,19 @@
 /y4 y2 y3 y2 sub tau div add def
 
 darkgrey setrgbcolor
-0 0 xmax ymax rectfill
+  0 0 xmax y1 rectfill
+darkgrey 0.8 black 0.2 rgbmix setrgbcolor
+  0 y1 x1 ymax y1 sub rectfill
+darkgrey 0.7 black 0.3 rgbmix setrgbcolor
+  x1 y2 xmax x1 sub ymax y2 sub rectfill
+darkgrey 0.6 black 0.4 rgbmix setrgbcolor
+  x2 y1 xmax x2 sub y2 y1 sub rectfill
+darkgrey 0.35 black 0.65 rgbmix setrgbcolor
+  x1 y1 x2 x1 sub y3 y1 sub rectfill
+darkgrey 0.2 black 0.8 rgbmix setrgbcolor
+  x1 y3 x3 x1 sub y2 y3 sub rectfill
+black setrgbcolor
+  x3 y4 x2 x3 sub y2 y4 sub rectfill
 
 /curve1 {
   /a 0.40 def
@@ -66,13 +78,13 @@ darkgrey setrgbcolor
 
 red setrgbcolor
   curve1 xmax y1 lineto closepath fill
-orange setrgbcolor
+orange 0.8 darkorange 0.2 rgbmix setrgbcolor
   curve2 x1 y1 lineto closepath fill
 yellow setrgbcolor
   curve3 x1 y2 lineto closepath fill
 green 0.5 darkgreen 0.5 rgbmix setrgbcolor
   curve4 x2 y2 lineto closepath fill
-blue setrgbcolor
+blue 0.5 paleblue 0.5 rgbmix setrgbcolor
   curve5 x2 y3 lineto closepath fill
 paleviolet 0.5 blue 0.5 rgbmix setrgbcolor
   curve6 x3 y3 lineto closepath fill
