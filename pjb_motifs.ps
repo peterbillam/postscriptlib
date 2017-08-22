@@ -40,6 +40,40 @@ end } def
     dup 3 2 roll dup 3 1 roll lt { pop } { exch pop } ifelse
 } def
 
+/motif_p41a { gsave   % x y width linecolour areacolours motif_p41a
+  10 dict begin   % this can hold up to ten new local variables
+  [ /areacolours /b /g /r /width /y /x ] { exch def } forall
+  x y translate  width 2 div dup scale  0 setlinejoin 0.05 setlinewidth
+  r g b setrgbcolor
+  -0.3 1 moveto -0.3 -1 lineto -1 -0.3 lineto 1 -0.3 lineto
+  0.3 -1 lineto 0.3 1 lineto 1 0.3 lineto -1 0.3 lineto closepath
+  gsave
+    /colours areacolours def
+    colours 0 rgbget setrgbcolor fill
+    colours 1 rgbget setrgbcolor -0.3 -0.3 0.6 0.6 rectfill
+  grestore
+  stroke
+  end grestore
+} def
+
+/motif_p41b { gsave   % x y width linecolour areacolours motif_p41b
+  10 dict begin   % this can hold up to ten new local variables
+  [ /areacolours /b /g /r /width /y /x ] { exch def } forall
+  x y translate  width 2 div dup scale  0 setlinejoin 0.05 setlinewidth
+  r g b setrgbcolor
+  -0.5 1 moveto -0.5 -1 lineto 1 0.5 lineto -1 0.5 lineto 0.5 -1 lineto
+  0.5 1 lineto -1 -0.5 lineto 1 -0.5 lineto closepath
+  gsave
+    /colours areacolours def
+    colours 0 rgbget setrgbcolor fill
+    colours 1 rgbget setrgbcolor -0.5 -0.5 1 1 rectfill
+    colours 2 rgbget setrgbcolor newpath
+      0 0.5 moveto 0.5 0 lineto 0 -0.5 lineto -0.5 0 lineto closepath fill
+  grestore
+  stroke
+  end grestore
+} def
+
 /brain_outline_path {   % usage: x y height brain_outline_path
   % Gray's Anatomy p.644
   10 dict begin [ /height /y /x ] { exch def } forall

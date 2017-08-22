@@ -1,0 +1,141 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2017, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+(/home/pjb/ps/lib/colours.ps) run
+% see Tribal and Village Rugs, by Peter F. Stone, Thames and Hudson
+% pp. 14 41 65 79 91 116 121 130 136 139 146 147 157 173 190 330 331
+%%EndProlog
+
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+
+/motif_p41a { gsave   % x y width linecolour areacolours motif_p41a
+  10 dict begin   % this can hold up to ten new local variables
+  [ /areacolours /b /g /r /width /y /x ] { exch def } forall
+  x y translate  width 2 div dup scale  0 setlinejoin 0.05 setlinewidth
+  r g b setrgbcolor
+  -0.3 1 moveto -0.3 -1 lineto -1 -0.3 lineto 1 -0.3 lineto
+  0.3 -1 lineto 0.3 1 lineto 1 0.3 lineto -1 0.3 lineto closepath
+  gsave
+    /colours areacolours def
+    colours 0 rgbget setrgbcolor fill
+    colours 1 rgbget setrgbcolor -0.3 -0.3 0.6 0.6 rectfill
+  grestore
+  stroke
+  end grestore
+} def
+/motif_p41b { gsave   % x y width linecolour areacolours motif_p41b
+  10 dict begin   % this can hold up to ten new local variables
+  [ /areacolours /b /g /r /width /y /x ] { exch def } forall
+  x y translate  width 2 div dup scale  0 setlinejoin 0.05 setlinewidth
+  r g b setrgbcolor
+  -0.5 1 moveto -0.5 -1 lineto 1 0.5 lineto -1 0.5 lineto 0.5 -1 lineto
+  0.5 1 lineto -1 -0.5 lineto 1 -0.5 lineto closepath
+  gsave
+    /colours areacolours def
+    colours 0 rgbget setrgbcolor fill
+    colours 1 rgbget setrgbcolor -0.5 -0.5 1 1 rectfill
+	colours 2 rgbget setrgbcolor newpath
+      0 0.5 moveto 0.5 0 lineto 0 -0.5 lineto -0.5 0 lineto closepath fill
+  grestore
+  stroke
+  end grestore
+} def
+
+/p41a {
+  [ black black orange ] randomrgbget
+  [ red violet yellow ] 2 randomrgbgetn motif_p41a
+} def
+/p41b {
+  [ black black orange ] randomrgbget
+  [ red darkviolet yellow darkred blue ] 3 randomrgbgetn motif_p41b
+}def
+
+darkred setrgbcolor 0 0 xmax ymax rectfill
+/fringewidth xmax 134 div def
+/majorborder xmax 17 mul 136 div def
+/minorborder xmax 28 mul 136 div def
+orange setrgbcolor
+  0 0 fringewidth ymax rectfill
+  xmax fringewidth sub 0 fringewidth ymax rectfill
+  0 0 xmax fringewidth rectfill
+  0 ymax fringewidth sub xmax fringewidth rectfill
+  minorborder minorborder fringewidth ymax minorborder 2 mul sub rectfill
+  xmax minorborder sub fringewidth sub minorborder
+    fringewidth ymax minorborder sub rectfill
+  minorborder minorborder xmax minorborder 2 mul sub  fringewidth rectfill
+  minorborder ymax minorborder sub fringewidth sub
+    xmax minorborder 2 mul sub fringewidth rectfill
+
+darkblue setrgbcolor
+  majorborder majorborder
+    xmax majorborder 2 mul sub minorborder majorborder sub rectfill
+  majorborder ymax minorborder sub
+    xmax majorborder 2 mul sub minorborder majorborder sub rectfill
+  majorborder majorborder
+    minorborder majorborder sub ymax majorborder 2 mul sub rectfill
+  xmax minorborder sub majorborder
+    minorborder majorborder sub ymax majorborder 2 mul sub rectfill
+
+/majorbordercentre majorborder fringewidth add 2 div def
+/minorbordercentre majorborder minorborder add 2 div def
+/majormotifwidth majorborder fringewidth sub 0.80 mul def
+/minormotifwidth minorborder majorborder sub 0.80 mul def
+
+0 1 11 {
+  /i exch def
+  /y ymax majorbordercentre 2 mul sub 11 div i mul majorbordercentre add def
+  majorbordercentre y majormotifwidth p41b
+  xmax majorbordercentre sub y majormotifwidth p41b
+} for
+1 1 7 {
+  /i exch def
+  /x xmax majorbordercentre 2 mul sub 7 div i mul majorbordercentre add def
+  x majorbordercentre majormotifwidth p41b
+  x ymax majorbordercentre sub majormotifwidth p41b
+} for
+
+0 1 11 {
+  /i exch def
+  /y ymax minorbordercentre 2 mul sub 11 div i mul minorbordercentre add def
+  minorbordercentre y minormotifwidth p41a
+  xmax minorbordercentre sub y minormotifwidth p41a
+} for
+1 1 7 {
+  /i exch def
+  /x xmax minorbordercentre 2 mul sub 7 div i mul minorbordercentre add def
+  x minorbordercentre minormotifwidth p41a
+  x ymax minorbordercentre sub minormotifwidth p41a
+} for
+
+minorbordercentre minorbordercentre minormotifwidth p41a
+
+xmax 0.5 mul ymax 0.67 mul xmax 0.40 mul p41b
+xmax 0.5 mul ymax 0.51 mul xmax 0.15 mul p41a
+xmax 0.5 mul ymax 0.35 mul xmax 0.40 mul p41b
+
+xmax 0.50 mul ymax 0.81 mul xmax 0.09 mul p41a
+xmax 0.50 mul ymax 0.67 mul xmax 0.12 mul p41a
+xmax 0.50 mul ymax 0.35 mul xmax 0.12 mul p41a
+
+xmax 0.29 mul ymax 0.55 mul xmax 0.10 mul p41a
+xmax 0.71 mul ymax 0.55 mul xmax 0.10 mul p41a
+
+xmax 0.33 mul ymax 0.20 mul xmax 0.10 mul p41a
+xmax 0.67 mul ymax 0.20 mul xmax 0.10 mul p41a
+
+showpage
+
+
+
+%%EOF
