@@ -12,60 +12,87 @@
 % see:  ~/lua/lib/Sequence.lua  but returning an array not a closure
 
 /aaba {  % usage: [ something somethingelse ] n aaba
+  15 dict begin
+  /new_n exch def /seed_arr exch def
+  /seed_n seed_arr length def
+  /new_arr  new_n array def
+
+  new_arr  % return
+  end
 } bind def
 
 /cycle { % usage: [ array of things ] n cycle
+  15 dict begin
+  /new_n exch def /seed_arr exch def
+  /seed_n seed_arr length def
+  /new_arr  new_n array def
+
+  new_arr  % return
+  end
 } bind def
 
 /leibnitz { % usage : [ array of things ] n leibnitz
+  15 dict begin
+  /new_n exch def /seed_arr exch def
+  /seed_n seed_arr length def
+  /new_arr  new_n array def
+
+  new_arr  % return
+  end
 } bind def
 
 /morse_thue { % usage : [ array of things ] n morse_thue
-  /morse_thue_new_n exch def /morse_thue_seed_a exch def
-  /morse_thue_seed_n morse_thue_seed_a length def
-  /morse_thue_new_a  morse_thue_new_n array def
-  morse_thue_new_a 0 morse_thue_seed_a putinterval  % bootstrap
-  /morse_thue_new_i   morse_thue_seed_n def  % and adjust pointer
-  /morse_thue_indexes_a  morse_thue_new_n array def
-  /morse_thue_indexes_i 0 def {
-    morse_thue_indexes_i morse_thue_seed_n ge { exit } if
-    morse_thue_indexes_a morse_thue_indexes_i morse_thue_indexes_i put
-    /morse_thue_indexes_i  morse_thue_indexes_i 1 add  def
+  15 dict begin
+  /new_n exch def /seed_arr exch def
+  /seed_n seed_arr length def
+  /new_arr  new_n array def
+  new_arr 0 seed_arr putinterval  % bootstrap
+  /new_i   seed_n def  % and adjust pointer
+  /indexes_arr  new_n array def
+  /indexes_i 0 def {
+    indexes_i seed_n ge { exit } if
+    indexes_arr indexes_i indexes_i put
+    /indexes_i  indexes_i 1 add  def
   } loop
   {
-    morse_thue_new_i morse_thue_new_n ge { exit } if
-    morse_thue_indexes_a  morse_thue_new_i
-      morse_thue_indexes_a morse_thue_new_i morse_thue_seed_n idiv get
-      morse_thue_new_i add  morse_thue_seed_n  mod
+    new_i new_n ge { exit } if
+    indexes_arr  new_i
+      indexes_arr new_i seed_n idiv get   new_i add  seed_n  mod
     put
-    morse_thue_new_a  morse_thue_new_i
-      morse_thue_seed_a  morse_thue_indexes_a morse_thue_new_i get  get
+    new_arr  new_i
+      seed_arr  indexes_arr new_i get  get
     put
-    /morse_thue_new_i     morse_thue_new_i     1 add def
+    /new_i  new_i 1 add def
   } loop
-  morse_thue_new_a  % return
+  new_arr  % return
+  end
 } bind def
 
 /rabbit { % usage : [ something somethingelse ] n rabbit
-  /rabbit_new_n exch def /rabbit_seed_a exch def
-  /rabbit_new_a  rabbit_new_n array def
-  /rabbit_pattern [ [ 0 1 0 0 1 ] [ 0 1 0 ] ] def
-  /rabbit_pattern_choice   0 def   % 0..1
-  /rabbit_pattern_choice_i 0 def   % 0..4 or 0..2
-  /rabbit_new_i 0 def {
-    /rabbit_choice rabbit_pattern  rabbit_pattern_choice get   % time-saver
-
-    /rabbit_new_i rabbit_new_i 1 add def
-    rabbit_new_i rabbit_new_n ge { exit } if
-    /rabbit_pattern_choice_i rabbit_pattern_choice_i 1 add def
-	rabbit_pattern_choice_i rabbit_choice length ge {
-      /rabbit_pattern_choice rabbit_pattern_choice 1 add 2 mod def % 0 or 1
-      /rabbit_pattern_choice_i 0 def
+  15 dict begin
+  /new_n exch def /seed_arr exch def
+  /new_arr  new_n array def
+  /pattern [ [ 0 1 0 0 1 ] [ 0 1 0 ] ] def
+  /pattern_choice   0 def   % 0..1
+  /pattern_choice_i 0 def   % 0..4 or 0..2
+  /new_i 0 def {
+    /choice pattern  pattern_choice get def  % time-saver
+    new_i new_n ge { exit } if
+    new_arr new_i  seed_arr  choice pattern_choice_i get  get  put
+    /pattern_choice_i pattern_choice_i 1 add def
+	pattern_choice_i choice length ge {
+      /pattern_choice pattern_choice 1 add 2 mod def % 0 or 1
+      /pattern_choice_i 0 def
     } if
+    /new_i new_i 1 add def
   } loop
-  rabbit_new_a   % return
+  new_arr   % return
+  end
 } bind def
 
+/randomget {   % usage:  [ an array ] randomget    from random.ps
+  dup length  rand  exch mod  get
+} bind def
 /random { % usage : [ array of things ] n random
 } bind def
 
