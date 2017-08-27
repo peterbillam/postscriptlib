@@ -1,0 +1,79 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2017, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+(/home/pjb/ps/lib/sequence.ps) run
+(/home/pjb/ps/lib/colours.ps) run
+/round { 0.5 add floor cvi } def
+%%EndProlog
+
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+% >>> math.atan(0.5 * (1 + math.sqrt(5))) * 180 / 3.141592653589
+% 58.28252558855371
+(/home/pjb/ps/lib/fonts.ps) run
+/rightshow {    % usage: x y font fontsize (string) rightshow
+  5 dict begin
+    [ /s /fontsize /font /y /x ] { exch def } forall
+    gsave font findfont  fontsize scalefont  setfont
+    % x s stringwidth pop sub  y   % bad pop!  (woosh-fonts...)
+    x s stringwidth 3 1 roll  %  ys x xs
+      sub exch   % xfinal ys
+      y exch sub
+      moveto s show grestore
+  end
+} bind def
+
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+% 0 0 xmax ymax paleblue blue true -.5 rectgradientfill
+black setrgbcolor 0 0 xmax ymax  rectfill
+/angles [90 0] 37 rabbit def
+/colours [ 0 1 ] 8 rabbit def
+/step 19 def
+2 setlinecap 0 setlinejoin
+step setlinewidth
+[ 0 2 4 6 8 10 12 14 ] {
+  /j exch def
+  xmax 0.06 mul step j mul add ymax 0.39 mul step j mul sub moveto
+  angles {
+    /ang exch def
+    step ang cos mul  step ang sin mul rlineto
+  } forall
+  [ red darkorange ]   colours j 2 div round get   rgbget setrgbcolor
+  stroke
+} forall
+
+darkorange setrgbcolor
+/FatSimple ymax 35 div selectfont
+/x xmax 0.97 mul def
+/y ymax 0.90 mul def /dy ymax 0.046 mul def
+x y /FatSimple ymax 37 div (THE MAJESTY AND) rightshow  /y y dy sub def
+x y /FatSimple ymax 30 div (BURNING OF) rightshow  /y y dy sub def
+x y /FatSimple ymax 35 div (THE CHILD'S) rightshow  /y y dy sub def
+x y /FatSimple ymax 28 div (DEATH) rightshow  /y y dy sub def
+
+darkred setrgbcolor
+/FatSimple ymax 35 div selectfont
+/x xmax 0.035 mul def
+/y ymax 0.24 mul def /dy ymax 0.044 mul def
+/FatSimple ymax 28 div selectfont
+x y moveto (THE) show  /y y dy sub def
+/FatSimple ymax 29 div selectfont
+x y moveto (GRAINS) show  /y y dy sub def
+/FatSimple ymax 35 div selectfont
+x y moveto (BEYOND AGE) show  /y y dy sub def
+/FatSimple ymax 37 div selectfont
+x y moveto (THE DARK VEINS) show  /y y dy sub def
+/FatSimple ymax 32 div selectfont
+x y moveto (OF HER MOTHER) show  /y y dy sub def
+showpage
+
+%%EOF
