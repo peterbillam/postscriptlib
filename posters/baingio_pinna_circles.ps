@@ -1,0 +1,74 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2017, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+(/home/pjb/ps/lib/colours.ps) run
+(/home/pjb/ps/lib/text.ps) run
+(/home/pjb/ps/lib/fonts.ps) run
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+
+/circle_of_squares {
+   % x y squareside nsquares inout dark light circle_of_squares
+  20 dict begin   % this can hold up to twenty new local variables
+  /light 4 1 roll rgbdef
+  /dark  4 1 roll rgbdef
+  [ /inout /nsquares /squareside ] { exch def } forall
+  gsave  translate
+  /radius 1.5 squareside mul nsquares mul 6.28318 div def
+  squareside 0.09 mul setlinewidth  0 setlinejoin
+  % 0 0 radius 0 360 arc  stroke
+  0 1 nsquares { /i exch def
+    /theta 360 nsquares div i mul def
+    /x radius theta sin mul def
+    /y radius theta cos mul def
+	x xmid 0.9 mul lt  x xmid -.9 mul gt and  y ymid 0.52 mul lt and {
+      gsave
+      x y  translate
+      15  inout mul  theta sub rotate
+      [ light dark ] i 2 mod rgbget setrgbcolor
+      squareside -0.5 mul dup  squareside dup rectstroke
+      grestore
+	} if
+  } for
+  grestore end
+} def
+
+% darkgrey setrgbcolor  0 0 xmax ymax  rectfill
+/xmid xmax 2    div def
+/ymid ymax 0.64 mul def
+/c1 red    0.7 darkred    0.3 rgbmix rgbdef
+/c2 orange 0.8 darkorange 0.2 rgbmix rgbdef
+newpath c2 setrgbcolor xmid ymid 20 0 360 arc closepath fill
+xmid ymid 20 ymid 1.3 mul  c2 c1  0.8 radialgradientfill
+xmid ymid 16   6 -1 black white circle_of_squares
+xmid ymid 16  18  1 black white circle_of_squares
+xmid ymid 16  30 -1 black white circle_of_squares
+xmid ymid 16  44  1 black white circle_of_squares
+xmid ymid 16  56 -1 black white circle_of_squares
+xmid ymid 16  70  1 black white circle_of_squares
+xmid ymid 16  82 -1 black white circle_of_squares
+xmid ymid 16  96  1 black white circle_of_squares
+xmid ymid 16 108 -1 black white circle_of_squares
+
+/textradius 16 1.56 mul 130 mul 6.28318 div def
+% /textradius 200 def
+xmid ymid translate
+% /HelveticaBoldItalic 112 selectfont c2 setrgbcolor
+/FatSimple 97 selectfont
+% c2 setrgbcolor
+violet setrgbcolor
+(pjb.com.au) 0 271  textradius  InsideCircleText
+
+showpage
+%%EOF
