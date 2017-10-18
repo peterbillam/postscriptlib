@@ -1,0 +1,86 @@
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2017, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%EndComments
+%%BeginProlog
+(/home/pjb/ps/lib/colours.ps) run
+(/home/pjb/ps/lib/line_drawing.ps) run
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+/xmid xmax 2 div def /ymid ymax 2 div def  
+
+% display -resize 1900x1040 /home/pjb/photos/art/gedc0992.jpg &
+/greco_path {   % x y height greco_path
+  20 dict begin   % this can hold up to twenty new local variables
+  [ /height /y /x ] { exch def } forall
+  /ratio height  897 div  def   % 897 = 978-81
+  x y translate
+  ratio ratio -1 mul scale
+  -436 -978 translate
+  [ 
+  363 978  353 963  352 944  348 797  348 682  348 549  347 525  352 491
+  354 463  369 420  381 406  385 402  389 399
+  386 395  384 390  383 377  380 359  376 347  377 340  371 347
+  % left armpit
+  366 364  351 393  342 398  325 393  289 374  261 359  239 335
+  % left wrist 
+  241 327  256 313  261 307  266 313  296 335  311 342  326 348  332 348
+  334 343  335 335  342 320  346 307  345 288  350 268  353 253  360 235
+  370 230  377 228  377 233  375 204  384 176  388 165  392 140  397 117
+  412 94   428 83   435 83   440 85   444 83   452 81   473 97   487 120
+  489 137  492 155  499 198  504 224  512 227  529 239  538 243  542 257  
+  546 286  547 291  545 301  551 328  555 333  557 342  580 327  612 294
+  % right wrist
+  % 662 302
+  630 318  605 354  577 377  568 384  560 388  552 393  536 386
+  % right armpit (ie: the viewer's right)
+  521 347  515 360  510 381  507 395  505 404  507 417  520 448  524 466
+  525 486  523 509  515 563  509 598  505 628  501 686  498 737  503 782
+  507 829  512 892  514 912  516 948  517 963  516 972  509 978
+  ] points2curve closepath 
+} def
+
+
+% black setrgbcolor  xmid 100  10 0 360 arc closepath fill
+% black setrgbcolor  xmid 700  10 0 360 arc closepath fill
+darkorange setrgbcolor
+0 0 xmax ymax rectfill
+
+/xtop xmax 0.59 mul def
+
+gsave
+newpath darkred setrgbcolor
+  xtop  ymax 0.14 mul  ymax 0.69 mul  greco_path fill
+grestore
+
+newpath black setrgbcolor
+0 0 moveto 0 ymax lineto xmax ymax lineto xmax 0 lineto closepath
+% 0 0 moveto xmax 0 lineto xmax ymax lineto 0 ymax lineto 0 0 lineto
+[ xtop xmax 0.01 mul add ymax 0.95 mul
+  xtop xmax 0.11 mul sub ymax 0.78 mul
+  xtop xmax 0.17 mul sub ymax 0.60 mul
+  xtop xmax 0.02 mul sub ymax 0.03 mul
+] points2curve
+[ xtop xmax 0.02 mul sub ymax 0.03 mul
+  xtop xmax 0.17 mul add ymax 0.60 mul
+  xtop xmax 0.13 mul add ymax 0.78 mul
+  xtop xmax 0.01 mul add ymax 0.95 mul
+] points2curve
+fill
+
+/ZapfChancery-MediumItalic 100 selectfont
+darkred 0.2 darkorange 0.8 rgbmix setrgbcolor
+xmax 0.03 mul ymax 0.04 mul moveto (Opening) show
+xmax 0.61 mul ymax 0.04 mul moveto (Night) show
+
+showpage
+%%EOF
