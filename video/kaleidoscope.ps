@@ -40,12 +40,21 @@
 0 0       xmax horizon          darkblue white    true -0.8 rectgradientfill
 0 horizon xmax ymax horizon sub white    paleblue true  0.3 rectgradientfill
 
-xmid ymax 0.55 mul translate
+/kaleidoscope {   % n kaleidoscope
+  10 dict begin   /n exch def
+  /rmax xmax dup mul ymax dup mul add sqrt def
+  /angle 360 n div def   /halfangle angle 2 div def
+  end
+} def
 
 rand rand
 /starting_rand 100000 irand def
 /tan30 30 sin 30 cos div def
 %/starting_rand 1001 def
+black setrgbcolor 10 10 moveto /HelveticaBold 15 selectfont
+  starting_rand 20 string cvs show
+% OK: 23480 368 48089 52863 48150
+xmid ymax 0.55 mul translate
 gsave newpath
   0 0 moveto 0 ymid lineto  xmid ymid lineto  xmid xmid tan30 mul lineto
   closepath
@@ -91,12 +100,15 @@ showpage
 0 0       xmax horizon          darkblue white    true -0.8 rectgradientfill
 0 horizon xmax ymax horizon sub white    paleblue true  0.3 rectgradientfill
 
-xmid ymax 0.55 mul translate
 
 rand rand
 /starting_rand 100000 irand def
 /tan45 45 sin 45 cos div def
 %/starting_rand 1001 def
+black setrgbcolor 10 10 moveto /HelveticaBold 15 selectfont
+  starting_rand 20 string cvs show
+% OK: 94575 76842 19622
+xmid ymax 0.55 mul translate
 gsave newpath
   0 0 moveto 0 ymid lineto  xmid ymid lineto  xmid xmid tan45 mul lineto
   closepath
@@ -153,12 +165,15 @@ showpage
 0 0       xmax horizon          darkblue white    true -0.8 rectgradientfill
 0 horizon xmax ymax horizon sub white    paleblue true  0.3 rectgradientfill
 
-xmid ymax 0.55 mul translate 1 -1 scale
 
 rand rand
 /starting_rand 100000 irand def
 /tan54 54 sin 54 cos div def
 %/starting_rand 1001 def
+black setrgbcolor 10 10 moveto /HelveticaBold 15 selectfont
+  starting_rand 20 string cvs show
+% OK: 53868 63868 66126 71704 60106 14523 76367 6009 5753 91625 278
+xmid ymax 0.55 mul translate 1 -1 scale
 gsave newpath
   0 0 moveto 0 ymid lineto  xmid ymid lineto  xmid xmid tan54 mul lineto
   closepath
@@ -227,12 +242,17 @@ showpage
 0 0       xmax horizon          darkblue white    true -0.8 rectgradientfill
 0 horizon xmax ymax horizon sub white    paleblue true  0.3 rectgradientfill
 
-xmid ymax 0.55 mul translate
-
 rand rand
 /starting_rand 100000 irand def
 /tan60 60 sin 60 cos div def
-%/starting_rand 1001 def
+black setrgbcolor 10 10 moveto /HelveticaBold 15 selectfont
+  starting_rand 20 string cvs show
+/starting_rand [
+  19603 13335 35976 58390 6449 34835 13302 71107 95073 23537 95405
+  53654 59380 34818 54963 24375 38096 63977 51496 36463 79275 17876
+  89576 ] randomget def
+/starting_rand 89576 def
+xmid ymax 0.55 mul translate
 gsave newpath
   0 0 moveto 0 ymid lineto  xmid ymid lineto  xmid xmid tan60 mul lineto
   closepath
