@@ -39,6 +39,12 @@
   0 0 0.04 0 360 arc fill newpath 0.2 0 0.04 0 360 arc fill grestore
 } bind def
 
+/tripledot {    % usage: x y staveheight tripledot  3.3c
+  gsave 3 1 roll translate dup scale newpath
+  0 0 0.04 0 360 arc fill newpath 0.2 0 0.04 0 360 arc fill
+  newpath 0.4 0 0.04 0 360 arc fill grestore
+} bind def
+
 /stave {  % usage: x_left x_right y_topline staveheight stave
   10 dict begin
   [ /staveheight /first /x_right /x_left ] { exch def } forall
