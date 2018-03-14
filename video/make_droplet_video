@@ -6,8 +6,8 @@
 #     This script is free software; you can redistribute it and/or      #
 #            modify it under the same terms as Perl itself.             #
 #########################################################################
-my $Version       = '1.0';
-my $VersionDate   = '20may2017';
+my $Version       = '1.1';
+my $VersionDate   = '12mar2018';
 
 # Movies on film are almost exclusively projected at 24 fps.
 # Television, however, does not have an internationally accepted frame rate.
@@ -17,6 +17,11 @@ my $VersionDate   = '20may2017';
 
 # How much of the action should be in the Perl that generates the PostScript
 # and how much should be in the PostScript itself ?
+
+#   avconv -i droplet_mus.wav \
+#     -f image2 -r 24 -i t_%06d.jpg \
+#     -s 1600x900 -c:a mp3 t.mp4
+
 
 my $TmpDir        = "/tmp/droplet_video.$$";
 my $FrameNumber   = 0;      # used and incremented by next_filename()
@@ -72,17 +77,17 @@ warn "\nCredits:\n";
 for ($iframe=1; $iframe <= 250; $iframe++) { credits2jpg($iframe); }
 
 if ($Avconv) {
-	system "$Avconv -f image2 -r $Fps -i t_%06d.jpg "
+	system "$Avconv -i droplet_mus.wav -f image2 -r $Fps -i t_%06d.jpg "
 	  . " -s ${Width}x$Height t.mp4";
 } elsif ($Ffmpeg) {
 	# "image2" is the image file demuxer,
 	#   which reads from a list of image files specified by a pattern.
-	system "$Ffmpeg -f image2 -r $Fps -i t_%06d.jpg "
+	system "$Ffmpeg -i droplet_mus.wav -f image2 -r $Fps -i t_%06d.jpg "
 	  . "-r $Fps -s ${Width}x$Height t.mp4";   # 1.7 worked first try :-)
 } elsif ($Mencoder) {
 	# mp3lame, faac and x264enc are not necessarily compiled in; pcm works.
 	my $aspect = sprintf '%5g', $Width/$Height;
-	system "$Mencoder -oac pcm -fps $Fps -ofps $Fps "
+	system "$Mencoder -audiofile droplet_mus.wav -oac pcm -fps $Fps -ofps $Fps "
 	  . "'mf://t_*.jpg' -mf h=$Height:w=$Width:fps=$Fps:type=jpeg "
 	  .  "-o t.mp4 -ovc lavc -lavcopts vcodec=mpeg4:aspect=$aspect";
 } else {
