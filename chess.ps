@@ -1,0 +1,307 @@
+%!
+%---------------- Constants -------------------
+
+/dx 40 def                        % the size of the piece
+
+%---------------- Functions -------------------
+
+/PlaceAt {   % call: r(ow) c(ol)
+	5 dict begin
+    /col exch def /row exch def
+    dx col mul dx row mul moveto    
+	end
+} bind def
+
+/Square {   % call: row col
+	5 dict begin
+    /col exch def /row exch def
+    col row add 2 mod 0 eq {
+      row col Black
+    } {
+      row col White
+    } ifelse 
+	end
+} bind def
+
+/Black {   % call: row col
+	5 dict begin
+    /col exch def /row exch def
+    row col PlaceAt (+) show
+	end
+} bind def
+
+/White {   % call: row col
+	5 dict begin
+    /col exch def /row exch def
+    row col PlaceAt (*) show
+	end
+} bind def
+
+/PawnW {   % call: row col
+	5 dict begin
+    /col exch def /row exch def
+    col row add 2 mod 0 eq {
+      row col PlaceAt (P) show
+    } {
+      row col PlaceAt (p) show
+    } ifelse 
+	end
+} bind def
+
+/PawnB {   % call: row col
+	5 dict begin
+    /col exch def /row exch def
+    col row add 2 mod 0 eq {
+      row col PlaceAt (O) show
+    } {
+      row col PlaceAt (o) show
+    } ifelse 
+	end
+} bind def
+
+/KnightW {   % call: row col
+	5 dict begin
+    /col exch def /row exch def
+    col row add 2 mod 0 eq {
+      row col PlaceAt (H) show
+    } {
+      row col PlaceAt (h) show
+    } ifelse 
+	end
+} bind def
+
+/KnightB {   % call: row col
+	5 dict begin
+    /col exch def /row exch def
+    col row add 2 mod 0 eq {
+      row col PlaceAt (J) show
+    } {
+      row col PlaceAt (j) show
+    } ifelse 
+	end
+} bind def
+
+/BishopW {   % call: row col
+	5 dict begin
+    /col exch def /row exch def
+    col row add 2 mod 0 eq {
+      row col PlaceAt (B) show
+    } {
+      row col PlaceAt (b) show
+    } ifelse 
+	end
+} bind def
+
+/BishopB {   % call: row col
+	5 dict begin
+    /col exch def /row exch def
+    col row add 2 mod 0 eq {
+      row col PlaceAt (N) show
+    } {
+      row col PlaceAt (n) show
+    } ifelse 
+	end
+} bind def
+
+/RookW {   % call: row col
+	5 dict begin
+    /col exch def /row exch def
+    col row add 2 mod 0 eq {
+      row col PlaceAt (R) show
+    } {
+      row col PlaceAt (r) show
+    } ifelse 
+	end
+} bind def
+
+/RookB {   % call: row col
+	5 dict begin
+    /col exch def /row exch def
+    col row add 2 mod 0 eq {
+      row col PlaceAt (T) show
+    } {
+      row col PlaceAt (t) show
+    } ifelse 
+	end
+} bind def
+
+/QueenW {   % call: row col
+	5 dict begin
+    /col exch def /row exch def
+    col row add 2 mod 0 eq {
+      row col PlaceAt (Q) show
+    } {
+      row col PlaceAt (q) show
+    } ifelse 
+	end
+} bind def
+
+/QueenB {   % call: row col
+	5 dict begin
+    /col exch def /row exch def
+    col row add 2 mod 0 eq {
+      row col PlaceAt (W) show
+    } {
+      row col PlaceAt (w) show
+    } ifelse 
+	end
+} bind def
+
+/KingW {   % call: row col
+	5 dict begin
+    /col exch def /row exch def
+    col row add 2 mod 0 eq {
+      row col PlaceAt (K) show
+    } {
+      row col PlaceAt (k) show
+    } ifelse 
+	end
+} bind def
+
+/KingB {   % call: row col
+	5 dict begin
+    /col exch def /row exch def
+    col row add 2 mod 0 eq { row col PlaceAt (L) show
+    } { row col PlaceAt (l) show
+    } ifelse 
+	end
+} bind def
+
+/Board {   % call: pos(ition <- array) b(ool -> show coord)
+	20 dict begin
+    /b    exch def /pos  exch def
+    /cols 8 def
+    /rows 8 def
+	% /ChessPiece findfont dx selectfont
+    1 1 rows {    % for each row
+        /i exch def
+        i 0 PlaceAt (/) show
+        b {  % write row coords
+          i -0.25 [( 0)( 1)( 2)( 3)( 4)( 5)( 6)( 7)( 8)] i get Label
+        } if                 
+        1 1 cols {    % for each column
+		  /ChessPiece findfont dx scalefont setfont
+          /j exch def     
+          % get (i,j) symbol from the board
+          pos i 1 sub cols mul j 1 sub add get
+          /piece exch def     
+          rows i sub 1 add j 
+          piece   0 eq { Square  } if
+          piece   1 eq { PawnW   } if
+          piece  -1 eq { PawnB   } if
+          piece   2 eq { KnightW } if
+          piece  -2 eq { KnightB } if
+          piece   3 eq { BishopW } if
+          piece  -3 eq { BishopB } if
+          piece   4 eq { RookW   } if
+          piece  -4 eq { RookB   } if
+          piece   5 eq { QueenW  } if
+          piece  -5 eq { QueenB  } if
+          piece   6 eq { KingW   } if
+          piece  -6 eq { KingB   } if
+        } for
+        i cols 1 add PlaceAt (\\) show
+        1 1 cols {    % draw upper and bottom lines
+          /j exch def     
+          0 j PlaceAt (_) show
+          rows 1 add j PlaceAt (-) show
+          b {  % write column coords
+            0 j [(a)(b)(c)(d)(e)(f)(g)(h)] j 1 sub get Label
+          } if                 
+        } for
+    } for
+	end
+} bind def
+
+/Label {   % call: row col s(tring)
+	10 dict begin
+	[ /s /c /r ] { exch def } forall
+    % /s exch def /c exch def /r exch def
+    gsave       
+    dx 4 div dx 5 div translate 
+	/coordsize   dx 0.55 mul  def
+    /Courier findfont coordsize scalefont setfont
+    r 9 gt {      % if the number is 10 or greater
+      /basefont /Courier findfont def   % it will condense font to fit size
+      basefont [coordsize 2 div 0 0 coordsize 0 0] makefont setfont
+      r c 0.4 add PlaceAt 
+    } {
+      r c PlaceAt 
+    } ifelse
+    s show
+    grestore
+	end
+} bind def
+
+/Marker {  % call: j i g(rey ratio) b(oolean/charpath) s(tring -> just 1 char)
+	10 dict begin
+	[ /s /b /g /i /j ] { exch def } forall
+    % /s exch def /b exch def /g exch def /i exch def /j exch def
+    gsave
+    g setgray
+    dx 3.5 div dx 5 div translate 
+    j i PlaceAt
+	/insidesize dx 0.7  mul def  % size of the letters inside the squares
+    /Helvetica-Bold findfont insidesize scalefont setfont
+    .5 setlinewidth
+    b {
+        s true charpath gsave 1 setgray fill grestore stroke
+      } {
+        s show
+    } ifelse
+    grestore
+	end
+} bind def
+
+/MarkerSm { % j i g(rey ratio) b(oolean/charpath) s(tring -> just 2 chars)
+	10 dict begin
+	[ /s /b /g /i /j ] { exch def } forall
+    % /s exch def /b exch def /g exch def /i exch def /j exch def
+    gsave
+    g setgray
+    dx 3.5 div dx 6 div translate 
+    j i PlaceAt
+    /basefont /Helvetica-Bold findfont def
+	/insidesize  dx 0.7  mul def  % size of the letters inside the squares
+    basefont [insidesize 2 div 0 0 insidesize 0 0] makefont setfont
+    .5 setlinewidth
+    b {
+        s true charpath gsave 1 setgray fill grestore stroke
+      } {
+        s show
+    } ifelse
+    grestore
+	end
+} bind def
+
+%--------------------------------------------------------------------------
+/fen2board { % useage:  fenstr fen2board
+	10 dict begin
+	/fenstr exch def
+	% /char2num << (p) -1 (n) -2 (b) -3 (r) -4 (q) -5 (k) -6
+	%              (P)  1 (N)  2 (B)  3 (R)  4 (Q)  5 (K)  6  (1) 0 >> def
+	/char2num << 112 -1 110 -2  98 -3 114 -4 113 -5 107 -6
+	              80  1  78  2  66  3  82  4  81  5  75  6  49 0 >> def
+	/a 64 array def
+	/i 0 def
+	fenstr {
+		/c exch def
+		c 32 eq { exit } if
+		c 47 eq {  % skip /
+		} {
+			c 50 ge c 56 le and {  % its 2..8
+				/n c 48 sub def {
+					a i 0 put
+					/i i 1 add def
+					/n n 1 sub def
+					n 1 lt { exit } if 
+				} loop
+			} {  % else its a character in the dict char2num
+				a i  char2num c get  put
+				/i i 1 add def
+			} ifelse
+		} ifelse
+	} forall
+	a true Board
+	end
+} bind def

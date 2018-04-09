@@ -1,0 +1,34 @@
+%!PS-Adobe-3.0
+%%BoundingBox: 0 0 380 370
+%%Pages: 1
+%%Page: 1 1
+%%EndComments
+(/home/pjb/ps/lib/chess.ps) run
+
+%---------------- Constants -------------------
+/dx 40 def                       % the size of the piece
+/coordsize   { dx 0.55 mul } def  % the size of the coordinates
+/insidesize  { dx 0.7  mul } def  % the size of the letters inside the squares
+
+%--------------------------------------------------------------------------
+
+/ChessPiece findfont dx scalefont setfont
+
+%---------------- (make your diagram starting here) -----------------------
+
+[ -4  -2  -3  -5  -6   0   0  -4
+  -1   0   0   0   0  -1   0   0
+   0   0   0   0  -1   0   0  -1
+   0  -1   0  -2   1   0   2   5
+   0  -3  -1   1   0   0   0   3
+   0   0   2   0   0   0   0   0
+   0   1   0   0   0   1   1   1  
+   4   0   0   0   6   3   0   4 ] true Board
+
+% 6 5 0 true (x) Marker
+% 5 5 0 true (x) Marker
+% 4 5 0 false (x) Marker
+% 3 5 0 false (x) Marker
+% 5 6 0 false (13) MarkerSm
+
+showpage
