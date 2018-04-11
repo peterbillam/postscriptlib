@@ -1,18 +1,27 @@
-%!PS-Adobe-3.0
-%%BoundingBox: 0 0 380 370
-%%Pages: 1
-%%Page: 1 1
+%!PS-Adobe-2.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        This Postscript is Copyright (c) 2018, Peter J Billam          %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%EndComments
+%%BeginProlog
+(/home/pjb/ps/lib/text.ps) run
+%%EndProlog
+
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
 (/home/pjb/ps/lib/chess.ps) run
 
 %---------------- Constants -------------------
 /dx 40 def                       % the size of the piece
 /coordsize   { dx 0.55 mul } def  % the size of the coordinates
 /insidesize  { dx 0.7  mul } def  % the size of the letters inside the squares
-
-%--------------------------------------------------------------------------
-
-/ChessPiece findfont dx scalefont setfont
 
 %---------------- (make your diagram starting here) -----------------------
 
@@ -24,6 +33,10 @@
    0   0   2   0   0   0   0   0
    0   1   0   0   0   1   1   1  
    4   0   0   0   6   3   0   4 ] true Board
+/long_string (The original Board subroutine \
+but with flip.) def
+ /Times-Roman 16 selectfont   /y 200 def
+ long_string 180 {400 y moveto show  /y y 19 sub def}  BreakIntoLines
 
 % 6 5 0 true (x) Marker
 % 5 5 0 true (x) Marker
@@ -31,4 +44,43 @@
 % 3 5 0 false (x) Marker
 % 5 6 0 false (13) MarkerSm
 
+gsave 200 400 translate
+	% (rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPPPPPP/RNBQKBNR w) fen2board
+	(1rbq1rk1/1pp1ppbp/p1np1np1/8/2PPP3/2N1BP2/PP1QN1PP/R3KB1R w) false fen2board
+grestore
+/long_string (The fen2board subroutine \
+without flip.) def
+ /Times-Roman 16 selectfont   /y 600 def
+ long_string 180 {20 y moveto show  /y y 19 sub def}  BreakIntoLines
+
 showpage
+
+%%Page: 2 2
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+(/home/pjb/ps/lib/chess.ps) run
+
+gsave 200 400 translate
+	% (rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPPPPPP/RNBQKBNR w) fen2board
+	(1rbq1rk1/1pp1ppbp/p1np1np1/8/2PPP3/2N1BP2/PP1QN1PP/R3KB1R ) true fen2board
+grestore
+/long_string (The fen2board subroutine \
+with flip, but with no active.) def
+ /Times-Roman 16 selectfont   /y 600 def
+ long_string 180 {20 y moveto show  /y y 19 sub def}  BreakIntoLines
+
+% C82    Ruy Lopez: open, Dilworth variation
+% 1.e4 e5 2.Nf3 Nc6 3.Bb5 a6 4.Ba4 Nf6 5.O-O Nxe4 6.d4 b5 7.Bb3 d5
+% 8.dxe5 Be6 9.c3 Bc5 10.Nbd2 O-O 11.Bc2 Nxf2
+gsave 20 20 translate
+	(r2q1rk1/2p2ppp/p1n1b3/1pbpP3/8/2P2N2/PPBN1nPP/R1BQ1RK1 w - - 0 12) false fen2board
+grestore
+/long_string (The fen2board subroutine \
+on a full FEN string.) def
+ /Times-Roman 16 selectfont   /y 200 def
+ long_string 180 {400 y moveto show  /y y 19 sub def}  BreakIntoLines
+
+showpage
+%%EOF

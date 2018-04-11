@@ -1,14 +1,19 @@
 %!
+% Needs:  http://homepages.di.fc.ul.pt/~jpn/gv/tabs/chessfont.zip
+% whichzips to a TTF file which you move into /usr/share/fonts/truetype
+% See:  http://homepages.di.fc.ul.pt/~jpn/gv/tabs/chess-template.eps
+% by Joao Pedro Neto  2016
+% In JS:  https://github.com/jhlywa/chess.js/blob/master/README.md
 %---------------- Constants -------------------
 
-/dx 40 def                        % the size of the piece
+/Chess.dx 40 def                        % the size of the piece
 
 %---------------- Functions -------------------
 
 /PlaceAt {   % call: r(ow) c(ol)
 	5 dict begin
     /col exch def /row exch def
-    dx col mul dx row mul moveto    
+    Chess.dx col mul Chess.dx row mul moveto    
 	end
 } bind def
 
@@ -167,25 +172,30 @@
 	end
 } bind def
 
-/Board {   % call: pos(ition <- array) b(ool -> show coord)
+/Board {   % call: position (<- array) flip (<- bool)
 	20 dict begin
-    /b    exch def /pos  exch def
-    /cols 8 def
-    /rows 8 def
-	% /ChessPiece findfont dx selectfont
+    /flip exch def /pos  exch def
+    /cols 8 def  /rows 8 def
     1 1 rows {    % for each row
         /i exch def
-        i 0 PlaceAt (/) show
-        b {  % write row coords
+        flip {  % write row coords
+          i -0.25 [( 0)( 1)( 2)( 3)( 4)( 5)( 6)( 7)( 8)] 9 i sub get Label
+		} {
           i -0.25 [( 0)( 1)( 2)( 3)( 4)( 5)( 6)( 7)( 8)] i get Label
-        } if                 
+        } ifelse 
+	   /ChessPiece findfont Chess.dx scalefont setfont
+        i 0 PlaceAt (/) show
         1 1 cols {    % for each column
-		  /ChessPiece findfont dx scalefont setfont
+		  /ChessPiece findfont Chess.dx scalefont setfont
           /j exch def     
-          % get (i,j) symbol from the board
+          % get (i,j)  from the board-array index
           pos i 1 sub cols mul j 1 sub add get
           /piece exch def     
-          rows i sub 1 add j 
+		  flip {
+          	9 rows i sub 1 add sub  9 j sub
+		  } {
+          	rows i sub 1 add   j 
+		  } ifelse
           piece   0 eq { Square  } if
           piece   1 eq { PawnW   } if
           piece  -1 eq { PawnB   } if
@@ -205,9 +215,11 @@
           /j exch def     
           0 j PlaceAt (_) show
           rows 1 add j PlaceAt (-) show
-          b {  % write column coords
+          flip {  % write column coords
+            0 j [(a)(b)(c)(d)(e)(f)(g)(h)] 8 j sub get Label
+		  } {
             0 j [(a)(b)(c)(d)(e)(f)(g)(h)] j 1 sub get Label
-          } if                 
+          } ifelse
         } for
     } for
 	end
@@ -218,8 +230,8 @@
 	[ /s /c /r ] { exch def } forall
     % /s exch def /c exch def /r exch def
     gsave       
-    dx 4 div dx 5 div translate 
-	/coordsize   dx 0.55 mul  def
+    Chess.dx 4 div Chess.dx 5 div translate 
+	/coordsize   Chess.dx 0.55 mul  def
     /Courier findfont coordsize scalefont setfont
     r 9 gt {      % if the number is 10 or greater
       /basefont /Courier findfont def   % it will condense font to fit size
@@ -239,9 +251,9 @@
     % /s exch def /b exch def /g exch def /i exch def /j exch def
     gsave
     g setgray
-    dx 3.5 div dx 5 div translate 
+    Chess.dx 3.5 div Chess.dx 5 div translate 
     j i PlaceAt
-	/insidesize dx 0.7  mul def  % size of the letters inside the squares
+	/insidesize Chess.dx 0.7  mul def  % size of the letters inside the squares
     /Helvetica-Bold findfont insidesize scalefont setfont
     .5 setlinewidth
     b {
@@ -259,10 +271,10 @@
     % /s exch def /b exch def /g exch def /i exch def /j exch def
     gsave
     g setgray
-    dx 3.5 div dx 6 div translate 
+    Chess.dx 3.5 div Chess.dx 6 div translate 
     j i PlaceAt
     /basefont /Helvetica-Bold findfont def
-	/insidesize  dx 0.7  mul def  % size of the letters inside the squares
+	/insidesize  Chess.dx 0.7  mul def  % size of the letters inside the squares
     basefont [insidesize 2 div 0 0 insidesize 0 0] makefont setfont
     .5 setlinewidth
     b {
@@ -275,18 +287,20 @@
 } bind def
 
 %--------------------------------------------------------------------------
-/fen2board { % useage:  fenstr fen2board
+/fen2board { % useage:  fenstr flip fen2board
 	10 dict begin
-	/fenstr exch def
+	/flip exch def   /fenstr exch def
 	% /char2num << (p) -1 (n) -2 (b) -3 (r) -4 (q) -5 (k) -6
 	%              (P)  1 (N)  2 (B)  3 (R)  4 (Q)  5 (K)  6  (1) 0 >> def
 	/char2num << 112 -1 110 -2  98 -3 114 -4 113 -5 107 -6
 	              80  1  78  2  66  3  82  4  81  5  75  6  49 0 >> def
 	/a 64 array def
 	/i 0 def
+	/istr 0 def
+	/active ( ) def
 	fenstr {
 		/c exch def
-		c 32 eq { exit } if
+		c 32 eq {  exit } if
 		c 47 eq {  % skip /
 		} {
 			c 50 ge c 56 le and {  % its 2..8
@@ -301,7 +315,16 @@
 				/i i 1 add def
 			} ifelse
 		} ifelse
+		/istr istr 1 add def
 	} forall
-	a true Board
+	a flip Board
+	fenstr length  istr 1 add  gt {
+		/active fenstr istr 1 add get def
+		active 98 eq {
+			flip { 1 } { 8 } ifelse  9.1 (B) Label
+		} {
+			flip { 8 } { 1 } ifelse  9.1 (W) Label
+		} ifelse
+	} if
 	end
 } bind def
