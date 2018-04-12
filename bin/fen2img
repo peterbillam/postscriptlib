@@ -1,22 +1,96 @@
-%!
+#!/usr/local/bin/lua
+---------------------------------------------------------------------
+--     This Lua5 script is Copyright (c) 2018, Peter J Billam      --
+--                       www.pjb.com.au                            --
+--  This script is free software; you can redistribute it and/or   --
+--         modify it under the same terms as Lua5 itself.          --
+---------------------------------------------------------------------
+local Version = '1.0  for Lua5'
+local VersionDate  = '11apr2018';
+local Synopsis = [[
+fen2img [-w 350] \
+  'rnb1k1nr/pppp1ppp/8/4p3/3b3q/4PPP1/PPP2K1P/RNBQ1BNR b KQkq - 0 5' \
+   output.png
+# default width is 400 pixels
+# output file can be a .jpg or .png or .eps
+]]
+
+local FEN = require 'chess.fen'
+
+Width  = 400;
+
+local iarg=1; while arg[iarg] ~= nil do
+	if not string.find(arg[iarg], '^-[a-z]') then break end
+	local first_letter = string.sub(arg[iarg],2,2)
+	if first_letter == 'v' then
+		local n = string.gsub(arg[0],"^.*/","",1)
+		print(n.." version "..Version.."  "..VersionDate)
+		os.exit(0)
+	elseif first_letter == 'w' then
+		iarg = iarg + 1
+		Width = tonumber( arg[iarg] )
+	else
+		local n = string.gsub(arg[0],"^.*/","",1)
+		print(n.." version "..Version.."  "..VersionDate.."\n\n"..Synopsis)
+		os.exit(0)
+	end
+	iarg = iarg+1
+end
+
+function round(x) return math.floor(x+0.5) end
+function warn(...)
+    local a = {}
+    for k,v in pairs{...} do table.insert(a, tostring(v)) end
+    io.stderr:write(table.concat(a),'\n') ; io.stderr:flush()
+end
+function die(...) warn(...);  os.exit(1) end
+
+Height = round(Width * 0.95)
+Dx     = round(Width * 0.1)
+
+Fenstr  = arg[iarg]
+if not Fenstr then die('must specify FEN string') end
+Output  = arg[iarg+1]
+if not Output then die('must specify output file') end
+-- https://www.ghostscript.com/doc/9.21/Devices.htm#PNG
+ext2dev = { jpg='jpeg', png='png16m', JPG='jpeg', PNG='png16m', eps='eps' }
+extension = string.match(Output,'%.(%a%a%a)$')
+if not extension then die('unrecognised extension in file ',Output) end
+Device  = ext2dev[extension]
+if not Device then die('unrecognised extension ',extension) end
+-- print(Fenstr) ; print(Fenstr) ; print(Output)
+-- print(extension) ; print(Device) ; os.exit()
+
+PS_sections = { "%!PS-Adobe-3.0 EPSF-3.0\n%%BoundingBox: 0 0 ", }
+table.insert(PS_sections, tostring(Width)..' '..tostring(Height))
+table.insert(PS_sections, [[
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%           This EPS is Copyright (c) 2018, Peter J Billam              %
+% Permission is granted  to any individual or institution to use, copy, %
+% modify or redistribute this software, so long as it is not resold for %
+% profit, and provided this notice is retained. It is provided "as is", %
+% without any express or implied warranty.    http://www.pjb.com.au     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Needs:  http://homepages.di.fc.ul.pt/~jpn/gv/tabs/chessfont.zip
-% whichzips to a TTF file which you move into /usr/share/fonts/truetype
+% which unzips to a TTF file which you move into /usr/share/fonts/truetype
 % See:  http://homepages.di.fc.ul.pt/~jpn/gv/tabs/chess-template.eps
 % by Joao Pedro Neto  2016
-% In JS:  https://github.com/jhlywa/chess.js/blob/master/README.md
+% ( In JS:  https://github.com/jhlywa/chess.js/blob/master/README.md )
+%%EndComments
+%%BeginProlog
 %---------------- Constants -------------------
+]])
 
-/Chess.dx 40 def                        % the size of the piece
+table.insert(PS_sections, '/Chess.dx '..tostring(Dx)..' def\n')
 
-%---------------- Functions -------------------
-
+table.insert(PS_sections, [[
 /PlaceAt {   % call: r(ow) c(ol)
 	5 dict begin
     /col exch def /row exch def
     Chess.dx col mul Chess.dx row mul moveto    
 	end
 } bind def
-
 /Square {   % call: row col
 	5 dict begin
     /col exch def /row exch def
@@ -27,21 +101,18 @@
     } ifelse 
 	end
 } bind def
-
 /Black {   % call: row col
 	5 dict begin
     /col exch def /row exch def
     row col PlaceAt (+) show
 	end
 } bind def
-
 /White {   % call: row col
 	5 dict begin
     /col exch def /row exch def
     row col PlaceAt (*) show
 	end
 } bind def
-
 /PawnW {   % call: row col
 	5 dict begin
     /col exch def /row exch def
@@ -52,7 +123,6 @@
     } ifelse 
 	end
 } bind def
-
 /PawnB {   % call: row col
 	5 dict begin
     /col exch def /row exch def
@@ -63,7 +133,6 @@
     } ifelse 
 	end
 } bind def
-
 /KnightW {   % call: row col
 	5 dict begin
     /col exch def /row exch def
@@ -74,7 +143,6 @@
     } ifelse 
 	end
 } bind def
-
 /KnightB {   % call: row col
 	5 dict begin
     /col exch def /row exch def
@@ -85,7 +153,6 @@
     } ifelse 
 	end
 } bind def
-
 /BishopW {   % call: row col
 	5 dict begin
     /col exch def /row exch def
@@ -96,7 +163,6 @@
     } ifelse 
 	end
 } bind def
-
 /BishopB {   % call: row col
 	5 dict begin
     /col exch def /row exch def
@@ -107,7 +173,6 @@
     } ifelse 
 	end
 } bind def
-
 /RookW {   % call: row col
 	5 dict begin
     /col exch def /row exch def
@@ -118,7 +183,6 @@
     } ifelse 
 	end
 } bind def
-
 /RookB {   % call: row col
 	5 dict begin
     /col exch def /row exch def
@@ -129,7 +193,6 @@
     } ifelse 
 	end
 } bind def
-
 /QueenW {   % call: row col
 	5 dict begin
     /col exch def /row exch def
@@ -140,7 +203,6 @@
     } ifelse 
 	end
 } bind def
-
 /QueenB {   % call: row col
 	5 dict begin
     /col exch def /row exch def
@@ -151,7 +213,6 @@
     } ifelse 
 	end
 } bind def
-
 /KingW {   % call: row col
 	5 dict begin
     /col exch def /row exch def
@@ -162,7 +223,6 @@
     } ifelse 
 	end
 } bind def
-
 /KingB {   % call: row col
 	5 dict begin
     /col exch def /row exch def
@@ -171,7 +231,6 @@
     } ifelse 
 	end
 } bind def
-
 /Board {   % call: position (<- array) flip (<- bool)
 	20 dict begin
     /flip exch def /pos  exch def
@@ -224,11 +283,9 @@
     } for
 	end
 } bind def
-
-/Label {   % call: row col s(tring)
+/Label {   % call: row col string
 	10 dict begin
 	[ /s /c /r ] { exch def } forall
-    % /s exch def /c exch def /r exch def
     gsave       
     Chess.dx 4 div Chess.dx 5 div translate 
 	/coordsize   Chess.dx 0.55 mul  def
@@ -244,11 +301,9 @@
     grestore
 	end
 } bind def
-
 /Marker {  % call: j i g(rey ratio) b(oolean/charpath) s(tring -> just 1 char)
 	10 dict begin
 	[ /s /b /g /i /j ] { exch def } forall
-    % /s exch def /b exch def /g exch def /i exch def /j exch def
     gsave
     g setgray
     Chess.dx 3.5 div Chess.dx 5 div translate 
@@ -264,7 +319,6 @@
     grestore
 	end
 } bind def
-
 /MarkerSm { % j i g(rey ratio) b(oolean/charpath) s(tring -> just 2 chars)
 	10 dict begin
 	[ /s /b /g /i /j ] { exch def } forall
@@ -285,7 +339,6 @@
     grestore
 	end
 } bind def
-
 %--------------------------------------------------------------------------
 /fen2board { % useage:  fenstr flip fen2board
 	10 dict begin
@@ -328,4 +381,77 @@
 	} if
 	end
 } bind def
+%%EndProlog
+]])
 
+table.insert(PS_sections, '('..Fenstr..') false fen2board\n')
+table.insert(PS_sections, '%%EOF\n')
+
+if Device == 'eps' then
+	local F = assert(io.open(Output, 'w'))
+	F:write(table.concat(PS_sections, ''))
+	F:close()
+	os.exit(0)
+end
+
+-- from /home/pbin/eps2png
+--if (!open(P,"|$gs -sDEVICE=$dev -sOutputFile=$tmp -q -g${x}x${y} -r$res -")){
+--    die "sorry, can't run $gs: $!\n";
+--}
+-- where dev is either jpeg or png16m or (if transparent) pgnalpha
+local gs_cmd = 'gs -sDEVICE='..Device..' -sOutputFile='..Output..
+  ' -q -g'..tostring(Width)..'x'..tostring(Height)..' -r72 -'
+print(gs_cmd)
+local GS = assert(io.popen(gs_cmd, 'w'))
+GS:write(table.concat(PS_sections, ''))
+GS:close()
+
+--[=[
+
+=pod
+
+=head1 NAME
+
+fen2img - Creates a .png or .jpg diagram of a chess position in FEN
+
+=head1 SYNOPSIS
+
+ fen2img -w 500 \
+   'rnb1k1nr/pppp1ppp/8/4p3/3b3q/4PPP1/PPP2K1P/RNBQ1BNR b KQkq - 0 5' \
+   /tmp/hammerschlag.png
+ display /tmp/hammerschlag.png
+
+ FEN=`pgn2fen '1.f3 e5 2. Kf2 Bc5+ 3.d4 Qh4+ 4. g3 Bxd4 5.e3'`
+ fen2img -w 500 "$FEN" /tmp/t.jpg
+ fen2img -w 500 "$FEN" /tmp/t.png
+ fen2img -w 500 "$FEN" /tmp/t.eps
+
+=head1 DESCRIPTION
+
+This script
+
+=head1 ARGUMENTS
+
+=over 3
+
+=item I<-v>
+
+Print the Version
+
+=back
+
+=head1 DOWNLOAD
+
+This at is available at
+
+=head1 AUTHOR
+
+Peter J Billam, http://www.pjb.com.au/comp/contact.html
+
+=head1 SEE ALSO
+
+ http://www.pjb.com.au/
+
+=cut
+
+]=]
