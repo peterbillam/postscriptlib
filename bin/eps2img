@@ -1,0 +1,187 @@
+#!/usr/local/bin/lua
+---------------------------------------------------------------------
+--     This Lua5 script is Copyright (c) 2018, Peter J Billam      --
+--                       www.pjb.com.au                            --
+--  This script is free software; you can redistribute it and/or   --
+--         modify it under the same terms as Lua5 itself.          --
+---------------------------------------------------------------------
+local Version = '1.0  for Lua5'
+local VersionDate  = '11apr2018';
+local Synopsis = [[
+  eps2img input.esp  output.jpg
+  # output file can be a .jpg or .png
+
+  eps2img -t input.esp  output.png
+  # gives .png files a Transparent background
+
+  eps2img -s 1.5 input.esp  output.png
+  # multiplies the Size by 1.5 times
+]]
+
+Transparent = false
+Size = 1.0
+local iarg=1; while arg[iarg] ~= nil do
+	if not string.find(arg[iarg], '^-[a-z]') then break end
+	local first_letter = string.sub(arg[iarg],2,2)
+	if first_letter == 'v' then
+		local n = string.gsub(arg[0],"^.*/","",1)
+		print(n.." version "..Version.."  "..VersionDate)
+		os.exit(0)
+	elseif first_letter == 's' then   -- change geometry also ?
+		iarg = iarg + 1
+		Size = tonumber( arg[iarg] )
+	elseif first_letter == 't' then
+		Transparent = true
+	else
+		local n = string.gsub(arg[0],"^.*/","",1)
+		print(n.." version "..Version.."  "..VersionDate.."\n\n"..Synopsis)
+		os.exit(0)
+	end
+	iarg = iarg+1
+end
+
+function round(x) return math.floor(x+0.5) end
+function warn(...)
+    local a = {}
+    for k,v in pairs{...} do table.insert(a, tostring(v)) end
+    io.stderr:write(table.concat(a),'\n') ; io.stderr:flush()
+end
+function die(...) warn(...);  os.exit(1) end
+
+Input   = arg[iarg]
+if not Input  then die('must specify input file') end
+Output  = arg[iarg+1]
+if not Output then die('must specify output file') end
+-- https://www.ghostscript.com/doc/9.21/Devices.htm#PNG
+ext2dev = { jpg='jpeg', png='png16m', JPG='jpeg', PNG='png16m' }
+extension = string.match(Output,'%.(%a%a%a)$')
+if not extension then die('unrecognised extension in file ',Output) end
+if Transparent then
+	if extension == 'png' then
+		Device = 'pngalpha'
+	else
+		die('-t option only makes sense with a .png output-file')
+	end
+else
+	Device  = ext2dev[extension]
+	if not Device then die('unrecognised extension ',extension) end
+end
+
+if Input == '-' then
+	Inp = io.stdin
+else
+	Inp, msg = io.open(Input, 'r')
+	if not Inp then die("can't read input file ",Input," - ",msg) end
+end
+local eps = Inp:read('a')
+Inp:close()
+-- print (eps)
+local Width, Height
+  = string.match(eps, '%%BoundingBox:? 0 0 ([%d.]+)%s([%d.]+)')
+-- print(Width, Height) ; os.exit()
+if not Width or not Height then
+	if string.match(eps, '%%BoundingBox') then
+		die('sorry, eps2img needs the %%BoundingBox to start at "0 0 "')
+	else
+		die("can't find a '%%BoundingBox 0 0 width height' line in ",Input)
+	end
+end
+
+-- from /home/pbin/eps2png
+--if (!open(P,"|$gs -sDEVICE=$dev -sOutputFile=$tmp -q -g${x}x${y} -r$res -")){
+--    die "sorry, can't run $gs: $!\n";
+--}
+-- where dev is either jpeg or png16m or (if transparent) pngalpha
+-- 
+
+Resolution = tostring(72 * Size)
+Height = tostring(round(tonumber(Height) * Size))
+Width  = tostring(round(tonumber(Width)  * Size))
+local gs_cmd = 'gs -sDEVICE='..Device..' -sOutputFile='..Output..
+  ' -q -g'..tostring(Width)..'x'..tostring(Height)..' -r'..Resolution..' -'
+io.stdout:write(gs_cmd..'\n')
+local GS = assert(io.popen(gs_cmd, 'w'))
+GS:write(eps)
+GS:close()
+
+--[=[
+
+=pod
+
+=head1 NAME
+
+eps2img - Converts an .eps ExtendedPostScript into a .png or .jpg image
+
+=head1 SYNOPSIS
+
+  eps2img input.esp  output.jpg
+  # output file can be a .jpg or .png
+
+  eps2img -s 1.5 input.esp  output.png
+  # output file Size 1.5 times larger
+
+  eps2img -t input.esp  output.png
+  # gives .png files a Transparent background
+
+=head1 DESCRIPTION
+
+This script converts an I<.eps> Extended PostScript file
+into a I<.png> or I<.jpg> image.
+The B<-s> option allows the size of the image to be scaled,
+and any enlargement takes place with no loss of clarity.
+The B<-t> option allows I<.png> images to be given a transparent background.
+
+It only works if the I<%%BoundingBox> line starts at "0 0"
+so it does not work on all I<.eps> files.
+
+=head1 ARGUMENTS
+
+=over 3
+
+=item I<-s 1.5>
+
+Sets the output file B<S>ize 1.5 times larger than default.
+By default, the conversion is one image-I<pixel> to one EPS I<point>.
+
+=item I<-t>
+
+Gives .png files a B<T>ransparent background.
+By default, the background is white.
+This option does not work for I<.jpg> files.
+
+=item I<-v>
+
+Print the Version
+
+=back
+
+=head1 DOWNLOAD
+
+This at is available in
+
+  git clone https://github.com/peterbillam/postscriptlib
+
+or at
+
+  https://github.com/peterbillam/postscriptlib
+  https://github.com/peterbillam/postscriptlib/tree/master/bin
+
+It also needs I<gs> to be installed, if it isn't already:
+
+  apt-get install ghostscript
+
+or see:   http://www.ghostscript.com/
+
+=head1 AUTHOR
+
+Peter J Billam, http://www.pjb.com.au/comp/contact.html
+
+=head1 SEE ALSO
+
+ https://github.com/peterbillam/postscriptlib
+ http://www.ghostscript.com
+ http://www.pjb.com.au
+
+=cut
+
+]=]
