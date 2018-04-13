@@ -10,14 +10,14 @@
 
 %---------------- Functions -------------------
 
-/PlaceAt {   % call: r(ow) c(ol)
+/PlaceAt {   % call: row col PlaceAt
 	5 dict begin
     /col exch def /row exch def
     Chess.dx col mul Chess.dx row mul moveto    
 	end
 } bind def
 
-/Square {   % call: row col
+/Square {   % call: row col Square
 	5 dict begin
     /col exch def /row exch def
     col row add 2 mod 0 eq {
@@ -28,21 +28,21 @@
 	end
 } bind def
 
-/Black {   % call: row col
+/Black {   % call: row col Black
 	5 dict begin
     /col exch def /row exch def
     row col PlaceAt (+) show
 	end
 } bind def
 
-/White {   % call: row col
+/White {   % call: row col White
 	5 dict begin
     /col exch def /row exch def
     row col PlaceAt (*) show
 	end
 } bind def
 
-/PawnW {   % call: row col
+/PawnW {   % call: row col PawnW
 	5 dict begin
     /col exch def /row exch def
     col row add 2 mod 0 eq {
@@ -53,7 +53,7 @@
 	end
 } bind def
 
-/PawnB {   % call: row col
+/PawnB {   % call: row col PawnB
 	5 dict begin
     /col exch def /row exch def
     col row add 2 mod 0 eq {
@@ -64,7 +64,7 @@
 	end
 } bind def
 
-/KnightW {   % call: row col
+/KnightW {   % call: row col KnightW
 	5 dict begin
     /col exch def /row exch def
     col row add 2 mod 0 eq {
@@ -75,7 +75,7 @@
 	end
 } bind def
 
-/KnightB {   % call: row col
+/KnightB {   % call: row col KnightB
 	5 dict begin
     /col exch def /row exch def
     col row add 2 mod 0 eq {
@@ -86,7 +86,7 @@
 	end
 } bind def
 
-/BishopW {   % call: row col
+/BishopW {   % call: row col BishopW
 	5 dict begin
     /col exch def /row exch def
     col row add 2 mod 0 eq {
@@ -97,7 +97,7 @@
 	end
 } bind def
 
-/BishopB {   % call: row col
+/BishopB {   % call: row col BishopB
 	5 dict begin
     /col exch def /row exch def
     col row add 2 mod 0 eq {
@@ -108,7 +108,7 @@
 	end
 } bind def
 
-/RookW {   % call: row col
+/RookW {   % call: row col RookW
 	5 dict begin
     /col exch def /row exch def
     col row add 2 mod 0 eq {
@@ -119,7 +119,7 @@
 	end
 } bind def
 
-/RookB {   % call: row col
+/RookB {   % call: row col RookB
 	5 dict begin
     /col exch def /row exch def
     col row add 2 mod 0 eq {
@@ -130,7 +130,7 @@
 	end
 } bind def
 
-/QueenW {   % call: row col
+/QueenW {   % call: row col QueenW
 	5 dict begin
     /col exch def /row exch def
     col row add 2 mod 0 eq {
@@ -141,7 +141,7 @@
 	end
 } bind def
 
-/QueenB {   % call: row col
+/QueenB {   % call: row col QueenB
 	5 dict begin
     /col exch def /row exch def
     col row add 2 mod 0 eq {
@@ -152,7 +152,7 @@
 	end
 } bind def
 
-/KingW {   % call: row col
+/KingW {   % call: row col KingW
 	5 dict begin
     /col exch def /row exch def
     col row add 2 mod 0 eq {
@@ -163,7 +163,7 @@
 	end
 } bind def
 
-/KingB {   % call: row col
+/KingB {   % call: row col KingB
 	5 dict begin
     /col exch def /row exch def
     col row add 2 mod 0 eq { row col PlaceAt (L) show
@@ -172,7 +172,7 @@
 	end
 } bind def
 
-/Board {   % call: position (<- array) flip (<- bool)
+/Board {   % call: position (<- array) flip (<- bool) Board
 	20 dict begin
     /flip exch def /pos  exch def
     /cols 8 def  /rows 8 def
@@ -225,7 +225,7 @@
 	end
 } bind def
 
-/Label {   % call: row col s(tring)
+/Label {   % call: row col string Label
 	10 dict begin
 	[ /s /c /r ] { exch def } forall
     % /s exch def /c exch def /r exch def
@@ -245,10 +245,9 @@
 	end
 } bind def
 
-/Marker {  % call: j i g(rey ratio) b(oolean/charpath) s(tring -> just 1 char)
+/Marker {  % call: j i grey_ratio boolean_charpath string_1_char Marker
 	10 dict begin
 	[ /s /b /g /i /j ] { exch def } forall
-    % /s exch def /b exch def /g exch def /i exch def /j exch def
     gsave
     g setgray
     Chess.dx 3.5 div Chess.dx 5 div translate 
@@ -265,16 +264,15 @@
 	end
 } bind def
 
-/MarkerSm { % j i g(rey ratio) b(oolean/charpath) s(tring -> just 2 chars)
+/MarkerSm { % j i grey_ratio boolean_charpath string_2_chars MarkerSm
 	10 dict begin
 	[ /s /b /g /i /j ] { exch def } forall
-    % /s exch def /b exch def /g exch def /i exch def /j exch def
     gsave
     g setgray
     Chess.dx 3.5 div Chess.dx 6 div translate 
     j i PlaceAt
     /basefont /Helvetica-Bold findfont def
-	/insidesize  Chess.dx 0.7  mul def  % size of the letters inside the squares
+	/insidesize  Chess.dx 0.7  mul def  % size of letters inside the squares
     basefont [insidesize 2 div 0 0 insidesize 0 0] makefont setfont
     .5 setlinewidth
     b {

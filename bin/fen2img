@@ -442,7 +442,27 @@ Print the Version
 
 =head1 DOWNLOAD
 
-This at is available at
+I<fen2img> at is available in
+
+  git clone https://github.com/peterbillam/postscriptlib
+
+or at
+
+  https://github.com/peterbillam/postscriptlib
+  https://github.com/peterbillam/postscriptlib/tree/master/bin
+
+It also needs I<gs> to be installed, if it isn't already:
+
+  apt-get install ghostscript
+
+or see:   http://www.ghostscript.com/
+
+It also needs a particular TrueType font:
+
+   http://homepages.di.fc.ul.pt/~jpn/gv/tabs/chessfont.zip
+
+which unzips to C<CHEQ_TT.TTF>
+which you move into C</usr/share/fonts/truetype/>
 
 =head1 AUTHOR
 
