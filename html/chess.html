@@ -1,0 +1,224 @@
+<HTML><HEAD><TITLE>chess.ps Manual</TITLE>
+<LINK rel=stylesheet type="text/css" href="styles.css" title="PJB Comp Styles">
+<META HTTP-EQUIV="Keywords"
+CONTENT="PostScript, chess">
+</HEAD>
+<BODY LINK="#000066" VLINK="#000066" ALINK="#000066">
+<DIV>
+<H1><IMG SRC="logo.jpg" ALT=" " WIDTH=126 HEIGHT=52>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <I>chess.ps</I>
+</H1>
+<CENTER>
+<TABLE ALIGN="center" WIDTH="85%" BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left">
+	<UL><LI>
+	<B><A HREF="#name">NAME</A></B>
+	</LI><LI>
+	<B><A HREF="#synopsis">SYNOPSIS</A></B>
+	</LI><LI>
+	<B><A HREF="#description">DESCRIPTION</A></B>
+	</LI></UL>
+</TD><TD ALIGN="left">
+	<UL><LI>
+	<B><A HREF="#procedures">PROCEDURES</A></B>
+	</LI><LI>
+	<B><A HREF="#variables">VARIABLES</A></B>
+	</LI><LI>
+	<B><A HREF="#install">INSTALL</A></B>
+	</LI></UL>
+</TD><TD ALIGN="left">
+	<UL><LI>
+	<B><A HREF="#author">AUTHOR</A></B>
+	</LI><LI>
+	<B><A HREF="#changes">CHANGES</A></B>
+	</LI><LI>
+	<B><A HREF="#see_also">SEE&nbsp;ALSO</A></B>
+	</LI></UL>
+</TD></TR></TABLE>
+</CENTER>
+
+
+<A NAME="name"> <HR> </A>
+<H3> NAME </H3>
+<P>
+&nbsp; &nbsp; &nbsp;
+chess.ps - Some useful chess-handling stuff in PostScript
+</P>
+
+<A NAME="synopsis"> <HR> </A>
+<H3> SYNOPSIS </H3>
+<PRE>
+ (/home/wherever/ps/lib/chess.ps) run
+ % to send it to a printer see <A HREF="include_run.html">include_run</A> . . .
+
+ gsave 100 200 translate
+ (1rbq1rk1/1pp1ppbp/p1np1np1/8/2PPP3/2N1BP2/PP1QN1PP/R3KB1R w) false fen2board
+ 5 2 0 true  (X)  Marker
+ 5 6 0 false (13) MarkerSm
+ grestore
+
+</PRE>
+
+<A NAME="description"><HR></A><H3>DESCRIPTION</H3>
+<P>
+This module implements in PostScript a few simple
+<A HREF="#procedures">procedures</A>
+for drawing chess diagrams,
+</P><P>
+This code is rolled into the
+<A HREF=fen2img.html">fen2img</A>
+application, written in <I>Lua</I>
+
+</P>
+
+<A NAME="procedures"> <HR> </A>
+<H3> PROCEDURES </H3>
+<DL>
+
+<DT>
+<B><A NAME="Board">position_array&nbsp; flip &nbsp; Board</A></B>
+</DT><DD><P>
+This procedure is evolved from the original by Joao Pedro Neto in
+<A HREF="http://homepages.di.fc.ul.pt/~jpn/gv/pstools.htm">
+homepages.di.fc.ul.pt/~jpn/gv/pstools.htm</A>
+and
+<A HREF="http://homepages.di.fc.ul.pt/~jpn/gv/tabs/chess-template.eps">
+homepages.di.fc.ul.pt/~jpn/gv/tabs/chess-template.eps</A>
+</P><P>
+The <B>position_array</B> has 64 elements.
+When laid out in rows of 8, it looks like the board seen from White's side:
+<PRE>
+  [ -4 -2 -3 -5 -6  0  0 -4
+    -1  0  0  0  0 -1  0  0
+     0  0  0  0 -1  0  0 -1
+     0 -1  0 -2  1  0  2  5
+     0 -3 -1  1  0  0  0  3
+     0  0  2  0  0  0  0  0
+     0  1  0  0  0  1  1  1  
+     4  0  0  0  6  3  0  4 ] false Board
+</PRE>
+where 0 means the square is empty, the positive numbers are White pieces,
+and their negatives the Black pieces.
+1=pawn, 2=knight, 3=bishop, 4=rook, 5=queen and 6=king.
+</P><P>
+The boolean <B>flip</B> determines whether
+the board will be shown rotated 180 degrees,
+from Black's point of view.
+</P>
+
+</DD><DT>
+<B><A NAME="fen2board">
+fen_str&nbsp; flip &nbsp; fen2board</A></B>
+</DT><DD><P>
+This procedure wraps the above <I>Board</I> procedure to accept the
+position in FEN syntax, see
+<A HREF="https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation">
+wikipedia</A>
+</P><P>
+The boolean <B>flip</B> determines whether
+the board will be shown rotated 180 degrees,
+from Black's point of view.
+</P>
+
+</DD><DT>
+<B><A NAME="Marker">
+row&nbsp; col&nbsp; grey_ratio&nbsp; boolean_charpath&nbsp; str &nbsp; Marker</A></B>
+</DT><DD><P>
+A <B>grey_ratio</B> of 0.0 means black, of 1.0 means white.
+Often, a <I>grey_ratio</I> of about 0.4 when <I>charpath</I> is <I>false</I>
+seems visually balanced against
+a <I>grey_ratio</I> of 0.0 when <I>charpath</I> is <I>true</I
+</P><P>
+If <B>boolean_charpath</B> is <I>true</I> then the character is
+printed in outline only, which gives a much lighter visual impression.
+</P>
+
+<!--</DD><DT>
+<B><A NAME="MarkerSm">
+row&nbsp; col&nbsp; grey_ratio&nbsp; boolean_charpath&nbsp; string_2_chars &nbsp; MarkerSm</A></B>
+</DT><DD><P>
+See the <I>Postscript Language Tutorial and Cookbook</I> p.167
+</P>-->
+
+</DD></DL>
+
+<A NAME="variables"> <HR> </A>
+<H3> VARIABLES</H3>
+<DL>
+
+<DT>
+<B><A NAME="dx">/Chess.dx &nbsp; 40 &nbsp; def</A></B>
+</DT><DD>
+The size of the square, in point. &nbsp;
+The default is 40
+</DD><DT>
+<B><A NAME="markersize">/Chess.markersize &nbsp; 0.7 &nbsp; def</A></B>
+</DT><DD>
+The relative size of marker-letters inside the squares.<BR>
+The default is 0.7, but if you wish, eg: to number a dozen or more
+'corresponding' squares in an endgame analysis, then
+<CODE>/Chess.markersize&nbsp;0.5&nbsp;def</CODE>
+may be more appropriate.
+</DD></DL>
+
+<A NAME="install"> <HR> </A>
+<H3> INSTALL </H3>
+<P>
+To install: go to
+<A HREF="free/chess.ps.txt">www.pjb.com.au/comp/free/chess.ps.txt</A>
+and save the file to your local disc.<BR>
+Rename it to <I>chess.ps</I> and move it into some appropriate
+directory such as <CODE>~/ps/lib</CODE>&nbsp;.&nbsp;.&nbsp;.
+</P><P>
+Or, first change directory to where you keep your PostScript libraries:
+<BR><CODE> &nbsp; &nbsp;
+cd /home/wherever/ps/lib/
+</CODE><BR>
+(or wherever) &nbsp; and then either: <BR>
+<CODE>
+&nbsp; &nbsp; wget -O chess.ps http://www.pjb.com.au/comp/free/chess.ps.txt
+</CODE><BR> or: <BR> <CODE>
+&nbsp; &nbsp; curl http://www.pjb.com.au/comp/free/chess.ps.txt -o chess.ps
+</CODE></P>
+<P>
+It also needs a particular <I>TrueType</I> font to be installed:
+<BR><CODE> &nbsp;  &nbsp;
+<A HREF="http://homepages.di.fc.ul.pt/~jpn/gv/tabs/chessfont.zip">
+homepages.di.fc.ul.pt/~jpn/gv/tabs/chessfont.zip</A></CODE><BR>
+This unzips to reveal the &nbsp;<CODE>CHEQ_TT.TTF</CODE>&nbsp; font,<BR>
+which you can install on <I>linux</I> by moving it into
+<CODE>/usr/share/fonts/truetype/</CODE>
+
+<A NAME="author"> <HR> </A>
+<H3> AUTHOR </H3>
+<P>
+Peter J Billam &nbsp;
+<A HREF="contact.html">www.pjb.com.au/comp/contact.html</A>
+</P>
+
+<A NAME="changes"><HR></A><H3>CHANGES</H3><PRE>
+ 20180415 first released version
+</PRE>
+
+<A NAME="see_also"> <HR> </A>
+<H3> SEE ALSO </H3>
+<P> &nbsp; &nbsp;
+<A HREF="https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation">
+en.wikipedia.org/wiki/Forsyth-Edwards_Notation</A>
+<BR> &nbsp; &nbsp;
+<A HREF="http://homepages.di.fc.ul.pt/~jpn/gv/pstools.htm">
+homepages.di.fc.ul.pt/~jpn/gv/pstools.htm</A>
+<BR> &nbsp; &nbsp;
+<A HREF="http://homepages.di.fc.ul.pt/~jpn/gv/tabs/chessfont.zip">
+homepages.di.fc.ul.pt/~jpn/gv/tabs/chessfont.zip</A>
+<BR> &nbsp; &nbsp;
+<A HREF="include_run.html">include_run</A>
+<BR> &nbsp; &nbsp;
+<A HREF="http://www.pjb.com.au/">http://www.pjb.com.au/</A>
+<BR> &nbsp; &nbsp;
+the <I>PostScript Language Reference Manual</I> (Adobe).
+</P>
+
+<HR><CENTER><P>Back to <A HREF="index.html">P J B Computing</A> or to
+<A HREF="../index.html">www.pjb.com.au</A>&nbsp;.&nbsp;.&nbsp;.</CENTER></P>
+</DIV></BODY></HTML>
