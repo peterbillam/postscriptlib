@@ -1,0 +1,108 @@
+<HTML><HEAD><TITLE>fen2img Manual</TITLE>
+<LINK rel=stylesheet type="text/css" href="styles.css" title="PJB Comp Styles">
+<META HTTP-EQUIV="Keywords"
+CONTENT="PostScript, chess, FEN, pgn, jpg">
+</HEAD>
+<BODY LINK="#000066" VLINK="#000066" ALINK="#000066">
+<DIV>
+<H1><IMG SRC="logo.jpg" ALT=" " WIDTH=126 HEIGHT=52>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <I>fen2img</I>
+</H1>
+<CENTER>
+<TABLE ALIGN="center" WIDTH="85%" BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left">
+<UL><LI>
+  <B><a href="#NAME">NAME</a></B>
+  </LI><LI>
+  <B><a href="#SYNOPSIS">SYNOPSIS</a></B>
+  </LI></UL>
+</TD><TD ALIGN="left">
+  <UL><LI>
+  <B><a href="#DESCRIPTION">DESCRIPTION</a></B>
+  </LI><LI>
+  <B><a href="#OPTIONS">OPTIONS</a></B>
+  </LI></UL>
+</TD><TD ALIGN="left">
+<UL><LI>
+  <B><a href="#DOWNLOAD">DOWNLOAD</a></B>
+  </LI><LI>
+  <B><a href="#AUTHOR">AUTHOR</a></B>
+  </LI><LI>
+  <B><a href="#SEE-ALSO">SEE ALSO</a></B>
+  </LI></UL>
+</TD></TR></TABLE>
+</CENTER>
+
+<H3 id="NAME">NAME</H3>
+
+<p>fen2img - Creates a .png or .jpg diagram of a chess position in FEN</p>
+
+<H3 id="SYNOPSIS">SYNOPSIS</H3>
+
+<pre><code> fen2img -w 500 \
+   'rnb1k1nr/pppp1ppp/8/4p3/3b3q/4PPP1/PPP2K1P/RNBQ1BNR b KQkq - 0 5' \
+   /tmp/hammerschlag.png
+ display /tmp/hammerschlag.png
+
+ FEN=`pgn2fen '1.f3 e5 2. Kf2 Bc5+ 3.d4 Qh4+ 4. g3 Bxd4+ 5.e3'`
+ fen2img -w 500 &quot;$FEN&quot; /tmp/t.jpg
+ fen2img -w 500 &quot;$FEN&quot; /tmp/t.png
+ fen2img -w 500 &quot;$FEN&quot; /tmp/t.eps</code></pre>
+
+<H3 id="DESCRIPTION">DESCRIPTION</H3>
+
+<p>This script converts a chess-position in FEN syntax into an image in
+<code>.jpg</code> or <code>.png</code> or <code>.eps</code> format.</p>
+
+<p>It incorporates the same code as makes up the
+<A HREF="chess.html"><code>chess.ps</code> <i>PostScript</i> library</A>,<BR>
+and feeds the result into <code>gs</code>
+to convert into <code>.jpg</code> or <code>.png</code> format.</p>
+
+<H3 id="OPTIONS">OPTIONS</H3>
+
+<dl>
+
+<dt id="w-500"><i>-w 500</i></dt> <dd>
+<p>This option sets the <b>W</b>idth in pixels of the <code>.jpg</code>
+or <code>.png</code> image, or the width in points of <code>.eps</code>
+files.</p>
+</dd>
+
+<dt id="v"><i>-v</i></dt> <dd>
+<p>Prints the Version</p>
+</dd>
+</dl>
+
+<H3 id="DOWNLOAD">DOWNLOAD</H3>
+
+<p><i>fen2img</i> at is available in</p>
+<pre><code>  git clone https://github.com/peterbillam/postscriptlib</code></pre>
+<p>or at</p>
+<pre><code>  https://github.com/peterbillam/postscriptlib
+  https://github.com/peterbillam/postscriptlib/tree/master/bin
+  http://www.pjb.com.au/comp/free/fen2img</code></pre>
+<p>It also needs <i>gs</i> to be installed, if it isn't already:</p>
+<pre><code>  apt-get install ghostscript</code></pre>
+<p>or see:
+<A HREF="http://www.ghostscript.com/">www.ghostscript.com/</A>
+</p><p>
+It also needs a particular TrueType font:</p>
+<pre><code>   http://homepages.di.fc.ul.pt/~jpn/gv/tabs/chessfont.zip</code></pre>
+<p>which unzips to <code>CHEQ_TT.TTF</code> which you move into
+<code>/usr/share/fonts/truetype/</code>
+</p>
+
+<H3 id="AUTHOR">AUTHOR</H3>
+<p>Peter J Billam, http://www.pjb.com.au/comp/contact.html</p>
+
+<H3 id="SEE-ALSO">SEE ALSO</H3>
+<pre><code> <A HREF="https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation">en.wikipedia.org/wiki/Forsyth-Edwards_Notation</A>
+ <A HREF="http://www.pjb.com.au/comp/chess.html">www.pjb.com.au/comp/chess.html</A>
+ <A HREF="http://www.pjb.com.au/">www.pjb.com.au/</A>
+</code></pre>
+
+</body>
+</html>
+
+

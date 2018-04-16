@@ -301,44 +301,6 @@ table.insert(PS_sections, [[
     grestore
 	end
 } bind def
-/Marker {  % call: j i g(rey ratio) b(oolean/charpath) s(tring -> just 1 char)
-	10 dict begin
-	[ /s /b /g /i /j ] { exch def } forall
-    gsave
-    g setgray
-    Chess.dx 3.5 div Chess.dx 5 div translate 
-    j i PlaceAt
-	/insidesize Chess.dx 0.7  mul def  % size of the letters inside the squares
-    /Helvetica-Bold findfont insidesize scalefont setfont
-    .5 setlinewidth
-    b {
-        s true charpath gsave 1 setgray fill grestore stroke
-      } {
-        s show
-    } ifelse
-    grestore
-	end
-} bind def
-/MarkerSm { % j i g(rey ratio) b(oolean/charpath) s(tring -> just 2 chars)
-	10 dict begin
-	[ /s /b /g /i /j ] { exch def } forall
-    % /s exch def /b exch def /g exch def /i exch def /j exch def
-    gsave
-    g setgray
-    Chess.dx 3.5 div Chess.dx 6 div translate 
-    j i PlaceAt
-    /basefont /Helvetica-Bold findfont def
-	/insidesize  Chess.dx 0.7  mul def  % size of the letters inside the squares
-    basefont [insidesize 2 div 0 0 insidesize 0 0] makefont setfont
-    .5 setlinewidth
-    b {
-        s true charpath gsave 1 setgray fill grestore stroke
-      } {
-        s show
-    } ifelse
-    grestore
-	end
-} bind def
 %--------------------------------------------------------------------------
 /fen2board { % useage:  fenstr flip fen2board
 	10 dict begin
@@ -421,22 +383,32 @@ fen2img - Creates a .png or .jpg diagram of a chess position in FEN
    /tmp/hammerschlag.png
  display /tmp/hammerschlag.png
 
- FEN=`pgn2fen '1.f3 e5 2. Kf2 Bc5+ 3.d4 Qh4+ 4. g3 Bxd4 5.e3'`
+ FEN=`pgn2fen '1.f3 e5 2. Kf2 Bc5+ 3.d4 Qh4+ 4. g3 Bxd4+ 5.e3'`
  fen2img -w 500 "$FEN" /tmp/t.jpg
  fen2img -w 500 "$FEN" /tmp/t.png
  fen2img -w 500 "$FEN" /tmp/t.eps
 
 =head1 DESCRIPTION
 
-This script
+This script converts a chess-position in FEN syntax
+into an image in C<.jpg> or C<.png> or C<.eps> format.
 
-=head1 ARGUMENTS
+It incorporates the same code as makes up the C<chess.ps>
+I<PostScript> library, and feeds the result into C<gs>
+to convert into C<.jpg> or C<.png> format.
+
+=head1 OPTIONS
 
 =over 3
 
+=item I<-w 500>
+
+This option sets the B<W>idth in pixels of the C<.jpg> or C<.png> image,
+or the width in points of C<.eps> files.
+
 =item I<-v>
 
-Print the Version
+Prints the Version
 
 =back
 
@@ -450,6 +422,7 @@ or at
 
   https://github.com/peterbillam/postscriptlib
   https://github.com/peterbillam/postscriptlib/tree/master/bin
+  http://www.pjb.com.au/comp/free/fen2img
 
 It also needs I<gs> to be installed, if it isn't already:
 
@@ -470,6 +443,8 @@ Peter J Billam, http://www.pjb.com.au/comp/contact.html
 
 =head1 SEE ALSO
 
+ https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
+ http://www.pjb.com.au/comp/chess.html
  http://www.pjb.com.au/
 
 =cut
