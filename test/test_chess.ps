@@ -90,7 +90,32 @@ showpage
 /xmax currentpagedevice (PageSize) get 0 get def
 /ymax currentpagedevice (PageSize) get 1 get def
 (/home/pjb/ps/lib/chess.ps) run
-gsave 40 80 translate
+gsave 20 20 translate
+  (8/8/8/8/8/8/8/8 w) false fen2board
+  7 3 0.0 true  (NOW) Marker
+  7 4 0.0 true  (13) Marker
+  7 5 0.3 false (WW) Marker
+  7 6 0.3 false (ll) Marker
+  6 3 0.0 true  (x) Marker
+  6 4 0.0 true  (x) Marker
+  6 5 0.3 false (x) Marker
+  6 6 0.3 false (x) Marker
+  5 3 0.0 true  (.) Marker
+  5 4 0.0 true  (.) Marker
+  5 5 0.3 false (.) Marker
+  5 6 0.3 false (.) Marker
+  4 3 0.0 true  (2) Marker
+  4 4 0.0 true  (2) Marker
+  4 5 0.3 false (2) Marker
+  4 6 0.3 false (2) Marker
+  3 3 0.1 true  (X) Marker
+  3 4 0.1 true  (X) Marker
+  3 5 0.1 false (X) Marker
+  3 6 0.1 false (X) Marker
+grestore
+
+/Chess.markersize 0.4 def
+gsave 200 400 translate
   (8/8/8/8/8/8/8/8 w) false fen2board
   7 3 0.0 true  (NOW) Marker
   7 4 0.0 true  (13) Marker

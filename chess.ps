@@ -266,7 +266,7 @@
     g setgray
     /insidesize  Chess.dx Chess.markersize mul  def
     /basefont /Helvetica-Bold findfont def
-    basefont [ insidesize s length 0.7 exp div  0 0  insidesize  0 0 ]
+    basefont [ insidesize s length 0.6 exp div  0 0  insidesize  0 0 ]
 	makefont setfont % now narrowed
     s space_to_centre  translate
     j i PlaceAt
@@ -279,26 +279,6 @@
     grestore
   end
 } bind def
-
-%/MarkerSm { % j i grey_ratio boolean_charpath string_2_chars MarkerSm
-%  10 dict begin
-%  [ /s /b /g /i /j ] { exch def } forall
-%    gsave
-%    g setgray
-%    /insidesize  Chess.dx Chess.markersize mul  def
-%    /basefont /Helvetica-Bold findfont def
-%    basefont [insidesize 2 div 0 0 insidesize 0 0] makefont setfont % narrow
-%    Chess.dx 3.5 div  Chess.dx 6 div  translate % should de-kludge this...
-%    j i PlaceAt
-%    b {
-%      .5 setlinewidth
-%        s true charpath  gsave 1 setgray fill grestore  stroke
-%      } {
-%        s show
-%    } ifelse
-%    grestore
-%  end
-%} bind def
 
 %--------------------------------------------------------------------------
 /fen2board { % useage:  fenstr flip fen2board
