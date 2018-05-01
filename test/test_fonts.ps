@@ -184,9 +184,29 @@ showpage
 /ymax currentpagedevice (PageSize) get 1 get def
 (/home/pjb/ps/lib/fonts.ps) run
 (/home/pjb/ps/lib/colours.ps) run
-% /FatSimple 60 selectfont
-% 60 700 moveto (Aa Mm Nn Vv) show
-% 60 600  moveto (\300\340 \302\342 \301\341 \321\361) show
+/FatBluntItalic 44 selectfont
+60 660  moveto (ThE QuicK BrowN) show
+60 600  moveto ( FoX JumpS OveR) show
+60 540  moveto (  ThE LazY DoG) show
+60 420  moveto (tHe qUICk bROWn) show
+60 360  moveto ( fOx jUMPs oVEr) show
+60 300  moveto (  tHe lAZy dOg) show
+darkred setrgbcolor
+/FatBluntItalic 40 selectfont
+% echo 'ÀàÁáÂâÃãÄä Çç ÈèÉéÊêËë' | utf2iso | od -b
+xmax 0.05 mul  ymax 0.24 mul  moveto
+(\300\340\301\341\302\342\304\344\040\307\347\040\310\350\311\351\312\352) show
+xmax 0.05 mul  ymax 0.12 mul  moveto
+(\315\355\317\357\321\361 \323\363\324\364\326\366 \332\372\334\374) show
+showpage
+
+%%Page: 6 6
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+(/home/pjb/ps/lib/fonts.ps) run
+(/home/pjb/ps/lib/colours.ps) run
 /FatSimple 44 selectfont
 60 660  moveto (ThE QuicK BrowN) show
 60 600  moveto ( FoX JumpS OveR) show
@@ -203,6 +223,27 @@ xmax 0.05 mul  ymax 0.12 mul  moveto
 (\315\355\317\357\321\361 \323\363\324\364\326\366 \332\372\334\374) show
 showpage
 
-%%EOF
+%%Page: 7 7
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+(/home/pjb/ps/lib/fonts.ps) run
+(/home/pjb/ps/lib/colours.ps) run
+/FatSimpleItalic 44 selectfont
+60 660  moveto (ThE QuicK BrowN) show
+60 600  moveto ( FoX JumpS OveR) show
+60 540  moveto (  ThE LazY DoG) show
+60 420  moveto (tHe qUICk bROWn) show
+60 360  moveto ( fOx jUMPs oVEr) show
+60 300  moveto (  tHe lAZy dOg) show
+darkred setrgbcolor
+/FatSimpleItalic 40 selectfont
+% echo 'ÀàÁáÂâÃãÄä Çç ÈèÉéÊêËë' | utf2iso | od -b
+xmax 0.05 mul  ymax 0.24 mul  moveto
+(\300\340\301\341\302\342\304\344\040\307\347\040\310\350\311\351\312\352) show
+xmax 0.05 mul  ymax 0.12 mul  moveto
+(\315\355\317\357\321\361 \323\363\324\364\326\366 \332\372\334\374) show
+showpage
 
 %%EOF
