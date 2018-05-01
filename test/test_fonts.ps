@@ -67,27 +67,20 @@ showpage
 %%EndPageSetup
 /xmax currentpagedevice (PageSize) get 0 get def
 /ymax currentpagedevice (PageSize) get 1 get def
-
 (/home/pjb/ps/lib/fonts.ps) run
 (/home/pjb/ps/lib/colours.ps) run
-
 xmax 0.08 mul  ymax 0.90 mul  moveto
-/TimesBoldItalicSmallCaps 40 selectfont
+/FatSimpleBoldItalic 40 selectfont
 (Hello World) show
-
 xmax 0.08 mul  ymax 0.855 mul  moveto
-/TimesBoldSmallCaps 35 selectfont
+/FatSimpleBold 35 selectfont
 (Hello World) show
-
 xmax 0.08 mul  ymax 0.815 mul  moveto
-/TimesItalicSmallCaps 30 selectfont
+/FatSimpleItalic 30 selectfont
 (Hello World) show
-
 xmax 0.08 mul  ymax 0.780 mul  moveto
-/TimesSmallCaps 25 selectfont
+/FatSimple 25 selectfont
 (Hello World) show
-
-
 /FatSimple 50 selectfont
 xmax 0.05 mul  ymax 0.67 mul  moveto
 (2+3 = 5    3-2 = 1) show
@@ -124,7 +117,6 @@ xmax 0.05 mul  ymax 0.20 mul  moveto
 (M,M;M http://www) show
 xmax 0.05 mul  ymax 0.14 mul  moveto
 (\300\340 \302\342 \301\341\315\355\323\363\332\372 \321\361) show
- 
 showpage
 
 %%Page: 3 3
@@ -132,11 +124,9 @@ showpage
 %%EndPageSetup
 /xmax currentpagedevice (PageSize) get 0 get def
 /ymax currentpagedevice (PageSize) get 1 get def
-
 (/home/pjb/ps/lib/fonts.ps) run
 (/home/pjb/ps/lib/colours.ps) run
 % (/home/pjb/ps/fonts/Font7x5/Font7x5.ps) run
-
 /Bitfont5x7 40 selectfont
 black setrgbcolor 0 0 xmax ymax rectfill   green setrgbcolor
 
@@ -159,7 +149,60 @@ black setrgbcolor 0 0 xmax ymax rectfill   green setrgbcolor
 % /Font7x5 30 selectfont
 50 160 moveto ($s~=/^y|n/ x@y.z.com) show
 50 100 moveto (#%&*_"'<>) show
-
 showpage
+
+%%Page: 4 4
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+(/home/pjb/ps/lib/fonts.ps) run
+(/home/pjb/ps/lib/colours.ps) run
+% /FatBlunt 60 selectfont
+% 60 700 moveto (Aa Mm Nn Vv) show
+% 60 600  moveto (\300\340 \302\342 \301\341 \321\361) show
+/FatBlunt 44 selectfont
+60 660  moveto (ThE QuicK BrowN) show
+60 600  moveto ( FoX JumpS OveR) show
+60 540  moveto (  ThE LazY DoG) show
+60 420  moveto (tHe qUICk bROWn) show
+60 360  moveto ( fOx jUMPs oVEr) show
+60 300  moveto (  tHe lAZy dOg) show
+darkred setrgbcolor
+/FatBlunt 40 selectfont
+% echo 'ÀàÁáÂâÃãÄä Çç ÈèÉéÊêËë' | utf2iso | od -b
+xmax 0.05 mul  ymax 0.24 mul  moveto
+(\300\340\301\341\302\342\304\344\040\307\347\040\310\350\311\351\312\352) show
+xmax 0.05 mul  ymax 0.12 mul  moveto
+(\315\355\317\357\321\361 \323\363\324\364\326\366 \332\372\334\374) show
+showpage
+
+%%Page: 5 5
+%%BeginPageSetup
+%%EndPageSetup
+/xmax currentpagedevice (PageSize) get 0 get def
+/ymax currentpagedevice (PageSize) get 1 get def
+(/home/pjb/ps/lib/fonts.ps) run
+(/home/pjb/ps/lib/colours.ps) run
+% /FatSimple 60 selectfont
+% 60 700 moveto (Aa Mm Nn Vv) show
+% 60 600  moveto (\300\340 \302\342 \301\341 \321\361) show
+/FatSimple 44 selectfont
+60 660  moveto (ThE QuicK BrowN) show
+60 600  moveto ( FoX JumpS OveR) show
+60 540  moveto (  ThE LazY DoG) show
+60 420  moveto (tHe qUICk bROWn) show
+60 360  moveto ( fOx jUMPs oVEr) show
+60 300  moveto (  tHe lAZy dOg) show
+darkred setrgbcolor
+/FatSimple 40 selectfont
+% echo 'ÀàÁáÂâÃãÄä Çç ÈèÉéÊêËë' | utf2iso | od -b
+xmax 0.05 mul  ymax 0.24 mul  moveto
+(\300\340\301\341\302\342\304\344\040\307\347\040\310\350\311\351\312\352) show
+xmax 0.05 mul  ymax 0.12 mul  moveto
+(\315\355\317\357\321\361 \323\363\324\364\326\366 \332\372\334\374) show
+showpage
+
+%%EOF
 
 %%EOF
