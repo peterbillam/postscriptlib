@@ -57,6 +57,10 @@ fonts.ps - Some useful fonts in PostScript
     50 600 moveto (FatSimple) show
  <A HREF="#FatSimpleItalic">/FatSimpleItalic</A> 30 selectfont
     50 550 moveto (FatSimpleItalic) show
+ <A HREF="#FatBlunt">/FatBlunt</A> 30 selectfont
+    50 600 moveto (FatBlunt) show
+ <A HREF="#FatBluntItalic">/FatBluntItalic</A> 30 selectfont
+    50 550 moveto (FatBluntItalic) show
  <A HREF="#HelveticaSmallCaps">/HelveticaSmallCaps</A> 30 selectfont
     50 470 moveto (HelveticaSmallCaps) show
  <A HREF="#HelveticaItalicSmallCaps">/HelveticaItalicSmallCaps</A> 30 selectfont
@@ -90,6 +94,8 @@ a small collection of custom fonts.
 <B><A HREF="#Bitfont5x7">Bitfont5x7</A></B> &nbsp;
 <B><A HREF="#FatSimple">FatSimple</A></B> &nbsp;
 <B><A HREF="#FatSimpleItalic">FatSimpleItalic</A></B> <BR>
+<B><A HREF="#FatBlunt">FatBlunt</A></B> &nbsp;
+<B><A HREF="#FatBluntItalic">FatBluntItalic</A></B> <BR>
 <B><A HREF="#HelveticaSmallCaps">HelveticaSmallCaps</A></B> &nbsp;
 <B><A HREF="#HelveticaItalicSmallCaps">HelveticaItalicSmallCaps</A></B> &nbsp;
 <B><A HREF="#HelveticaBoldSmallCaps">HelveticaBoldSmallCaps</A></B> &nbsp;
@@ -142,6 +148,32 @@ It is used in the title of the
 <B><A HREF="free/droplet_video.mp4">Droplet Video</A></B>,
 also to be found on <I>youtube</I>
 <A HREF="https://youtu.be/yLo-cU9gPlA">youtu.be/yLo-cU9gPlA</A>
+</P></DD><DT>
+
+<B><A NAME="FatBlunt">/FatBlunt 30 selectfont</A></B>
+</DT><DD><P>
+<IMG SRC="graphics/fat_blunt.png" ALIGN="right">
+This is a <I>Type 3</I> font, with simple shapes and very broad strokes.
+It's mostly intended for use in posters;
+it creates even clearer tangent-lines than <I>FatSimple</I>
+along the top and the bottom of the letters.
+<BR>
+It differ from <I>FatSimple</I> in that the pointy tops to <B>A</B>,
+<B>M</B> and <B>N</B> are broadened to be horizontals.
+The give <I>FatBlunt</I> a more 'brutalist' character,
+whereas <I>FatSimple</I> is more 'edgy'.
+<BR>
+Lowercase letters are displayed as SmallCaps,
+It includes ISO accents for german and french,
+plus digits <B>0</B>-<B>9</B>
+and <B>+ - = . , : ; ! ? ' " / | _ ( )</B>
+<BR>Remember <I> charpath</I> will not work with any <I>Type 3</I> font.
+</P></DD><DT>
+
+<B><A NAME="FatBluntItalic">/FatBluntItalic 30 selectfont</A></B>
+</DT><DD><P>
+<IMG SRC="graphics/fat_blunt_italic.png" ALIGN="right">
+This is the same as <I>FatBlunt</I> but sloping strongly to the right.
 
 </P></DD><DT>
 
@@ -242,6 +274,8 @@ Peter J Billam &nbsp;
 
 <A NAME="changes"><HR></A><H3>CHANGES</H3><PRE>
  
+ 20180501 introduce FatBlunt and FatBluntItalic
+ 20180501 bugs fixed in FatSimple &eacute; and &ecirc;
  20170521 FatSimple gets _ ' and "
  20160705 FatSimple gets Agrave and Acirc
  20160604 FatSimple gets , ; /
